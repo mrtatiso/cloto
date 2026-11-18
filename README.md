@@ -1,4 +1,4 @@
-<img width="1200" height="400" alt="CLOTO" src="https://github.com/user-attachments/assets/5854b5ef-b686-49cb-bb79-830213e544fc" />
+<img width="1200" height="400" alt="CLOTO" src="https://github.com/user-attachments/assets/5922c609-2673-4b01-9a12-f577922b01b0" />
 
 Ideas, cajas de texto, imágenes, vídeos, PDF, enlaces y cuerdas.
 Cada proyecto es un solo archivo `.cloto` con todo dentro. Se puede proteger con contraseña.
