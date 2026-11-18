@@ -56,6 +56,7 @@ body {
 @keyframes d5 { 50% { transform:translate(30vmax,-18vmax) scale(.9); } 100% { transform:translate(45vmax,-4vmax) scale(1.2); } }
 @keyframes pulse { from { opacity:.45; } to { opacity:1; } }
 @media (prefers-reduced-motion: reduce) { #aura i { animation:none; } }
+.wkgtk #aura i { animation:none; }                /* ventana de Linux (WebKitGTK): el fondo quieto, si no repinta toda la pantalla en cada cuadro */
 
 /* ---------- lienzo ---------- */
 #stage { position:fixed; inset:0; touch-action:none; }
@@ -137,6 +138,16 @@ body.pulling #stage, body.pulling .node, body.pulling .elab, body.pulling .edge 
 #ring .it.pick input { position:absolute; inset:-4px; width:30px; height:30px; opacity:0; cursor:pointer; border:0; padding:0; }
 #ring .ctr { position:absolute; left:-46px; top:-10px; width:92px; text-align:center; font:500 11px/20px var(--ui); color:var(--muted); pointer-events:none; }
 #ring .it.none { background:linear-gradient(135deg, transparent 45%, var(--muted) 45%, var(--muted) 55%, transparent 55%); }
+/* clavija: un segundo anillo invisible en el centro; su punto se toma y se gira para tensar (doble clic: todos) */
+#ring .peg { position:absolute; left:-38px; top:-38px; width:76px; height:76px; border-radius:50%; cursor:grab; touch-action:none; animation:ringbg .2s ease-out; }
+#ring .peg::before { content:''; position:absolute; inset:9px; border-radius:50%; border:1px dashed transparent; transition:border-color .2s; }
+#ring .peg:hover::before, #ring .peg.on::before { border-color:color-mix(in srgb, var(--muted) 50%, transparent); }
+#ring .peg b { position:absolute; left:50%; top:50%; width:7px; height:7px; margin:-3.5px 0 0 -3.5px; border-radius:50%; background:var(--muted);
+  transform:rotate(var(--a, -1.5708rad)) translate(29px); transition:width .15s, height .15s, margin .15s, background .15s, box-shadow .15s; }
+#ring .peg.ease b { transition:transform .45s cubic-bezier(.2,.9,.3,1.15), width .15s, height .15s, margin .15s, background .15s; }
+#ring .peg:hover b, #ring .peg.on b { width:10px; height:10px; margin:-5px 0 0 -5px; background:var(--text); box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent); }
+#ring .peg.on { cursor:grabbing; }
+#ring .peg.taut b { background:var(--accent); }
 @keyframes ringpop { from { transform:scale(.3); opacity:0; } }
 @keyframes ringbg { from { transform:scale(.6); opacity:0; } }
 
@@ -247,6 +258,7 @@ const REPO = /^https?:/.test('__CLOTO_REPO__') ? '__CLOTO_REPO__' : '';     // l
 const WEB = !DESK && /^https?:$/.test(location.protocol) && !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);   // versión de prueba en línea
 if (WEB) document.body.classList.add('web');
 if (DESK && location.search) history.replaceState(null, '', location.pathname);   // la llave de un solo uso no queda en la dirección
+if (DESK && /Linux/.test(navigator.userAgent) && !/Chrom|Edg/.test(navigator.userAgent)) document.documentElement.classList.add('wkgtk');   // ventana de Linux (WebKitGTK)
 if (DESK) {                                                 // en la app, los enlaces se abren en tu navegador
   const wo = window.open.bind(window);
   window.open = (u, ...r) => { if (/^https?:/i.test(u) && !String(u).startsWith(location.origin)) { deskPost('open-url', { url: String(u) }); return null; } return wo(u, ...r); };
@@ -333,9 +345,21 @@ const snd = (() => {
     puff() { if (!gate('puff', 70)) return; hiss(2600, 260, .26, .26, .8, 'lowpass'); tone('sine', 110, 55, .16, .12); },
     chord() { tone('sine', 523, 523, .22, .14); tone('sine', 659, 659, .26, .12, .07); },
     tick() { tone('sine', 880, 700, .04, .07); },
-    pluck(len) {                                                // rasgar la cuerda: más larga, más grave
-      const f = Math.max(190, Math.min(480, 500 - len * .35));
-      tone('triangle', f, f * .985, .38, .1); tone('sine', f * 2, f * 1.98, .2, .03);
+    pluck(len, v = 1) {                                         // rasgar la cuerda: más larga, más grave
+      if (!gate('pluck', 30)) return;
+      const f = Math.max(190, Math.min(520, 500 - len * .35)), a = Math.max(.15, Math.min(1, v));
+      tone('triangle', f, f * .985, .38, .1 * a); tone('sine', f * 2, f * 1.98, .2, .03 * a);
+    },
+    ratchet(up) {                                               // clavija: un clic por diente, más agudo al tensar
+      if (!gate('ratchet', 28)) return;
+      const r = .9 + Math.random() * .2;
+      hiss((up ? 5200 : 3600) * r, 2600, .018, .05, 2.2); tone('sine', (up ? 1500 : 1100) * r, 800, .022, .035);
+    },
+    zip() { if (!gate('zip', 160)) return; hiss(700, 3200, .22, .07, 1.4); tone('sine', 220, 440, .22, .05); },   // tensar: el hilo se recoge
+    land(v) {                                                   // un peso aterriza sobre una caja
+      if (!gate('land', 90)) return;
+      const a = Math.max(.15, Math.min(1, v));
+      tone('sine', 170, 85, .09, .22 * a); hiss(1200, 500, .04, .07 * a, 1.2);
     },
     cross() { if (!gate('cross', 90)) return; hiss(4200, 2400, .06, .07, 1.6); tone('sine', 760, 520, .06, .04); },
     tension(level) {                                           // cuerda tensa: el tono sube y vibra más con la tensión o la agitación
@@ -357,7 +381,7 @@ const snd = (() => {
     }
   };
 })();
-let mv = { dx: 0, dy: 0, t: 0 }; const pluckAt = {};     // último movimiento del puntero (para rasgar hilos)
+let mv = { dx: 0, dy: 0, t: 0 }; const pluckAt = {}, taut = new Map();   // taut: cuánto tensa un peso cada hilo (0 flojo · 1 tenso)     // último movimiento del puntero (para rasgar hilos)
 
 /* =========================================================
    Estado
@@ -404,7 +428,7 @@ function fit() {
    Datos: exportar, guardar en el navegador, historial
    ========================================================= */
 const exportNode = n => { const o = { id: n.id, x: Math.round(n.x), y: Math.round(n.y), text: n.text }; if (n.w) o.w = true; if (n.color) o.color = n.color; if (n.fr) o.frame = n.fr; if (n.media) o.media = exportMedia(n.media); return o; };
-const exportEdge = e => { const o = { id: e.id, from: e.from, to: e.to }; if (e.dir && e.dir !== 'fwd') o.dir = e.dir; if (e.c) o.color = e.c; if (e.len0) o.len = Math.round(e.len0); if (e.st) o.style = e.st; if (e.lab) o.label = e.lab; if (e.arrow) o.arrow = e.arrow; return o; };
+const exportEdge = e => { const o = { id: e.id, from: e.from, to: e.to }; if (e.dir && e.dir !== 'fwd') o.dir = e.dir; if (e.c) o.color = e.c; if (e.len0) o.len = Math.round(e.len0); if (e.st) o.style = e.st; if (e.lab) o.label = e.lab; if (e.arrow) o.arrow = e.arrow; if (e.tight) o.tight = true; if (e.lb) o.orig = Math.round(e.lb); return o; };
 const exportGroup = g => { const o = { id: g.id, nodes: g.nodes.slice() }; if (g.label) o.label = g.label; if (g.color) o.color = g.color; return o; };
 const snapshot = () => JSON.stringify({ nodes: nodes.map(exportNode), edges: edges.map(exportEdge), groups: groups.map(exportGroup) });
 const fileData = () => ({
@@ -465,6 +489,8 @@ function ingest(d) {
     if (e.style === 'dash' || e.style === 'dot') ed.st = e.style;
     if (e.arrow === 'to' || e.arrow === 'from' || e.arrow === 'both') ed.arrow = e.arrow;
     if (typeof e.label === 'string' && e.label.trim()) ed.lab = e.label.trim().slice(0, 48);
+    if (e.tight === true) ed.tight = true;                   // tensado: siempre recto, como cuerda de guitarra
+    if (+e.orig > 0) ed.lb = +e.orig;                        // largo de nacimiento de un hilo de peso que la clavija cambió
     edges.push(ed);
   });
   pruneDangling(true);
@@ -504,7 +530,8 @@ function refocusEdit() {
 }
 function softBlur(t, ev, still, finish) {
   if (!still()) return;
-  const left = pdLeft || (ev.relatedTarget && !t.contains(ev.relatedTarget));
+  const rt = ev.relatedTarget;                                         // solo cuenta pasar a un campo de Cloto (buscar, nombre, contraseña)
+  const left = pdLeft || (rt && !t.contains(rt) && /^(INPUT|TEXTAREA)$/.test(rt.tagName || ''));
   if (left) { finish(); return; }
   const sel = getSelection();                                          // donde ibas escribiendo, para volver justo ahí
   if (sel && sel.rangeCount && t.contains(sel.anchorNode)) caret = sel.getRangeAt(0).cloneRange();
@@ -684,6 +711,7 @@ function splitEdge(id, at, tag) {                  // tag: el nudo es un peso (t
   const L = e.len || e.len0 || 80, frac = k / SEGS;
   const e1 = { id: uid('e'), from: e.from, to: n.id, dir: e.dir, c: e.c, st: e.st, lab: e.lab, arrow: e.arrow === 'from' || e.arrow === 'both' ? 'from' : undefined, len0: Math.max(40, L * frac), len: 0 };
   const e2 = { id: uid('e'), from: n.id, to: e.to, dir: e.dir, c: e.c, st: e.st, arrow: e.arrow === 'to' || e.arrow === 'both' ? 'to' : undefined, len0: Math.max(40, L * (1 - frac)), len: 0 };
+  if (e.tight && !tag) { e1.tight = e2.tight = true; }        // un nudo (caja) en un hilo tenso: las dos mitades siguen tensas
   if (P) { ropes.set(e1.id, resample(P.slice(0, k + 1))); ropes.set(e2.id, resample(P.slice(k))); }
   edges.push(e1, e2);
   if (e.lab) { edges.forEach(x => { if (x.from === e.id) x.from = e1.id; if (x.to === e.id) x.to = e1.id; }); n.split.e1 = e1.id; }
@@ -708,6 +736,11 @@ function startEdit(id) {
   t.focus();
   const r = document.createRange(); r.selectNodeContents(t); r.collapse(false);
   const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+}
+function syncEdit() {                              // guardar no cierra la caja que escribes: solo toma su texto
+  if (!editing) return;
+  const n = node(editing), el = els.get(editing);
+  if (n && el) n.text = el.firstChild.innerText.replace(/\s+$/, '');
 }
 function finishEdit() {
   if (!editing) return;
@@ -839,14 +872,14 @@ findQ.addEventListener('keydown', e => {
    - Nunca se rompen: ceden todo lo que haga falta, por rápido que los jalen.
    - Al quedar flojos se retraen hasta su largo base (len0).
    ========================================================= */
-const ropes = new Map(), SEGS = 40, GRAV = .32, DAMP = .93;
+const ropes = new Map(), SEGS = 40, GRAV = .32, DAMP = .93;    // un paso por cuadro, como siempre
+const TIGHT = 1.003;   // un hilo tenso guarda solo esta holgura: recto, pero con espacio para vibrar
 const GIVE = .04;      // estiramiento que aguanta antes de empezar a ceder
 const CREEP = 9;       // ceder mínimo por cuadro (px); si la tensión es grande cede la mitad de lo que falta
 const RETRACT = .5;    // px por cuadro que recupera al quedar flojo
 let simRaf = 0, simCalm = 0, simT = 0, lastDragEnd = 0, debris = [];
 let wRest = 0, wSleep = false;                    // reposo de los pesos (ver stepWeights)
-let lastKick = 0, fade = 1;                       // tras soltar, el freno sube poco a poco: la energía siempre se agota
-function kick() { simCalm = 0; wSleep = false; wRest = 0; lastKick = performance.now(); fade = 1; if (!simRaf) simRaf = requestAnimationFrame(simStep); }
+function kick() { simCalm = 0; wSleep = false; wRest = 0; if (!simRaf) simRaf = requestAnimationFrame(simStep); }
 
 function rect(n) { const el = els.get(n.id), w = el.offsetWidth, h = el.offsetHeight; return { x: n.x, y: n.y, w, h, cx: n.x + w / 2, cy: n.y + h / 2 }; }
 const centerDist = (a, b) => { const ra = rect(a), rb = rect(b); return Math.hypot(rb.cx - ra.cx, rb.cy - ra.cy); };
@@ -865,14 +898,22 @@ const ropeLen = P => { let L = 0; for (let i = 0; i < P.length - 1; i++) L += Ma
 const inkOf = c => c ? `color-mix(in srgb, ${c} 90%, var(--bg))` : 'var(--edge)';
 
 /* punto del marco (redondeado) en la dirección de (tx, ty): ahí se amarra el hilo y se desliza por el borde */
-function rim(r, tx, ty) {
+function rim(r, tx, ty) {                            // exacto: el rayo desde el centro choca con el lado recto o con la esquina redonda
   const hx = (r.x1 - r.x0) / 2, hy = (r.y1 - r.y0) / 2;
   if (hx <= 0 || hy <= 0) return { x: r.cx, y: r.cy };
+  const cx = (r.x0 + r.x1) / 2, cy = (r.y0 + r.y1) / 2;
   const dx = tx - r.cx, dy = ty - r.cy, m = Math.hypot(dx, dy);
   const ux = m ? dx / m : 0, uy = m ? dy / m : 1;
-  let a = 0, b = hx + hy + 2;
-  for (let k = 0; k < 12; k++) { const t = (a + b) / 2; if (insideRound({ x: r.cx + ux * t, y: r.cy + uy * t }, r)) a = t; else b = t; }
-  return { x: r.cx + ux * b, y: r.cy + uy * b };
+  const ax = Math.abs(ux), ay = Math.abs(uy), t = Math.min(ax > 1e-9 ? hx / ax : Infinity, ay > 1e-9 ? hy / ay : Infinity);
+  const ox = r.cx - cx, oy = r.cy - cy;                 // el centro del rayo puede no ser el del marco (casi siempre lo es)
+  let px = ox + ux * t, py = oy + uy * t;
+  const R = Math.min(16, hy, hx), ix = hx - R, iy = hy - R;
+  if (Math.abs(px) > ix && Math.abs(py) > iy) {         // cae en una esquina: corta el círculo de esa esquina
+    const kx = Math.sign(px) * ix, ky = Math.sign(py) * iy, fx = ox - kx, fy = oy - ky;
+    const bq = fx * ux + fy * uy, c = fx * fx + fy * fy - R * R, disc = bq * bq - c;
+    if (disc >= 0) { const tt = -bq + Math.sqrt(disc); px = ox + ux * tt; py = oy + uy * tt; }
+  }
+  return { x: cx + px, y: cy + py };
 }
 const gapOf = (A, B) => { const a = rim(A, B.cx, B.cy), b = rim(B, A.cx, A.cy); return Math.hypot(b.x - a.x, b.y - a.y); };
 function initRope(A, B, len) {
@@ -927,28 +968,37 @@ function sideOf(q, r) {
    Si queda dentro, o del lado opuesto (la caja pasó rápido), se empuja al marco por su lado: el hilo se tensa, nunca cruza. */
 const nearestSide = (q, r) => { const l = q.x - r.x0, rr = r.x1 - q.x, t = q.y - r.y0, b = r.y1 - q.y, m = Math.min(l, rr, t, b); return m === l ? 'l' : m === rr ? 'r' : m === t ? 't' : 'b'; };
 const surfAt = (r, side, q) => surf(r, side, side === 't' || side === 'b' ? q.x - r.x0 : q.y - r.y0);
-function collide(P, near, fixed) {
+function collide(P, near, fixed, acc = null) {
+  const NN = near.length;
+  const react = (id, dx, dy) => {                                    // el hilo empujado por un peso lo empuja de vuelta
+    if (P.own && id !== P.own[0] && id !== P.own[1]) P.hits = (P.hits || 0) + 1;   // algo ajeno lo está empujando
+    if (!acc || !acc.w.has(id) || id === acc.a || id === acc.b) return;
+    const o = acc.out.get(id) || { x: 0, y: 0 }; o.x += dx * acc.k; o.y += dy * acc.k; acc.out.set(id, o);
+  };
   for (let i = 1; i < SEGS; i++) {
     if (fixed(i)) continue;
     const q = P[i];
     if (!q.sd) q.sd = {};
-    near.forEach(([id, r]) => {
-      const cur = sideOf(q, r), rec = q.sd[id];
-      if (cur && cur !== OPP[rec]) { q.sd[id] = cur; return; }      // fuera y del mismo lado (o rodeando): bien
+    for (let j = 0; j < NN; j++) {
+      const id = near[j][0], r = near[j][1], rec = q.sd[id];
+      const cur = sideOf(q, r);
+      if (cur && cur !== OPP[rec]) { q.sd[id] = cur; continue; }      // fuera y del mismo lado (o rodeando): bien
       const nb = (P[i - 1].sd && P[i - 1].sd[id]) || (P[i + 1].sd && P[i + 1].sd[id]);
       const side = rec || nb || nearestSide(q, r);                   // sin memoria: el lado de su vecino, el hilo no se parte
       const pnt = surfAt(r, side, q), dx = pnt.x - q.x, dy = pnt.y - q.y;
       q.x += dx; q.y += dy; q.px += dx * .8; q.py += dy * .8;      // un poco de roce con el marco
-      q.sd[id] = side;
-    });
+      q.sd[id] = side; react(id, dx, dy);
+    }
   }
   for (let i = 0; i < SEGS; i++) {                                   // ningún tramo entre dos puntos corta la caja
     const u = P[i], v = P[i + 1], fu = fixed(i), fv = fixed(i + 1);
     if (fu && fv) continue;
-    near.forEach(([id, r]) => {
-      const t = clipSeg(u, v, r); if (t == null) return;            // intersección exacta, sin importar lo largo del tramo
+    const sx0 = Math.min(u.x, v.x), sx1 = Math.max(u.x, v.x), sy0 = Math.min(u.y, v.y), sy1 = Math.max(u.y, v.y);
+    for (let j = 0; j < NN; j++) { const id = near[j][0], r = near[j][1];
+      if (sx1 <= r.x0 || sx0 >= r.x1 || sy1 <= r.y0 || sy0 >= r.y1) continue;   // el tramo ni se acerca a la caja
+      const t = clipSeg(u, v, r); if (t == null) continue;          // intersección exacta, sin importar lo largo del tramo
       const m = { x: u.x + (v.x - u.x) * t, y: u.y + (v.y - u.y) * t };
-      if (!insideRound(m, r)) return;
+      if (!insideRound(m, r)) continue;
       const su = (!fu && u.sd && u.sd[id]) || sideOf(u, r), sv = (!fv && v.sd && v.sd[id]) || sideOf(v, r);
       if (su && sv && su === OPP[sv]) {
         // ensartado (un extremo arriba y el otro abajo): el punto libre da la vuelta por la esquina más cercana
@@ -959,13 +1009,14 @@ function collide(P, near, fixed) {
         const pnt = surf(r, lat, old === 't' || old === 'l' ? R : span - R);
         q.px += pnt.x - q.x; q.py += pnt.y - q.y; q.x = pnt.x; q.y = pnt.y;
         if (!q.sd) q.sd = {}; q.sd[id] = lat;
-        return;
+        continue;
       }
       const side = (!fu && u.sd && u.sd[id]) || (!fv && v.sd && v.sd[id]) || su || sv || nearestSide(m, r);
       const pnt = surfAt(r, side, m), dx = pnt.x - m.x, dy = pnt.y - m.y;
       if (!fu) { const w = fv ? Math.min(2, 1 / (1 - t || 1)) : 1; u.x += dx * w; u.y += dy * w; u.px += dx * .8; u.py += dy * .8; }
       if (!fv) { const w = fu ? Math.min(2, 1 / (t || 1)) : 1; v.x += dx * w; v.y += dy * w; v.px += dx * .8; v.py += dy * .8; }
-    });
+      react(id, dx, dy);
+    }
   }
 }
 function clipSeg(u, v, r) {                         // Liang–Barsky: punto medio del tramo dentro de la caja, o null
@@ -986,16 +1037,18 @@ const forget = (P, near) => {                       // olvida cajas lejanas para
 /* un paso de un hilo: extremos en A y B, y opcionalmente un punto agarrado con el mouse */
 /* peso de la etiqueta: el punto central (y un poco sus vecinos) pesa LABEL_W veces más; cae más y cede menos al tirón */
 const LABEL_W = 6, LABEL_G = 2;       // LABEL_W: cuánto menos cede al tirón · LABEL_G: gravedad extra (sin estirar el hilo)
-function stepRope(P, A, B, len, near, pin, hv = -1) {
+function stepRope(P, A, B, len, near, pin, hv = -1, gs = 1, f = 1, heavy = false, ks = 0, acc = null, dk = DAMP) {   // dk: amortiguamiento (ceñido a una caja, mucho roce)   // acc: pesos que empujan el hilo reciben la reacción   // ks: cuánto vuelve a la recta (cuerda tensa)   // heavy: hilo que sostiene un peso (más pasadas, para que no se estire)   // gs: gravedad propia del hilo (0 = recto, lo tensa un peso) · f: cuadros de 60 Hz que pasaron
   const fall = i => hv < 0 ? 0 : Math.max(0, 1 - Math.abs(i - hv) / 3), mass = i => 1 + (LABEL_W - 1) * fall(i);
   const seg = len / SEGS, pi = pin ? pin.i : -1;
   const fixed = i => i === 0 || i === SEGS || i === pi;
+  const ratio = P.f ? f / P.f : 1, damp = Math.pow(dk, f) * ratio, g = GRAV * f * f;   // Verlet con paso variable: igual en 60, 120 o 144 Hz
+  P.f = f;
   let energy = 0;
   for (let i = 1; i < SEGS; i++) {
     if (i === pi) continue;
-    const q = P[i], vx = (q.x - q.px) * DAMP * fade, vy = (q.y - q.py) * DAMP * fade;
-    q.px = q.x; q.py = q.y; q.x += vx; q.y += vy + GRAV * (1 + LABEL_G * fall(i));
-    energy += vx * vx + vy * vy;
+    const q = P[i], vx = (q.x - q.px) * damp, vy = (q.y - q.py) * damp;
+    q.px = q.x; q.py = q.y; q.x += vx; q.y += vy + g * gs * (1 + LABEL_G * fall(i));
+    energy += (vx * vx + vy * vy) / (f * f);
   }
   const anchor = () => {                                       // extremos amarrados al marco, del lado hacia donde jala el hilo
     const a = rim(A, P[1].x, P[1].y), b = rim(B, P[SEGS - 1].x, P[SEGS - 1].y);
@@ -1003,10 +1056,21 @@ function stepRope(P, A, B, len, near, pin, hv = -1) {
     P[SEGS].x = P[SEGS].px = b.x; P[SEGS].y = P[SEGS].py = b.y;
   };
   if (pin) { const q = P[pi]; q.px = q.x; q.py = q.y; q.x = pin.x; q.y = pin.y; }   // al soltar conserva el impulso
+  if (ks > 0) {                                                // tenso: cuerda de guitarra, vuelve a la recta vibrando (antes de chocar: las cajas siguen siendo sólidas)
+    const a0 = P[0], z = P[SEGS];
+    for (let i = 1; i < SEGS; i++) { const q = P[i]; q.x += (a0.x + (z.x - a0.x) * i / SEGS - q.x) * ks; q.y += (a0.y + (z.y - a0.y) * i / SEGS - q.y) * ks; }
+  }
   forget(P, near);
-  for (let k = 0, K = hv < 0 ? 18 : 40; k < K; k++) {     // con peso, más pasadas: que no estire el hilo
+  P.hits = 0;
+  let close = near;                                            // dentro de las pasadas solo importan las cajas pegadas al hilo; las lejanas, una vez por cuadro
+  if (near.length) {
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    for (const q of P) { if (q.x < x0) x0 = q.x; if (q.x > x1) x1 = q.x; if (q.y < y0) y0 = q.y; if (q.y > y1) y1 = q.y; }
+    close = near.filter(([, r]) => r.x1 > x0 - 60 && r.x0 < x1 + 60 && r.y1 > y0 - 60 && r.y0 < y1 + 60);
+  }
+  for (let k = 0, K = heavy || hv >= 0 ? 40 : 18; k < K; k++) {     // con peso, más pasadas: que no estire el hilo
     anchor();
-    if (near.length) collide(P, near, fixed);
+    if (close.length) collide(P, close, fixed);
     for (let i = 0; i < SEGS; i++) {
       const u = P[i], v = P[i + 1], dx = v.x - u.x, dy = v.y - u.y, d = Math.hypot(dx, dy) || .001;
       if (d <= seg) continue;                                  // flojo: no empuja
@@ -1018,7 +1082,7 @@ function stepRope(P, A, B, len, near, pin, hv = -1) {
     }
   }
   anchor();
-  if (near.length) { collide(P, near, fixed); collide(P, near, fixed); }
+  if (near.length) { collide(P, near, fixed, acc); if (close.length) collide(P, close, fixed); }
   return { L: ropeLen(P), energy };
 }
 const smooth = pts => {
@@ -1120,7 +1184,7 @@ function drawDebris(f = 1) {
   return h;
 }
 
-let simErr = 0;
+let simErr = 0, prevB = new Map(), wPush = new Map(), wFree = new Set();
 function simStep(now) {
   try { simStep0(now); simErr = 0; }
   catch (err) {                                    // un error no debe congelar el lienzo con restos a medio caer
@@ -1128,11 +1192,11 @@ function simStep(now) {
     if (++simErr < 4) simRaf = requestAnimationFrame(simStep);
   }
 }
-/* los pesos cuelgan como en un resorte: tienen masa, caen, estiran el hilo y rebotan. El hilo conserva el largo que tenía
-   hasta el peso (cuando el peso estaba en medio, el tramo de ese lado) y vuelve a él en cuanto se suelta.
-   Un peso sin ningún hilo se queda donde está */
-const WGRAV = .5, WDAMP = .975, WK = 3.4, WMAX = 45;       // gravedad · freno · rigidez (relativa al largo) · velocidad máxima
-let weightsMoving = false, wAcc = 0;
+/* los pesos tienen masa (según su tamaño) y cuelgan de sus hilos, que son cuerdas: no se estiran ni se recogen solos.
+   Si arrastras el peso más lejos, el hilo se alarga y se queda así; «tensar» lo recoge hasta su largo original. Un peso sin caja a la que colgarse se queda donde está.
+   Al tensarse de golpe el hilo rebota un poco y suena como cuerda; los pesos chocan con las cajas y entre sí, y se pueden lanzar */
+const WGRAV = .29, WDRAG = .03, WMAX = 30, WREST = .22, WFRIC = .32, WBOUNCE = .18;   // gravedad · aire · velocidad máx. · rebote del hilo · roce · rebote en cajas
+let weightsMoving = false;
 function anchoredWeights() {                       // un peso cae solo si, siguiendo hilos, llega a alguna caja: si no, se queda donde está
   const adj = new Map(), out = new Set();
   edges.forEach(e => { (adj.get(e.from) || adj.set(e.from, []).get(e.from)).push(e.to); (adj.get(e.to) || adj.set(e.to, []).get(e.to)).push(e.from); });
@@ -1145,42 +1209,129 @@ function anchoredWeights() {                       // un peso cae solo si, sigui
   return out;
 }
 function stepWeights(f) {
-  wAcc = Math.min(wAcc + f, 4);                    // paso fijo (60 por segundo): igual de estable a cualquier frecuencia de pantalla
-  if (wAcc < 1) return weightsMoving;
-  const free = anchoredWeights(), list = [];
+  /* los hilos de un peso son hilos, no resortes: flojos no hacen nada, tensos lo detienen sin estirarse (con un pequeño rebote).
+     Subpasos de igual duración: la caída se ve igual de fluida a cualquier frecuencia de pantalla */
+  const free = anchoredWeights(), list = [], held = [], solid = [];
   nodes.forEach(n => {
-    if (!n.w) return;
     const el = els.get(n.id); if (!el) return;
-    const held = editing === n.id || (drag && drag.type === 'node' && drag.moved && drag.orig && drag.orig.has(n.id));
-    if (!free.has(n.id) || held) { n.vx = n.vy = 0; return; }
-    list.push({ n, el, w: el.offsetWidth, h: el.offsetHeight, inc: edges.filter(e => e.from === n.id || e.to === n.id) });
-  });
-  let maxSp = 0, maxF = 0;
-  while (wAcc >= 1) {
-    wAcc -= 1;
-    for (const { n, el, w, h, inc } of list) {
-      const cx = n.x + w / 2, cy = n.y + h / 2;
-      let fx = 0, fy = WGRAV;
-      const W = { cx, cy, x0: cx - w / 2 - PAD, y0: cy - h / 2 - PAD, x1: cx + w / 2 + PAD, y1: cy + h / 2 + PAD };
-      inc.forEach(e => {
-        const O = boxFor(e.from === n.id ? e.to : e.from), len = e.len0 || e.len || 0; if (!O || !len) return;
-        const gap = gapOf(W, O); if (gap <= len) return;                    // flojo: no tira; estirado: tira como resorte
-        const dx = O.cx - cx, dy = O.cy - cy, d = Math.hypot(dx, dy) || 1, k = WK * (gap - len) / len;
-        fx += dx / d * k; fy += dy / d * k;
-      });
-      const fm = Math.hypot(fx, fy); maxF = Math.max(maxF, fm);
-      if (wSleep && fm < .35) { n.vx = n.vy = 0; continue; }          // dormido: no se mueve hasta que algo tire de verdad
-      wSleep = false;
-      let vx = ((n.vx || 0) + fx) * WDAMP * fade, vy = ((n.vy || 0) + fy) * WDAMP * fade;
-      const sp = Math.hypot(vx, vy); if (sp > WMAX) { vx *= WMAX / sp; vy *= WMAX / sp; }
-      n.vx = vx; n.vy = vy; n.x += vx; n.y += vy;
-      maxSp = Math.max(maxSp, sp);
+    const w = el.offsetWidth, h = el.offsetHeight;
+    if (!n.w) { solid.push({ x0: n.x, y0: n.y, x1: n.x + w, y1: n.y + h }); return; }
+    const o = { n, w, h, m: Math.max(1, w * h / 700), inc: edges.filter(e => e.len && (e.from === n.id || e.to === n.id)) };
+    const dragged = drag && drag.type === 'node' && drag.moved && drag.orig && drag.orig.has(n.id);
+    if (editing === n.id || dragged) {             // en tu mano: se mide con qué velocidad lo mueves, para lanzarlo al soltar
+      if (dragged && n._lx != null) { const k = .45; n.vx = (n.vx || 0) * (1 - k) + (n.x - n._lx) / f * k; n.vy = (n.vy || 0) * (1 - k) + (n.y - n._ly) / f * k; }
+      else n.vx = n.vy = 0;
+      n._lx = n.x; n._ly = n.y;
+      held.push(o); solid.push({ x0: n.x, y0: n.y, x1: n.x + w, y1: n.y + h }); return;
     }
+    delete n._lx; delete n._ly;
+    if (!free.has(n.id)) { n.vx = n.vy = 0; solid.push({ x0: n.x, y0: n.y, x1: n.x + w, y1: n.y + h }); return; }
+    list.push(o);
+  });
+  wFree = new Set(list.map(o => o.n.id));                     // los que pueden moverse: los hilos que empujan les devuelven el empujón
+  const box = o => { const cx = o.n.x + o.w / 2, cy = o.n.y + o.h / 2; return { cx, cy, x0: cx - o.w / 2 - PAD, y0: cy - o.h / 2 - PAD, x1: cx + o.w / 2 + PAD, y1: cy + o.h / 2 + PAD }; };
+  const other = (e, n) => e.from === n.id ? e.to : e.from;
+  const grow = (e, g) => { if (g <= e.len) return; if (e.lb == null) e.lb = e.len0; e.len = e.len0 = g; };   // el hilo se alarga y se queda así (el largo original se recuerda para «tensar»)
+  held.forEach(o => o.inc.forEach(e => { const O = boxFor(other(e, o.n)); if (O) grow(e, gapOf(box(o), O)); }));   // lo arrastras: suelta hilo
+  if (!list.length) { wRest = 0; return false; }
+  if (wSleep) return false;                         // en reposo hasta que algo lo despierte (kick)
+  const moving = new Map(list.map(o => [o.n.id, o])), wedges = new Set();
+  list.forEach(o => o.inc.forEach(e => wedges.add(e)));
+  const sub = Math.max(1, Math.ceil(f - .35)), dt = f / sub;
+  /* choque caja contra caja: se empuja por el lado del que venía (así no atraviesa aunque vaya rápido) */
+  const side = (o, S) => {
+    const x0 = o.n.x, y0 = o.n.y, x1 = x0 + o.w, y1 = y0 + o.h;
+    if (x1 <= S.x0 || x0 >= S.x1 || y1 <= S.y0 || y0 >= S.y1) return null;
+    const pt = y1 - S.y0, pb = S.y1 - y0, pl = x1 - S.x0, pr = S.x1 - x0;
+    let s;
+    if (o.py + o.h <= S.y0 + .5) s = 't'; else if (o.py >= S.y1 - .5) s = 'b'; else if (o.px + o.w <= S.x0 + .5) s = 'l'; else if (o.px >= S.x1 - .5) s = 'r';
+    else { const m = Math.min(pt, pb, pl, pr); s = m === pt ? 't' : m === pb ? 'b' : m === pl ? 'l' : 'r'; }
+    return { s, d: s === 't' ? pt : s === 'b' ? pb : s === 'l' ? pl : pr };
+  };
+  const push = (o, s, d) => { if (s === 't') o.n.y -= d; else if (s === 'b') o.n.y += d; else if (s === 'l') o.n.x -= d; else o.n.x += d; o.hit = s; };
+  let maxSp = 0, landV = 0; const twangs = new Map();
+  for (let s = 0; s < sub; s++) {
+    for (const o of list) {                         // gravedad y aire: los pesos grandes cortan mejor el aire
+      const n = o.n; o.px = n.x; o.py = n.y; o.hit = null; o.tug = null;
+      const air = Math.pow(1 - WDRAG / Math.sqrt(o.m), dt);
+      let vx = (n.vx || 0) * air, vy = ((n.vy || 0) + WGRAV * dt) * air;
+      const sp = Math.hypot(vx, vy); if (sp > WMAX) { vx *= WMAX / sp; vy *= WMAX / sp; }
+      o.vx = vx; o.vy = vy; n.x += vx * dt; n.y += vy * dt;
+    }
+    /* acortar un hilo (clavija o «tensar») es una petición: se aplica poco a poco y, si obligaría a estirar otro hilo, se deshace y se queda al tope */
+    const shr = [];
+    wedges.forEach(e => {
+      let c = 0, pend = false;
+      if (e._pend > 0) { c = Math.min(e._pend, 5 * dt); pend = true; }
+      else if (e.len > e.len0) { const g = e.len - e.len0; c = Math.min(g, Math.min(3, Math.max(.5, g * .035)) * dt); }
+      if (c <= 0) return;
+      shr.push({ e, L: e.len, L0: e.len0, c, pend });
+      e.len -= c; if (pend) e.len0 = e.len;
+    });
+    const tautNow = new Set();
+    for (let it = 0; it < 8; it++) {
+      for (const o of list) for (const e of o.inc) {  // el hilo tenso no deja pasar
+        const id = other(e, o.n), O = boxFor(id); if (!O) continue;
+        const W = box(o), gap = gapOf(W, O); if (gap <= e.len) continue;
+        const dx = O.cx - W.cx, dy = O.cy - W.cy, d = Math.hypot(dx, dy) || 1, mo = moving.get(id), c = gap - e.len;
+        const share = mo ? (1 / o.m) / (1 / o.m + 1 / mo.m) : 1;
+        o.n.x += dx / d * c * share; o.n.y += dy / d * c * share;
+        if (mo) { mo.n.x -= dx / d * c * (1 - share); mo.n.y -= dy / d * c * (1 - share); }
+        o.tug = { e, ux: dx / d, uy: dy / d }; tautNow.add(e);
+      }
+      for (const o of list) for (const S of solid) { const h = side(o, S); if (h) push(o, h.s, h.d); }   // cajas: sólidas
+      for (let i = 0; i < list.length; i++) for (let j = i + 1; j < list.length; j++) {   // pesos entre sí: se reparten el empujón según su masa
+        const a = list[i], b = list[j], S = { x0: b.n.x, y0: b.n.y, x1: b.n.x + b.w, y1: b.n.y + b.h }, h = side(a, S); if (!h) continue;
+        const sa = (1 / a.m) / (1 / a.m + 1 / b.m);
+        push(a, h.s, h.d * sa); push(b, { t: 'b', b: 't', l: 'r', r: 'l' }[h.s], h.d * (1 - sa));
+      }
+    }
+    if (shr.length) {                               // ¿lo que se acortó es posible? si algún hilo de ese peso quedó sin cumplirse, no: se deshace y queda al tope
+      const bad = new Set();
+      for (const o of list) for (const e of o.inc) { const O = boxFor(other(e, o.n)); if (O && gapOf(box(o), O) > e.len + 1.2) bad.add(o.n.id); }
+      const now = performance.now(), back = new Set();
+      shr.forEach(x => {
+        const e = x.e;
+        if (!bad.has(e.from) && !bad.has(e.to)) { if (x.pend) e._pend -= x.c; return; }
+        if (bad.has(e.from)) back.add(e.from); if (bad.has(e.to)) back.add(e.to);
+        e.len = x.L; e.len0 = x.pend ? x.L0 : x.L; e._pend = 0; e._top = now;   // al tope: ni sigue acortando ni estira a los demás
+        if (!x.pend && e.lb == null) e.lb = x.L0;                               // «tensar» no llegó: se recuerda el largo original para otra vez
+      });
+      for (const o of list) if (back.has(o.n.id)) { o.n.x = o.px; o.n.y = o.py; o.vx = o.vy = 0; }   // el peso vuelve a donde estaba, sin tirón
+    }
+    for (const o of list) for (const e of o.inc) {  // lo que no se pudo cumplir (dos cajas jalan hacia lados opuestos), el hilo cede y se queda así: nunca pelean
+      const O = boxFor(other(e, o.n)); if (!O) continue;
+      const g = gapOf(box(o), O);
+      if (g > e.len + 2) grow(e, g);                    // solo un estirón real (separaste las cajas); el residuo de la gravedad no alarga el hilo
+    }
+    for (const o of list) {
+      const n = o.n;
+      if (o.hit === 't' || o.hit === 'b') n.x = o.px + (n.x - o.px) * (1 - WFRIC);         // roce al apoyarse
+      else if (o.hit) n.y = o.py + (n.y - o.py) * (1 - WFRIC * .5);
+      let vx = (n.x - o.px) / dt, vy = (n.y - o.py) / dt;
+      if (o.hit) {                                                                           // rebote suave en la caja
+        const vin = o.hit === 't' ? o.vy : o.hit === 'b' ? -o.vy : o.hit === 'l' ? o.vx : -o.vx;
+        if (vin > 1.2) { const r = vin * WBOUNCE; if (o.hit === 't') vy = -r; else if (o.hit === 'b') vy = r; else if (o.hit === 'l') vx = -r; else vx = r; landV = Math.max(landV, vin); }
+      }
+      if (o.tug && !o.tug.e._tt) {                   // el hilo pasa de flojo a tenso de golpe: rebota hacia la caja y vibra (ya tenso, no)
+        const ax = -o.tug.ux, ay = -o.tug.uy, lost = (o.vx * ax + o.vy * ay) - (vx * ax + vy * ay);
+        if (lost > .5 + WGRAV * dt * 1.5) {
+          vx -= ax * lost * WREST; vy -= ay * lost * WREST;
+          if (lost > 2.2) twangs.set(o.tug.e, Math.max(twangs.get(o.tug.e) || 0, lost));
+        }
+      }
+      n.vx = vx; n.vy = vy; maxSp = Math.max(maxSp, Math.hypot(vx, vy));
+    }
+    wedges.forEach(e => { e._tt = tautNow.has(e); });
   }
-  list.forEach(({ n, el }) => place(n, el));
-  wRest = maxSp < .08 && maxF < .35 ? wRest + 1 : 0;   // quieto de verdad unos cuadros seguidos: reposa, sin temblar
-  if (wRest > 12) { wSleep = true; list.forEach(({ n }) => { n.vx = n.vy = 0; }); return false; }
-  return list.length > 0;
+  list.forEach(o => { const el = els.get(o.n.id); if (el) place(o.n, el); });
+  twangs.forEach((lost, e) => { const P = ropes.get(e.id); if (P) twang(e, P, Math.min(8, lost * 1.1)); });
+  if (landV > 2.5) snd.land(landV / 14);
+  let still = true;                                  // reposa si casi no cambió de lugar en varios cuadros (el residuo del solver no cuenta como movimiento)
+  for (const o of list) { const n = o.n; if (n._rx == null || Math.hypot(n.x - n._rx, n.y - n._ry) > .4) { n._rx = n.x; n._ry = n.y; still = false; } }
+  wRest = still || maxSp < .05 ? wRest + 1 : 0;
+  if (wRest > 20) { wSleep = true; list.forEach(o => { o.n.vx = o.n.vy = 0; }); return false; }
+  return true;
 }
 function settleWeights() {                          // el peso dejó de moverse: su posición nueva se guarda sin crear un paso más en el historial
   nodes.forEach(n => { if (n.w) { n.vx = n.vy = 0; } });
@@ -1189,20 +1340,24 @@ function settleWeights() {                          // el peso dejó de moverse:
 }
 function simStep0(now) {
   simRaf = 0;
-  fade = 1 - .2 * Math.min(1, Math.max(0, (now - lastKick - 1500) / 2500));   // 1.5 s libre; luego, en 2.5 s, el freno llega a su máximo
   const f = simT ? Math.min(3, Math.max(.5, (now - simT) / 16.7)) : 1; simT = now;
-  const wmove = stepWeights(f);
+  const wmove = stepWeights(f);                                   // los pesos van en tiempo real: la misma caída en cualquier pantalla
   if (weightsMoving && !wmove) settleWeights();
   weightsMoving = wmove;
   const boxes = new Map();
   nodes.forEach(n => { if (els.has(n.id)) boxes.set(n.id, boxOf(n)); });
-  const nearFor = (P, skip) => {
+  const nearFor = (P, skip, skip2) => {
     let bx0 = Infinity, by0 = Infinity, bx1 = -Infinity, by1 = -Infinity;
     P.forEach(q => { bx0 = Math.min(bx0, q.x); by0 = Math.min(by0, q.y); bx1 = Math.max(bx1, q.x); by1 = Math.max(by1, q.y); });
     const out = [];
-    boxes.forEach((r, id) => { if (id !== skip && r.x1 > bx0 - 160 && r.x0 < bx1 + 160 && r.y1 > by0 - 160 && r.y0 < by1 + 160) out.push([id, r]); });
+    boxes.forEach((r, id) => { if (id !== skip && id !== skip2 && r.x1 > bx0 - 160 && r.x0 < bx1 + 160 && r.y1 > by0 - 160 && r.y0 < by1 + 160) out.push([id, r]); });
     return out;
   };
+  const moved = [];                                                   // cajas que se movieron desde el cuadro anterior: despiertan los hilos cercanos
+  const nowB = new Map();
+  boxes.forEach((r, id) => { const k = r.x0.toFixed(1) + ',' + r.y0.toFixed(1) + ',' + r.x1.toFixed(1) + ',' + r.y1.toFixed(1); nowB.set(id, k); if (prevB.get(id) !== k) moved.push(r); });
+  prevB = nowB;
+  const nearMoved = bb => moved.some(r => r.x1 > bb[0] - 160 && r.x0 < bb[2] + 160 && r.y1 > bb[1] - 160 && r.y0 < bb[3] + 160);   // el mismo radio con el que el hilo recuerda de qué lado está cada caja
   const anchors = new Map(boxes);
   edges.forEach(e => { if (e.lab) { const b = labBox(e.id); if (b) anchors.set(e.id, b); } });
   drawIslands();
@@ -1218,18 +1373,49 @@ function simStep0(now) {
     if (!P) { e.len = Math.max(e.len, dist); P = initRope(A, B, e.len); ropes.set(e.id, P); }
 
     const pin = grab && grab.id === e.id ? grab : null;
-    const r = stepRope(P, A, B, e.len, nearFor(P, null), pin, e.lab ? SEGS >> 1 : -1);         // también choca con sus propios nodos
+    const wEnd = (nmap.get(e.from) || {}).w || (nmap.get(e.to) || {}).w;   // un peso cuelga: el hilo que lo sostiene no cede al balanceo
+    const tz = wEnd || e.tight;                                         // tensado por un peso o con «tensar»
+    P.blk = e.tight && !wEnd && P.hits > 0 ? 12 : Math.max(0, (P.blk || 0) - 1);
+    const wrap = P.blk > 0;                                             // tenso y rodeando una caja: ceñido a ella, sin comba
+    const gs = wrap ? 0 : tz ? clamp01((e.len - dist) / (e.len * .06)) : 1;   // tenso: sin comba; flojo: cuelga como siempre
+    const rl = wrap ? e.len : gs < 1 ? dist * (1 + .004 * (1 - gs)) + (e.len - dist) * gs : e.len;   // casi tenso: recto, con la holgura mínima para vibrar
+    /* un hilo quieto duerme: si nada lo toca (extremos, largo, cajas cercanas, el puntero) no se recalcula */
+    const sig = A.x0.toFixed(1) + ',' + A.y0.toFixed(1) + ',' + A.x1.toFixed(1) + ',' + A.y1.toFixed(1) + '|' + B.x0.toFixed(1) + ',' + B.y0.toFixed(1) + ',' + B.x1.toFixed(1) + ',' + B.y1.toFixed(1) + '|' + Math.round(rl);
+    const asleep = !pin && P.rest > 30 && P.sig === sig && P.d && !nearMoved(P.bb);
+    let r;
+    if (asleep) r = { L: P.L, energy: 0 };
+    else {
+      const ks = gs < 1 && !pin && !wrap ? (1 - gs) * .3 : 0;
+      const acc = wFree.size ? { w: wFree, a: e.from, b: e.to, out: wPush, k: .004 + .03 * clamp01(((P.L || rl) / rl - .985) / .05) } : null;   // un peso que empuja este hilo siente su resistencia (más si está tenso)
+      P.own = [e.from, e.to];
+      r = stepRope(P, A, B, rl, nearFor(P, isW(e.from) ? e.from : null, isW(e.to) ? e.to : null), pin, e.lab ? SEGS >> 1 : -1, gs, 1, wEnd && gs < 1, ks, acc, wrap ? .55 : DAMP);   // también choca con sus propios nodos
+      P.rest = r.energy < (wrap ? .6 : .003) && P.sig === sig ? (P.rest || 0) + 1 : 0;   // ceñido a una caja: su temblor de roce (décimas de pixel) no cuenta
+      P.sig = sig; P.L = r.L; P.d = null;
+      if (P.rest > 30) { let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity; for (const q of P) { if (q.x < x0) x0 = q.x; if (q.x > x1) x1 = q.x; if (q.y < y0) y0 = q.y; if (q.y > y1) y1 = q.y; } P.bb = [x0, y0, x1, y1]; }
+    }
+    taut.set(e.id, tz ? 1 - gs : 0);
     energy += r.energy;
 
     // tensión: cuánto excede el hilo a lo que mide ahora; nunca se rompe, solo cede
     const excess = r.L - e.len * (1 + GIVE), brk = 50 / view.k + e.len * .25;   // brk solo gradúa el adelgazamiento visual
-    const wEnd = (nmap.get(e.from) || {}).w || (nmap.get(e.to) || {}).w;   // un peso cuelga: el hilo que lo sostiene no cede al balanceo
-    if (excess > 0 && !wEnd) {                                // jalado: se estira, tan rápido como lo jalen
+    const target = e.tight ? Math.max(8, dist * TIGHT) : Math.max(e.len0, dist * 1.05);   // tenso: siempre recto · flojo: su largo base (len0)
+    if (e.tight && !wEnd && !pin) {                           // tenso: recto entre sus cajas; si algo lo empuja, cede lo justo para rodearlo y al liberarse vuelve a la recta
+      if (wrap) {                                             // ceñido a una caja: casi sin estirarse, así no pelea con ella
+        if (r.L > e.len * 1.015) { e.len = r.L / 1.006; busy = true; }
+        else if (r.L < e.len && e.len > target + .5) { const gap = e.len - target; e.len -= Math.min(gap, Math.max(RETRACT * .5, gap * .02)) * f; busy = true; }
+      }
+      else if (e.len < target) e.len = target;
+      else if (e.len > target + .5) { const gap = e.len - target; e.len -= Math.min(gap, Math.max(RETRACT, gap * .09) * f); busy = true; }
+    } else if (excess > 0 && !wEnd) {                         // jalado: se estira, tan rápido como lo jalen
       const need = r.L / (1 + GIVE) - e.len;
       e.len += Math.min(need, Math.max(CREEP / view.k * f, need * .5)); busy = true;
-    } else if (!pin && r.L < e.len * (1 + GIVE / 2) && e.len > e.len0 + .5) {
-      const target = Math.max(e.len0, dist * 1.05);                    // flojo: se retrae hacia su largo base (len0)
-      if (e.len > target + .5) { const gap = e.len - target; e.len -= Math.min(gap, Math.max(RETRACT, gap * .06) * f); busy = true; }
+    } else if (!pin && !wEnd && r.L < e.len * (1 + GIVE / 2) && e.len > target + .5) {
+      const gap = e.len - target; e.len -= Math.min(gap, Math.max(RETRACT, gap * (e.tight ? .09 : .06)) * f); busy = true;   // se retrae, rápido al principio y suave al final
+    }
+    if (e._snap) {                                            // acabas de tensarlo: al quedar recto, suena y vibra como cuerda
+      if (!pin && e.len <= target + 1.5 && !wEnd) { delete e._snap; twang(e, P, 3.2); }
+      else if (performance.now() - e._snap > 2500) delete e._snap;
+      busy = true;
     }
     if (pin) busy = true;
     alive.add(e.id);
@@ -1239,7 +1425,7 @@ function simStep0(now) {
       le.classList.toggle('sel', selEdges.has(e.id)); placeLabel(le, P);
     } else if (lels.has(e.id)) { lels.get(e.id).remove(); lels.delete(e.id); }
 
-    const d = smooth(P), kn = knotsOf(P, e.arrow);
+    const d = P.d || (P.d = smooth(P)), kn = knotsOf(P, e.arrow);
     const tense = clamp01(excess / brk);
     tlevel = Math.max(tlevel, tense * 2.5, Math.min(1, Math.sqrt(r.energy / SEGS) / 7) * .8);
     let st = e.c ? `--ec:${inkOf(e.c)};` : '';
@@ -1250,6 +1436,16 @@ function simStep0(now) {
          (sel ? `<path class="halo" d="${d}"/>` : '') + `<path class="hit" d="${d}"/><path class="line" d="${d}"/>${kn.map(k => knotSvg(k, 'class="knot"')).join('')}</g>`;
   }
 
+  if (wPush.size) {                                                  // lo que los hilos empujaron a los pesos: los frena o los desvía (los ligeros sienten más)
+    wPush.forEach((v, id) => {
+      const n = nmap.get(id), el = els.get(id); if (!n || !el) return;
+      const m = Math.max(1, el.offsetWidth * el.offsetHeight / 700);
+      let dx = -v.x / m, dy = -v.y / m; const d = Math.hypot(dx, dy); if (d > 3) { dx *= 3 / d; dy *= 3 / d; }
+      n.vx = (n.vx || 0) + dx; n.vy = (n.vy || 0) + dy;
+      if (d > .02) { wSleep = false; wRest = 0; busy = true; }
+    });
+    wPush.clear();
+  }
   lels.forEach((el, id) => { if (!alive.has(id) && labEdit !== id) { el.remove(); lels.delete(id); } });
 
   // el hilo que vas sacando de un nodo
@@ -1271,10 +1467,75 @@ function simStep0(now) {
   edgeg.innerHTML = h;
   const interacting = (drag && drag.moved && drag.type !== 'pan') || grab || pull;
   checkCrossings(interacting);
-  snd.tension(interacting ? tlevel : 0);
+  snd.tension(turn ? Math.max(turn.level, tlevel * .5) : interacting ? tlevel : 0);
   simCalm = energy < .01 * Math.max(1, alive.size) && !debris.length && !busy ? simCalm + 1 : 0;
   if (simCalm < 40) simRaf = requestAnimationFrame(simStep); else simT = 0;
 }
+/* =========================================================
+   Tensar: aprieta los hilos. Uno entre cajas queda recto (y se mantiene recto aunque muevas las cajas);
+   uno que sostiene un peso vuelve a su largo original, el de nacimiento, y el carrete recoge el resto.
+   ========================================================= */
+const isW = id => !!(nmap.get(id) || {}).w;
+const wRope = e => isW(e.from) || isW(e.to);
+function twang(e, P, amp) {                          // rasgueo: la cuerda vibra de lado a lado y suena según su tensión
+  P.rest = 0;
+  const a = P[0], z = P[SEGS], dx = z.x - a.x, dy = z.y - a.y, d = Math.hypot(dx, dy) || 1, nx = -dy / d, ny = dx / d, s = Math.random() < .5 ? -1 : 1;
+  for (let i = 1; i < SEGS; i++) { const w = Math.sin(Math.PI * i / SEGS) * amp * s; P[i].px -= nx * w; P[i].py -= ny * w; }
+  snd.pluck((e.len || e.len0 || 200) * (1 - .6 * (taut.get(e.id) || 0)), amp / 5);
+  kick();
+}
+function tensar(list) {
+  list = list.filter(e => edges.includes(e)); if (!list.length) return 0;
+  const now = performance.now(); let n = 0;
+  list.forEach(e => {
+    const A = boxFor(e.from), B = boxFor(e.to); if (!A || !B) return;
+    if (wRope(e)) {                                   // con peso: solo vuelve a su largo original
+      if (e.lb) { e.len0 = e.lb; delete e.lb; }
+      if (e.len < e.len0) e.len = e.len0;             // la clavija lo había acortado: lo suelta y el peso baja
+      n++; return;
+    }
+    e.tight = true; e.len0 = Math.max(8, gapOf(A, B) * TIGHT); e._snap = now; n++;
+  });
+  if (!n) return 0;
+  snd.zip(); kick(); commit();
+  return n;
+}
+const allRopes = () => edges.slice();
+const pegTargets = () => { const t = inkTargets(); return t.length ? t : allRopes(); };   // los hilos seleccionados (o de las cajas seleccionadas); si no hay, todos
+/* clavija: girar en el sentido del reloj tensa, al revés afloja. Una vuelta completa recoge cerca de 60 % de la distancia entre los extremos */
+function turnBy(list, da) {
+  let lvl = 0, k = 0;
+  list.forEach(e => {
+    if (!edges.includes(e)) return;
+    const A = boxFor(e.from), B = boxFor(e.to); if (!A || !B) return;
+    const dist = gapOf(A, B);
+    if (wRope(e)) {                                   // con peso: un cabrestante; sube o baja el peso
+      if (e.lb == null) e.lb = e.len0;
+      const d = da / (2 * Math.PI) * Math.max(100, e.len0 * .6);
+      if (d > 0) {                                     // tensar: se pide; la física lo cumple si se puede
+        const room = Math.max(0, e.len - (e._pend || 0) - 14);
+        if (room > .5 && performance.now() - (e._top || 0) > 350) e._pend = Math.min(200, (e._pend || 0) + Math.min(d, room));
+        else e._top = performance.now();
+      } else { e._pend = 0; const nl = Math.min(6000, e.len0 - d); e.len0 = nl; if (e.len < nl) e.len = nl; }   // aflojar: siempre se puede
+      lvl += clamp01(1 - (e.len - 14) / 400); k++;
+      return;
+    }
+    const min = Math.max(8, dist * TIGHT), d = da / (2 * Math.PI) * Math.max(120, dist * .6);
+    if (d > 0) {
+      const was = e.tight, nl = Math.max(min, e.len - d);
+      e.len = e.len0 = nl;
+      if (nl <= min + .5 && !was) { e.tight = true; const P = ropes.get(e.id); if (P) twang(e, P, 2.4); }
+      else if (was) e._top = performance.now();
+    } else if (d < 0) {
+      delete e.tight; delete e._snap;
+      e.len = e.len0 = Math.min(dist * 4 + 400, Math.max(e.len, min) - d);
+    }
+    lvl += clamp01(1 - (e.len - dist) / (dist * .35 + 20)); k++;
+  });
+  if (k) kick();
+  return k ? lvl / k : 0;
+}
+
 function nearestIdx(id, m) {
   const P = ropes.get(id); if (!P) return SEGS >> 1;
   let best = Infinity, k = SEGS >> 1;
@@ -1392,6 +1653,7 @@ const ICO = {
   img: ic('<rect x="2.5" y="3.5" width="11" height="9" rx="1.6"/><circle cx="6" cy="7" r="1"/><path d="M3 11.4l3.4-3 2.8 2.4 1.9-1.5 2.2 2"/>'),
   paste: ic('<rect x="3.5" y="3" width="9" height="11" rx="1.6"/><path d="M6 3V2h4v1M6 7.5h4M6 10h4"/>'),
   folder: ic('<path d="M2 4.5h4l1.2 1.5H14v6.5H2z"/><circle cx="8" cy="9.3" r="1.2"/>'),
+  taut: ic('<circle cx="8" cy="8" r="2"/><path d="M8 1.5v4.5M8 10v4.5"/><path d="M4.2 4.2l1.4 1.4M10.4 10.4l1.4 1.4" opacity=".55"/>'),
   sound: ic('<path d="M3 6.5h2.5L9 3.5v9L5.5 9.5H3z"/><path d="M11.5 6a3 3 0 0 1 0 4"/>')
 };
 const arrowIco = v => `<svg viewBox="0 0 24 12" width="24" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 6H21"/>${v === 'to' || v === 'both' ? '<circle cx="16.5" cy="6" r="2.3" fill="currentColor" stroke="none"/>' : ''}${v === 'from' || v === 'both' ? '<circle cx="7.5" cy="6" r="2.3" fill="currentColor" stroke="none"/>' : ''}</svg>`;
@@ -1405,7 +1667,7 @@ const ARNAME = { none: 'Sin nudo', to: 'Nudo al final', from: 'Nudo al inicio', 
 function showRing(o) {
   const items = o.items.slice();
   if (o.back) items.push({ ico: ICO.back, tip: 'Volver', run: o.back, keep: true });
-  ringSt = { items, pick: o.pick || null };
+  ringSt = { items, pick: o.pick || null, peg: o.peg || pegTargets };
   const N = items.length + (o.pick ? 1 : 0), lead = o.lead || o.items.length, R = 68, step = 2 * Math.PI / N, M = 108;
   ringEl.style.left = Math.min(innerWidth - M, Math.max(M, o.cx)) + 'px';
   ringEl.style.top = Math.min(innerHeight - M, Math.max(M, o.cy)) + 'px';
@@ -1416,10 +1678,52 @@ function showRing(o) {
   ringEl.innerHTML = '<i class="bg"></i><b class="ctr"></b>' + items.map((it, i) => {
     const sw = it.color !== undefined;
     return `<i class="it ${sw ? 'c' + (it.color ? '' : ' none') : 'st'}${it.on ? ' on' : ''}" data-i="${i}" data-tip="${esc(it.tip || '')}" style="${at(i, sw ? 22 : 30)}${sw && it.color ? ';background:' + it.color : ''}">${sw ? '' : it.ico}</i>`;
-  }).join('') + (o.pick ? `<label class="it c pick" data-tip="Otro color" style="${at(items.length, 22)}"><input type="color" value="${prefs.custom || '#7aa7e6'}"></label>` : '');
+  }).join('') + (o.pick ? `<label class="it c pick" data-tip="Otro color" style="${at(items.length, 22)}"><input type="color" value="${prefs.custom || '#7aa7e6'}"></label>` : '')
+    + `<i class="peg" data-tip="Gira · tensar" style="--a:${pegAng.toFixed(3)}rad"><b></b></i>`;   // la clavija: siempre al centro
   ringOpen = true; ringEl.classList.add('open');
 }
-function closeRing() { if (!ringOpen) return; ringOpen = false; ringEl.classList.remove('open'); }
+function closeRing() { if (!ringOpen) return; endTurn(); ringOpen = false; ringEl.classList.remove('open'); }
+/* clavija: tómala y gira. A favor del reloj tensa, en contra afloja; un toque tensa lo seleccionado, doble toque tensa todos */
+let turn = null, pegAng = -Math.PI / 2, pegClick = 0;
+const ringCtr = t => { const c = ringEl.querySelector('.ctr'); if (c) c.textContent = t; };
+function pegSpin(pg, by) { pg.classList.add('ease'); pegAng += by; pg.style.setProperty('--a', pegAng.toFixed(3) + 'rad'); setTimeout(() => pg.classList.remove('ease'), 460); }
+ringEl.addEventListener('pointerdown', e => {
+  const pg = e.target.closest('.peg'); if (!pg || !ringSt) return;
+  e.preventDefault(); e.stopPropagation();
+  try { pg.setPointerCapture(e.pointerId); } catch (er) {}
+  const r = ringEl.getBoundingClientRect();
+  turn = { pg, id: e.pointerId, cx: r.left, cy: r.top, a: Math.atan2(e.clientY - r.top, e.clientX - r.left), sum: 0, tick: 0, t0: performance.now(), list: ringSt.peg(), level: 0, changed: false };
+  pg.classList.add('on'); kick();
+});
+ringEl.addEventListener('pointermove', e => {
+  if (!turn || e.pointerId !== turn.id) return;
+  const dx = e.clientX - turn.cx, dy = e.clientY - turn.cy; if (Math.hypot(dx, dy) < 7) return;   // muy al centro el ángulo salta: se ignora
+  const a = Math.atan2(dy, dx); let d = a - turn.a; d -= Math.round(d / (2 * Math.PI)) * 2 * Math.PI; turn.a = a;
+  if (!d) return;
+  turn.sum += d; pegAng += d; turn.pg.style.setProperty('--a', pegAng.toFixed(3) + 'rad');
+  if (Math.abs(turn.sum) < .12 && !turn.changed) return;                         // un toque con temblor no cuenta como giro
+  turn.level = turnBy(turn.list, d); turn.changed = true;
+  const now = performance.now(), live = turn.list.filter(x => edges.includes(x));
+  const topped = d > 0 && live.length && live.every(x => now - (x._top || 0) < 400 && !(x._pend > .5));   // ya nada cede: al tope
+  turn.tick += Math.abs(d);
+  if (turn.tick > Math.PI / 14) { turn.tick = 0; if (topped) snd.tick(); else snd.ratchet(d > 0); }
+  turn.pg.classList.toggle('taut', !!topped);
+  ringCtr(d > 0 ? (topped ? 'Al tope' : 'Tensando') : 'Aflojando');
+});
+function endTurn(e) {
+  if (!turn || (e && e.pointerId !== turn.id)) return;
+  const t = turn; turn = null; t.pg.classList.remove('on', 'taut');
+  if (!t.changed && performance.now() - t.t0 < 450) {                            // toque: tensa lo seleccionado · doble toque: todos
+    const now = performance.now(), all = now - pegClick < DBL_MS;
+    pegClick = all ? 0 : now;
+    const n = tensar(all ? allRopes() : t.list);
+    pegSpin(t.pg, Math.PI * (all ? 2 : 1));
+    ringCtr(n ? (all ? 'Todos tensos' : n === 1 ? 'Tenso' : n + ' tensos') : 'Sin hilos');
+  } else if (t.changed) { commit(); ringCtr(''); }
+  snd.tension(0);
+}
+ringEl.addEventListener('pointerup', endTurn);
+ringEl.addEventListener('pointercancel', endTurn);
 ringEl.addEventListener('click', e => {
   const el = e.target.closest('[data-i]'); if (!el || !ringSt) return;
   const it = ringSt.items[+el.dataset.i]; if (!it) return;
@@ -1506,6 +1810,7 @@ function ringCanvas(cx, cy) {
     { ico: ICO.open, tip: 'Abrir', run: openFile },
     { ico: ICO.export, tip: 'Exportar', keep: true, run: () => ringExport(cx, cy) },
     { ico: ICO.fit, tip: 'Ajustar vista', run: fit },
+    ...(edges.length ? [{ ico: ICO.taut, tip: 'Tensar todos los hilos', run: () => tensar(allRopes()) }] : []),
     { ico: ICO.theme, tip: 'Claro / oscuro', run: toggleTheme },
     { ico: ICO.sound, tip: prefs.snd === false ? 'Activar sonido' : 'Silenciar', run: toggleSound },
     { ico: ICO.plus, tip: 'Nueva caja', run: () => startEdit(addNodeCentered(toWorld(cx, cy)).id) },
@@ -1699,9 +2004,13 @@ edgeg.addEventListener('pointerover', e => {
   if (!g || drag || pull || performance.now() - mv.t > 70 || Math.hypot(mv.dx, mv.dy) < 1.5) return;   // solo si el puntero se movió: el redibujo del hilo no cuenta
   const id = g.dataset.id, now = performance.now(), P = ropes.get(id), ed = edgeById(id);
   if (!P || now - (pluckAt[id] || 0) < 260) return;
-  pluckAt[id] = now; snd.pluck(ed ? (ed.len || ed.len0) : 300);
+  const tt = taut.get(id) || 0;
+  pluckAt[id] = now; P.rest = 0; snd.pluck((ed ? (ed.len || ed.len0) : 300) * (1 - .6 * tt));   // tensa: más aguda
   const i = nearestIdx(id, toWorld(e.clientX, e.clientY)), cap = v => Math.max(-25, Math.min(25, v)) / view.k * .5;
-  for (let j = Math.max(1, i - 2); j <= Math.min(SEGS - 1, i + 2); j++) { P[j].px -= cap(mv.dx); P[j].py -= cap(mv.dy); }   // el roce la hace vibrar
+  if (tt > .3) {                                                     // cuerda tensa: el punteo la mueve entera, más en el punto que tocas
+    const c = Math.max(1, Math.min(SEGS - 1, i));
+    for (let j = 1; j < SEGS; j++) { const w = (j <= c ? j / c : (SEGS - j) / (SEGS - c)) * 1.3; P[j].px -= cap(mv.dx) * w; P[j].py -= cap(mv.dy) * w; }
+  } else for (let j = Math.max(1, i - 2); j <= Math.min(SEGS - 1, i + 2); j++) { P[j].px -= cap(mv.dx); P[j].py -= cap(mv.dy); }   // el roce la hace vibrar
   kick();
 });
 edgeg.addEventListener('pointerout', () => { hoverEdge = null; });
@@ -1762,6 +2071,7 @@ window.addEventListener('keydown', e => {
   else if (e.key === '?') toggleHelp();
   else if (k === 'l') cycleStroke();
   else if (k === 'f') fit();
+  else if (k === 'a') { const t = inkTargets(); tensar(e.shiftKey || !t.length ? allRopes() : t); }   // apretar: lo seleccionado, o todos
 });
 
 /* =========================================================
@@ -1772,7 +2082,7 @@ const fileName = () => fileBase + '.' + (kind || 'cloto');
 function updateTitle() { document.title = (fileHandle || fileBase !== 'hilo' ? 'Cloto · ' + fileName() : 'Cloto') + (lock ? ' · protegido' : ''); }
 
 async function save() {
-  if (editing) finishEdit();
+  syncEdit();
   persist();
   if (!dir && !noFolder && !WEB && window.showDirectoryPicker && window.top === window) { if (!(await connectFolder())) noFolder = true; }
   if (dir) { if (!isNamed()) { openName(true); return; } if (await saveProject()) return; }
@@ -2151,7 +2461,9 @@ function exportMD() { if (nodes.length) saveBlob(new Blob([buildMD()], { type: '
 const HELP = [
   ['Lienzo', [['crear caja', 'doble clic'], ['mover · zoom', 'arrastrar · rueda'], ['seleccionar varias', '⇧ + arrastrar'], ['ajustar vista · tema · sonido', 'F · T · M'], ['buscar', '^F'], ['deshacer · rehacer', '^Z · ^⇧Z']]],
   ['Cajas', [['sacar un hilo', 'mantén y arrastra · Alt'], ['editar', 'doble clic · Enter'], ['caja hija', 'Tab'], ['vaciar y editar · borrar (el hilo se rehace)', '⌫ · Supr'], ['marco, color, más', 'clic derecho'], ['duplicar', '^D']]],
-  ['Hilos', [['tag (peso) en medio', 'doble clic en el tercio central'], ['caja para seguir extendiendo', 'doble clic en los tercios de las orillas'], ['color, trazo, nudo', 'clic derecho'], ['trazo · nudo', 'L · D'], ['cortar', 'Supr']]],
+  ['Hilos', [['tag (peso) en medio', 'doble clic en el tercio central'], ['caja para seguir extendiendo', 'doble clic en los tercios de las orillas'], ['color, trazo, nudo', 'clic derecho'], ['trazo · nudo', 'L · D'], ['tensar (con peso: vuelve a su largo original)', 'A · ⇧A todos'],
+             ['clavija: gira el punto del centro del menú', '↻ tensa · ↺ afloja'], ['tensar con la clavija · todos', 'toque · doble toque'], ['cortar', 'Supr']]],
+  ['Pesos', [['alargar su hilo', 'arrastra el peso (el hilo se queda así)'], ['lanzar', 'suéltalo en movimiento'], ['subir o bajar', 'clavija en su hilo'], ['volver al largo original', 'A']]],
   ['Islas', [['agrupar · desagrupar', '^G · ^⇧G'], ['mover todo', 'arrastra su nombre'], ['renombrar', 'doble clic en el nombre']]],
   ['Archivo', [['guardar · abrir', '^S · ^O'], ['exportar PNG, SVG, MD', '^E · clic derecho en vacío'], ['contraseña del proyecto', 'clic derecho en vacío'], ...(WEB ? [['descargar la app', 'botón ⤓']] : [['carpeta · nombre del proyecto', 'clic derecho en vacío'], DESK ? ['abrir la carpeta del proyecto', 'botón ⤓'] : ['descargar Cloto', 'botón ⤓']])]],
   ['Multimedia', [['imagen, vídeo, audio, PDF, archivo', 'arrástralo al lienzo'], ['enlace o imagen', '^V · clic derecho → Insertar'], ['visitar enlace', 'clic en la tarjeta'], ['ver la página · ampliar · reproducir', 'doble clic'], ['leyenda · título', 'Enter']]]
@@ -2303,7 +2615,7 @@ async function assetURL(name) {
 }
 /* guardar: el proyecto completo en un solo .cloto, dentro de la carpeta */
 async function saveProject(quiet) {
-  if (editing) finishEdit();
+  syncEdit();
   persist();
   if (!dir || !(await okPerm(true))) return false;
   try {
