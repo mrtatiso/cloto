@@ -1,3 +1,4 @@
+<img width="1200" height="400" alt="CLOTO" src="https://github.com/user-attachments/assets/a5f101d0-398d-4b9b-80b8-c280450ce041" />
 # Cloto
 
 Ideas, cajas de texto, imágenes, vídeos, PDF, enlaces y cuerdas.
