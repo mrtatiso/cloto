@@ -1,10 +1,7 @@
 # Cloto
 
-Ideas unidas por hilos: cajas de texto, imágenes, vídeos, PDF y enlaces amarrados con hilos que se estiran y se mecen.
+Ideas, cajas de texto, imágenes, vídeos, PDF, enlaces y cuerdas.
 Cada proyecto es un solo archivo `.cloto` con todo dentro, y se puede proteger con contraseña.
-
-- **Pruébalo en línea:** `https://<usuario>.github.io/<repo>/` (versión de prueba: abre y guarda archivos `.cloto`, sin carpeta de proyectos)
-- **Descarga la app:** [Releases](../../releases/latest), en Windows, macOS o Linux
 
 ## La app de escritorio
 
