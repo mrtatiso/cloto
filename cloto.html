@@ -845,7 +845,8 @@ const CREEP = 9;       // ceder mínimo por cuadro (px); si la tensión es grand
 const RETRACT = .5;    // px por cuadro que recupera al quedar flojo
 let simRaf = 0, simCalm = 0, simT = 0, lastDragEnd = 0, debris = [];
 let wRest = 0, wSleep = false;                    // reposo de los pesos (ver stepWeights)
-function kick() { simCalm = 0; wSleep = false; wRest = 0; if (!simRaf) simRaf = requestAnimationFrame(simStep); }
+let lastKick = 0, fade = 1;                       // tras soltar, el freno sube poco a poco: la energía siempre se agota
+function kick() { simCalm = 0; wSleep = false; wRest = 0; lastKick = performance.now(); fade = 1; if (!simRaf) simRaf = requestAnimationFrame(simStep); }
 
 function rect(n) { const el = els.get(n.id), w = el.offsetWidth, h = el.offsetHeight; return { x: n.x, y: n.y, w, h, cx: n.x + w / 2, cy: n.y + h / 2 }; }
 const centerDist = (a, b) => { const ra = rect(a), rb = rect(b); return Math.hypot(rb.cx - ra.cx, rb.cy - ra.cy); };
@@ -992,7 +993,7 @@ function stepRope(P, A, B, len, near, pin, hv = -1) {
   let energy = 0;
   for (let i = 1; i < SEGS; i++) {
     if (i === pi) continue;
-    const q = P[i], vx = (q.x - q.px) * DAMP, vy = (q.y - q.py) * DAMP;
+    const q = P[i], vx = (q.x - q.px) * DAMP * fade, vy = (q.y - q.py) * DAMP * fade;
     q.px = q.x; q.py = q.y; q.x += vx; q.y += vy + GRAV * (1 + LABEL_G * fall(i));
     energy += vx * vx + vy * vy;
   }
@@ -1170,7 +1171,7 @@ function stepWeights(f) {
       const fm = Math.hypot(fx, fy); maxF = Math.max(maxF, fm);
       if (wSleep && fm < .35) { n.vx = n.vy = 0; continue; }          // dormido: no se mueve hasta que algo tire de verdad
       wSleep = false;
-      let vx = ((n.vx || 0) + fx) * WDAMP, vy = ((n.vy || 0) + fy) * WDAMP;
+      let vx = ((n.vx || 0) + fx) * WDAMP * fade, vy = ((n.vy || 0) + fy) * WDAMP * fade;
       const sp = Math.hypot(vx, vy); if (sp > WMAX) { vx *= WMAX / sp; vy *= WMAX / sp; }
       n.vx = vx; n.vy = vy; n.x += vx; n.y += vy;
       maxSp = Math.max(maxSp, sp);
@@ -1188,6 +1189,7 @@ function settleWeights() {                          // el peso dejó de moverse:
 }
 function simStep0(now) {
   simRaf = 0;
+  fade = 1 - .2 * Math.min(1, Math.max(0, (now - lastKick - 1500) / 2500));   // 1.5 s libre; luego, en 2.5 s, el freno llega a su máximo
   const f = simT ? Math.min(3, Math.max(.5, (now - simT) / 16.7)) : 1; simT = now;
   const wmove = stepWeights(f);
   if (weightsMoving && !wmove) settleWeights();
