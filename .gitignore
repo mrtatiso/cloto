@@ -1,0 +1,13 @@
+build/
+dist/
+__pycache__/
+*.pyc
+cloto.json
+cloto.log
+proyectos/
+navegador/
+navegador-chromium/
+/Cloto/
+Cloto-*.zip
+Cloto-*.tar.gz
+.DS_Store
