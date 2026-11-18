@@ -1,1 +1,0 @@
-Aquí guarda Cloto tus proyectos: cada uno es un solo archivo .cloto con el mapa y sus imágenes, vídeos y PDF dentro.
