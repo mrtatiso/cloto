@@ -651,6 +651,8 @@ def open_window(url, server_only=False):
             S.window = webview.create_window(APP, url, width=1280, height=820, min_size=(640, 420),
                                              background_color='#f4f4f6', text_select=True)
             kw = {'private_mode': False, 'storage_path': str(DATA / 'navegador')}
+            if FROZEN and sys.platform.startswith('linux'):
+                kw['gui'] = 'qt'                                  # la app de Linux trae Qt dentro (no depende de GTK ni de Chrome)
             try:
                 webview.start(icon=str(RES / 'icono' / 'cloto-256.png'), **kw)
             except TypeError:

@@ -166,4 +166,4 @@ El enlace «descargar la app» de la versión en línea se completa solo con el 
 
 - **macOS:** la app no está firmada por Apple. La primera vez hay que abrirla con clic derecho → Abrir, o usar `Instalar.command`, que le quita la marca de «descargado de internet». Para firmarla y notarizarla hace falta una cuenta de desarrollador de Apple.
 - **Windows:** sin firma de código, SmartScreen puede avisar la primera vez («Más información → Ejecutar de todas formas»).
-- **Linux:** el binario usa Chrome o Chromium en modo app. Con `python3-gi` y WebKitGTK instalados, `python3 cloto.py` abre la ventana nativa.
+- **Linux:** el binario trae su propia ventana (Qt con WebEngine incluido), así que no necesita navegador. Pesa unos 170 MB y tarda unos segundos en abrir la primera vez. Necesita las librerías gráficas básicas de cualquier escritorio (X11 o XWayland). Si algo falla al abrir la ventana, `CLOTO_SIN_WEBVIEW=1` fuerza el modo con Chrome/Chromium o el navegador. Desde el código, `python3 cloto.py` abre la ventana nativa con `python3-gi` y WebKitGTK instalados.
