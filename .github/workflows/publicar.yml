@@ -39,9 +39,8 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pyinstaller
-          # Ventana propia (pywebview) en los tres sistemas. En Linux va con Qt dentro (no depende de GTK ni de Chrome).
-          pip install -r requirements.txt
-          if [ "${{ matrix.sistema }}" = "linux" ]; then pip install PyQt5 PyQtWebEngine qtpy; fi
+          # Windows y macOS: ventana nativa (pywebview). Linux usa Chrome/Chromium en modo app o el navegador.
+          if [ "${{ matrix.sistema }}" != "linux" ]; then pip install -r requirements.txt; fi
 
       - name: Versión y enlace al repositorio
         run: |
@@ -101,10 +100,15 @@ jobs:
           merge-multiple: true
       - name: Armar CLOTO/
         run: |
-          mkdir -p CLOTO/windows CLOTO/macos CLOTO/linux CLOTO/proyectos x/w x/m x/l
+          mkdir -p CLOTO/windows CLOTO/macos CLOTO/linux CLOTO/proyectos x/w x/m
           unzip -q partes/Cloto-windows.zip -d x/w && cp x/w/Cloto/Cloto.exe CLOTO/windows/
           unzip -q partes/Cloto-macos.zip -d x/m && cp -R x/m/Cloto/Cloto.app CLOTO/macos/
-          tar xzf partes/Cloto-linux.tar.gz -C x/l && cp x/l/Cloto/Cloto CLOTO/linux/
+          # Linux: el código y un script; la computadora hace de intérprete y abre la misma ventana de «python3 cloto.py»
+          V="${GITHUB_REF_NAME#v}"; [ "$GITHUB_REF_TYPE" = "tag" ] || V="0.0.0-prueba"
+          [[ "$V" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]] || { echo "Versión inválida: $V"; exit 1; }
+          cp cloto.py cloto.html CLOTO/linux/ && cp -r icono CLOTO/linux/icono && cp paquete-usb/Cloto-linux.sh CLOTO/linux/Cloto
+          sed -i "s#^VERSION = '[^']*'#VERSION = '$V'#" CLOTO/linux/cloto.py
+          sed -i "s#__CLOTO_REPO__#https://github.com/${GITHUB_REPOSITORY}#g" CLOTO/linux/cloto.html
           cp paquete-usb/Instalar.bat paquete-usb/Desinstalar.bat paquete-usb/Instalar.command paquete-usb/Desinstalar.command \
              paquete-usb/instalar.sh paquete-usb/desinstalar.sh paquete-usb/LEEME.txt CLOTO/
           cp paquete-usb/proyectos.txt CLOTO/proyectos/LEEME.txt
