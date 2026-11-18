@@ -1130,7 +1130,7 @@ function simStep(now) {
 /* los pesos cuelgan como en un resorte: tienen masa, caen, estiran el hilo y rebotan. El hilo conserva el largo que tenía
    hasta el peso (cuando el peso estaba en medio, el tramo de ese lado) y vuelve a él en cuanto se suelta.
    Un peso sin ningún hilo se queda donde está */
-const WGRAV = .45, WDAMP = .9, WK = 2.2, WMAX = 30;        // gravedad · freno · rigidez (relativa al largo) · velocidad máxima
+const WGRAV = .5, WDAMP = .975, WK = 3.4, WMAX = 45;       // gravedad · freno · rigidez (relativa al largo) · velocidad máxima
 let weightsMoving = false, wAcc = 0;
 function anchoredWeights() {                       // un peso cae solo si, siguiendo hilos, llega a alguna caja: si no, se queda donde está
   const adj = new Map(), out = new Set();
@@ -1164,7 +1164,7 @@ function stepWeights(f) {
       inc.forEach(e => {
         const O = boxFor(e.from === n.id ? e.to : e.from), len = e.len0 || e.len || 0; if (!O || !len) return;
         const gap = gapOf(W, O); if (gap <= len) return;                    // flojo: no tira; estirado: tira como resorte
-        const dx = O.cx - cx, dy = O.cy - cy, d = Math.hypot(dx, dy) || 1, k = Math.min(WK * (gap - len) / len, 6);
+        const dx = O.cx - cx, dy = O.cy - cy, d = Math.hypot(dx, dy) || 1, k = WK * (gap - len) / len;
         fx += dx / d * k; fy += dy / d * k;
       });
       const fm = Math.hypot(fx, fy); maxF = Math.max(maxF, fm);
@@ -1221,7 +1221,8 @@ function simStep0(now) {
 
     // tensión: cuánto excede el hilo a lo que mide ahora; nunca se rompe, solo cede
     const excess = r.L - e.len * (1 + GIVE), brk = 50 / view.k + e.len * .25;   // brk solo gradúa el adelgazamiento visual
-    if (excess > 0) {                                                  // jalado: se estira, tan rápido como lo jalen (el resorte de un peso usa len0: vuelve)
+    const wEnd = (nmap.get(e.from) || {}).w || (nmap.get(e.to) || {}).w;   // un peso cuelga: el hilo que lo sostiene no cede al balanceo
+    if (excess > 0 && !wEnd) {                                // jalado: se estira, tan rápido como lo jalen
       const need = r.L / (1 + GIVE) - e.len;
       e.len += Math.min(need, Math.max(CREEP / view.k * f, need * .5)); busy = true;
     } else if (!pin && r.L < e.len * (1 + GIVE / 2) && e.len > e.len0 + .5) {
