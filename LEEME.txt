@@ -1,0 +1,35 @@
+CLOTO en una memoria USB
+Ideas unidas por hilos. Tu app y tus proyectos viajan contigo; cada computadora solo guarda un acceso directo.
+
+PREPARAR LA MEMORIA (una sola vez)
+  1. Ponle de nombre  CLOTO  a la memoria (formato exFAT: lo leen Windows, macOS y Linux).
+  2. Copia aquí TODO el contenido de esta carpeta, en la raíz de la memoria:
+       windows/   macos/   linux/   proyectos/   Instalar…   LEEME.txt
+
+EN CADA COMPUTADORA
+  Conecta la memoria y abre el instalador de ese sistema (está en la raíz de la memoria):
+    Windows   Instalar.bat
+    macOS     Instalar.command   (si macOS lo bloquea: clic derecho → Abrir)
+    Linux     instalar.sh        (si dice «permiso denegado»:  sh instalar.sh)
+  Aparece el icono del nudo en el escritorio y en el menú. Desde entonces solo abres el acceso directo.
+
+  El acceso directo busca la memoria llamada CLOTO: sigue funcionando aunque aparezca con otra letra
+  o en otro puerto. Si la memoria no está conectada, te avisa que la conectes.
+
+TUS PROYECTOS
+  Se guardan en la memoria, en «proyectos»; cada proyecto es un solo archivo .cloto con todo dentro
+  (el mapa, imágenes, vídeos, PDF…). Nada de tus proyectos se queda en la computadora.
+  Para compartir un proyecto, manda su .cloto: se abre en la app o en la versión en línea.
+
+SEGURIDAD
+  · La instalación no pide permisos de administrador: solo escribe en las carpetas de tu usuario.
+  · En la memoria se guarda un identificador aleatorio (.cloto-id) que el acceso directo comprueba antes
+    de abrir nada: otra memoria que también se llame CLOTO no puede hacerle correr un programa ajeno.
+  · Si pierdes la memoria, quien la encuentre puede abrir tus proyectos: ponles contraseña
+    (clic derecho en el lienzo vacío → «Proteger con contraseña»; cifrado AES-256).
+    Si olvidas la contraseña, el proyecto no se puede recuperar.
+  · Cuando termines, expulsa la memoria desde el sistema antes de sacarla.
+
+QUITAR
+  Desinstalar.bat (Windows), Desinstalar.command (macOS) o desinstalar.sh (Linux): quitan los accesos de
+  esa computadora. No tocan la memoria.
