@@ -1,0 +1,2744 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src * data: blob:; media-src blob: data:; frame-src https: http: blob:; connect-src 'self' https: data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Cloto</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJhIiBjeD0iMjIlIiBjeT0iMTglIiByPSI5NSUiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2QzZTBmNiIvPjxzdG9wIG9mZnNldD0iLjUiIHN0b3AtY29sb3I9IiNmMGYwZjUiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNkZWQ3ZjIiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48cmVjdCB4PSI2IiB5PSI2IiB3aWR0aD0iMTE2IiBoZWlnaHQ9IjExNiIgcng9IjI3IiBmaWxsPSJ1cmwoI2EpIi8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjQgNjQpIHNjYWxlKC45MikgdHJhbnNsYXRlKC02NCAtNjQpIj48bWFzayBpZD0ibSIgbWFza1VuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeD0iLTIwIiB5PSItMjAiIHdpZHRoPSIxNjgiIGhlaWdodD0iMTY4Ij48cmVjdCB4PSItMjAiIHk9Ii0yMCIgd2lkdGg9IjE2OCIgaGVpZ2h0PSIxNjgiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNDEuNzMgNjYuNTAgTDQxLjc2IDY3LjE2IEw0MS43OSA2Ny44MSBMNDEuODMgNjguNDUgTDQxLjg4IDY5LjEwIEw0MS45MyA2OS43NCBMNDIuMDAgNzAuMzggTDQyLjA3IDcxLjAyIEw0Mi4xNiA3MS42NiBMNDIuMjUgNzIuMjkgTDQyLjM1IDcyLjkyIEw0Mi40NiA3My41NCBMNDIuNTggNzQuMTYgTDQyLjcwIDc0Ljc4IEw0Mi44NCA3NS4zOSBMNDIuOTggNzYuMDAgTDQzLjEzIDc2LjYxIEw0My4yOSA3Ny4yMSBMNDMuNDYgNzcuODAgTDQzLjYzIDc4LjM5IEw0My44MiA3OC45OCBMNDQuMDEgNzkuNTYgTDQ0LjIxIDgwLjEzIEw0NC40MiA4MC43MCBMNDQuNjMgODEuMjcgTDQ0Ljg2IDgxLjgzIEw0NS4wOSA4Mi4zOCBMNDUuMzMgODIuOTIgTDQ1LjU4IDgzLjQ2IEw0NS44MyA4NC4wMCBMNDYuMTAgODQuNTIiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyMS43MCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNNzEuODcgNzYuMzkgTDcyLjQ1IDc2LjM2IEw3My4wMyA3Ni4zMyBMNzMuNjAgNzYuMjkgTDc0LjE3IDc2LjI1IEw3NC43NCA3Ni4yMCBMNzUuMzEgNzYuMTUgTDc1Ljg3IDc2LjEwIEw3Ni40MyA3Ni4wNCBMNzYuOTkgNzUuOTggTDc3LjU0IDc1LjkxIEw3OC4xMCA3NS44NCBMNzguNjQgNzUuNzYgTDc5LjE5IDc1LjY4IEw3OS43MyA3NS41OSBMODAuMjYgNzUuNTAgTDgwLjgwIDc1LjQxIEw4MS4zMiA3NS4zMCBMODEuODUgNzUuMjAgTDgyLjM3IDc1LjA5IEw4Mi44OCA3NC45NyBMODMuMzkgNzQuODUgTDgzLjkwIDc0LjcyIEw4NC40MCA3NC41OCBMODQuODkgNzQuNDUgTDg1LjM4IDc0LjMwIEw4NS44NiA3NC4xNSBMODYuMzQgNzMuOTkgTDg2LjgyIDczLjgzIEw4Ny4yOCA3My42NyBMODcuNzUgNzMuNDkiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyMS43MCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNODkuMzMgNDcuODMgTDg5LjU4IDQ3LjU5IEw4OS44MyA0Ny4zNCBMOTAuMDggNDcuMTAgTDkwLjM0IDQ2Ljg2IEw5MC41OSA0Ni42MSBMOTAuODUgNDYuMzYgTDkxLjEwIDQ2LjEyIEw5MS4zNiA0NS44NyBMOTEuNjIgNDUuNjIgTDkxLjg5IDQ1LjM3IEw5Mi4xNSA0NS4xMyBMOTIuNDEgNDQuODggTDkyLjY4IDQ0LjYzIEw5Mi45NSA0NC4zOCBMOTMuMjIgNDQuMTMgTDkzLjQ5IDQzLjg4IEw5My43NiA0My42MyBMOTQuMDMgNDMuMzggTDk0LjMxIDQzLjEyIEw5NC41OSA0Mi44NyBMOTQuODcgNDIuNjIgTDk1LjE0IDQyLjM3IEw5NS40MyA0Mi4xMiBMOTUuNzEgNDEuODYgTDk1Ljk5IDQxLjYxIEw5Ni4yOCA0MS4zNiBMOTYuNTcgNDEuMTAgTDk2Ljg1IDQwLjg1IEw5Ny4xNSA0MC42MCBMOTcuNDQgNDAuMzQiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyMS43MCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIGZpbGw9Im5vbmUiLz48L21hc2s+PGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMWQxZDFmIiBzdHJva2Utd2lkdGg9IjEyLjUwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIG1hc2s9InVybCgjbSkiIGQ9Ik0xNi4yNSA3OS41MiBMMTYuODUgNzkuNDMgTDE3LjQ1IDc5LjM0IEwxOC4wNSA3OS4yNSBMMTguNjUgNzkuMTcgTDE5LjI1IDc5LjA4IEwxOS44NiA3OS4wMCBMMjAuNDYgNzguOTEgTDIxLjA3IDc4LjgzIEwyMS42NyA3OC43NSBMMjIuMjggNzguNjYgTDIyLjg5IDc4LjU4IEwyMy41MCA3OC41MCBMMjQuMTEgNzguNDIgTDI0LjcyIDc4LjM1IEwyNS4zMyA3OC4yNyBMMjUuOTQgNzguMTkgTDI2LjU1IDc4LjEyIEwyNy4xNiA3OC4wNSBMMjcuNzcgNzcuOTcgTDI4LjM5IDc3LjkwIEwyOS4wMCA3Ny44MyBMMjkuNjEgNzcuNzYgTDMwLjIyIDc3LjY5IEwzMC44MyA3Ny42MyBMMzEuNDQgNzcuNTYgTDMyLjA1IDc3LjUwIEwzMi42NiA3Ny40MyBMMzMuMjcgNzcuMzcgTDMzLjg4IDc3LjMxIEwzNC40OSA3Ny4yNSBMMzUuMTAgNzcuMTkgTDM1LjcxIDc3LjE0IEwzNi4zMSA3Ny4wOCBMMzYuOTIgNzcuMDMgTDM3LjUyIDc2Ljk4IEwzOC4xMiA3Ni45MiBMMzguNzMgNzYuODcgTDM5LjMzIDc2LjgzIEwzOS45MyA3Ni43OCBMNDAuNTIgNzYuNzMgTDQxLjEyIDc2LjY5IEw0MS43MSA3Ni42NSBMNDIuMzEgNzYuNjEgTDQyLjkwIDc2LjU3IEw0My40OSA3Ni41MyBMNDQuMDcgNzYuNDkgTDQ0LjY2IDc2LjQ2IEw0NS4yNCA3Ni40MiBMNDUuODMgNzYuMzkgTDQ2LjQwIDc2LjM2IEw0Ni45OCA3Ni4zNCBMNDcuNTYgNzYuMzEgTDQ4LjEzIDc2LjI4IEw0OC43MCA3Ni4yNiBMNDkuMjcgNzYuMjQgTDQ5LjgzIDc2LjIyIEw1MC4zOSA3Ni4yMCBMNTAuOTUgNzYuMTkgTDUxLjUxIDc2LjE3IEw1Mi4wNiA3Ni4xNiBMNTIuNjEgNzYuMTUgTDUzLjE2IDc2LjE0IEw1My43MSA3Ni4xNCBMNTQuMjUgNzYuMTMgTDU0Ljc4IDc2LjEzIEw1NS4zMiA3Ni4xMyBMNTUuODUgNzYuMTMgTDU2LjM4IDc2LjEzIEw1Ni45MCA3Ni4xNCBMNTcuNDIgNzYuMTUgTDU3Ljk0IDc2LjE2IEw1OC40NSA3Ni4xNyBMNTguOTYgNzYuMTggTDU5LjQ3IDc2LjIwIEw1OS45NyA3Ni4yMSBMNjAuNDYgNzYuMjMgTDYwLjk2IDc2LjI2IEw2MS40NCA3Ni4yOCBMNjEuOTMgNzYuMzEgTDYyLjQxIDc2LjM0IEw2My4wMSA3Ni4zNiBMNjMuNjAgNzYuMzkgTDY0LjIwIDc2LjQxIEw2NC43OSA3Ni40MyBMNjUuMzkgNzYuNDUgTDY1Ljk4IDc2LjQ2IEw2Ni41OCA3Ni40NyBMNjcuMTcgNzYuNDcgTDY3Ljc2IDc2LjQ4IEw2OC4zNiA3Ni40NyBMNjguOTQgNzYuNDcgTDY5LjUzIDc2LjQ2IEw3MC4xMiA3Ni40NSBMNzAuNzAgNzYuNDMgTDcxLjI5IDc2LjQxIEw3MS44NyA3Ni4zOSBMNzIuNDUgNzYuMzYgTDczLjAzIDc2LjMzIEw3My42MCA3Ni4yOSBMNzQuMTcgNzYuMjUgTDc0Ljc0IDc2LjIwIEw3NS4zMSA3Ni4xNSBMNzUuODcgNzYuMTAgTDc2LjQzIDc2LjA0IEw3Ni45OSA3NS45OCBMNzcuNTQgNzUuOTEgTDc4LjEwIDc1Ljg0IEw3OC42NCA3NS43NiBMNzkuMTkgNzUuNjggTDc5LjczIDc1LjU5IEw4MC4yNiA3NS41MCBMODAuODAgNzUuNDEgTDgxLjMyIDc1LjMwIEw4MS44NSA3NS4yMCBMODIuMzcgNzUuMDkgTDgyLjg4IDc0Ljk3IEw4My4zOSA3NC44NSBMODMuOTAgNzQuNzIgTDg0LjQwIDc0LjU4IEw4NC44OSA3NC40NSBMODUuMzggNzQuMzAgTDg1Ljg2IDc0LjE1IEw4Ni4zNCA3My45OSBMODYuODIgNzMuODMgTDg3LjI4IDczLjY3IEw4Ny43NSA3My40OSBMODguMjAgNzMuMzEgTDg4LjY1IDczLjEzIEw4OS4xMCA3Mi45MyBMODkuNTMgNzIuNzQgTDg5Ljk2IDcyLjUzIEw5MC4zOSA3Mi4zMiBMOTAuODAgNzIuMTEgTDkxLjIxIDcxLjg4IEw5MS42MiA3MS42NSBMOTIuMDEgNzEuNDIgTDkyLjQwIDcxLjE3IEw5Mi43OCA3MC45MiBMOTMuMTUgNzAuNjcgTDkzLjUyIDcwLjQwIEw5My44OCA3MC4xMyBMOTQuMjMgNjkuODYgTDk0LjU3IDY5LjU3IEw5NC45MCA2OS4yOCBMOTUuMjMgNjguOTggTDk1LjU1IDY4LjY4IEw5NS44NSA2OC4zNiBMOTYuMTUgNjguMDQgTDk2LjQ0IDY3LjcyIEw5Ni43MyA2Ny4zOCBMOTcuMDAgNjcuMDQgTDk3LjI2IDY2LjY5IEw5Ny41MSA2Ni4zMyBMOTcuNzYgNjUuOTYgTDk3Ljk5IDY1LjU5IEw5OC4yMiA2NS4yMSBMOTguNDMgNjQuODIgTDk4LjY0IDY0LjQyIEw5OC44MyA2NC4wMiBMOTkuMDIgNjMuNjAgTDk5LjE5IDYzLjEyIEw5OS4zNSA2Mi42NSBMOTkuNDkgNjIuMTcgTDk5LjYxIDYxLjY5IEw5OS43MyA2MS4yMiBMOTkuODMgNjAuNzQgTDk5LjkxIDYwLjI3IEw5OS45OCA1OS43OSBMMTAwLjA0IDU5LjMyIEwxMDAuMDggNTguODUgTDEwMC4xMSA1OC4zOCBMMTAwLjEyIDU3LjkyIEwxMDAuMTIgNTcuNDUgTDEwMC4xMSA1Ni45OSBMMTAwLjA5IDU2LjUyIEwxMDAuMDUgNTYuMDYgTDEwMC4wMCA1NS42MSBMOTkuOTMgNTUuMTUgTDk5Ljg1IDU0LjcwIEw5OS43NiA1NC4yNSBMOTkuNjYgNTMuODAgTDk5LjU0IDUzLjM2IEw5OS40MiA1Mi45MiBMOTkuMjcgNTIuNDkgTDk5LjEyIDUyLjA1IEw5OC45NiA1MS42MiBMOTguNzggNTEuMjAgTDk4LjU5IDUwLjc4IEw5OC4zOSA1MC4zNiBMOTguMTggNDkuOTUgTDk3Ljk1IDQ5LjU0IEw5Ny43MiA0OS4xNCBMOTcuNDcgNDguNzQgTDk3LjIxIDQ4LjM0IEw5Ni45NCA0Ny45NiBMOTYuNjYgNDcuNTcgTDk2LjM3IDQ3LjE5IEw5Ni4wNyA0Ni44MiBMOTUuNzYgNDYuNDUgTDk1LjQ0IDQ2LjA5IEw5NS4xMCA0NS43NCBMOTQuNzYgNDUuMzkgTDk0LjQwIDQ1LjA1IEw5NC4wNCA0NC43MSBMOTMuNjcgNDQuMzggTDkzLjI4IDQ0LjA2IEw5Mi44OSA0My43NCBMOTIuNDggNDMuNDMgTDkyLjA3IDQzLjEzIEw5MS42NSA0Mi44NCBMOTEuMjIgNDIuNTUgTDkwLjc4IDQyLjI3IEw5MC4zMyA0Mi4wMCBMODkuODcgNDEuNzMgTDg5LjQwIDQxLjQ4IEw4OC45MiA0MS4yMyBMODguNDQgNDAuOTkgTDg3Ljk0IDQwLjc2IEw4Ny40NCA0MC41NCBMODYuOTMgNDAuMzIgTDg2LjQxIDQwLjEyIEw4NS44OCAzOS45MiBMODUuMzUgMzkuNzQgTDg0LjgxIDM5LjU2IEw4NC4yNiAzOS4zOSBMODMuNzAgMzkuMjQgTDgzLjEzIDM5LjA5IEw4Mi41NiAzOC45NSBMODEuOTggMzguODIgTDgxLjM5IDM4LjcxIEw4MC44MCAzOC42MCBMODAuMTkgMzguNTAgTDc5LjU4IDM4LjQyIEw3OC45NyAzOC4zNCBMNzguMzUgMzguMjggTDc3LjcyIDM4LjIzIEw3Ny4wOCAzOC4xOSBMNzYuNDQgMzguMTYgTDc1LjgwIDM4LjE0IEw3NS4xNCAzOC4xNCBMNzQuNDMgMzguMTQgTDczLjcyIDM4LjE2IEw3My4wMSAzOC4xOCBMNzIuMzEgMzguMjIgTDcxLjYyIDM4LjI2IEw3MC45MyAzOC4zMiBMNzAuMjQgMzguMzkgTDY5LjU2IDM4LjQ2IEw2OC44OSAzOC41NSBMNjguMjIgMzguNjUgTDY3LjU2IDM4Ljc1IEw2Ni45MCAzOC44NyBMNjYuMjUgMzguOTkgTDY1LjYwIDM5LjEyIEw2NC45NiAzOS4yNyBMNjQuMzMgMzkuNDIgTDYzLjcwIDM5LjU4IEw2My4wOCAzOS43NiBMNjIuNDcgMzkuOTQgTDYxLjg2IDQwLjEyIEw2MS4yNiA0MC4zMiBMNjAuNjcgNDAuNTMgTDYwLjA4IDQwLjc1IEw1OS41MCA0MC45NyBMNTguOTMgNDEuMjEgTDU4LjM2IDQxLjQ1IEw1Ny44MCA0MS43MCBMNTcuMjUgNDEuOTYgTDU2LjcxIDQyLjIyIEw1Ni4xNyA0Mi41MCBMNTUuNjQgNDIuNzggTDU1LjEyIDQzLjA4IEw1NC42MSA0My4zOCBMNTQuMTEgNDMuNjggTDUzLjYxIDQ0LjAwIEw1My4xMyA0NC4zMiBMNTIuNjUgNDQuNjYgTDUyLjE4IDQ0Ljk5IEw1MS43MiA0NS4zNCBMNTEuMjcgNDUuNzAgTDUwLjgyIDQ2LjA2IEw1MC4zOSA0Ni40MyBMNDkuOTYgNDYuODAgTDQ5LjU1IDQ3LjE5IEw0OS4xNCA0Ny41OCBMNDguNzUgNDcuOTggTDQ4LjM2IDQ4LjM4IEw0Ny45OCA0OC43OSBMNDcuNjEgNDkuMjEgTDQ3LjI2IDQ5LjY0IEw0Ni45MSA1MC4wNyBMNDYuNTcgNTAuNTEgTDQ2LjI0IDUwLjk1IEw0NS45MyA1MS40MSBMNDUuNjIgNTEuODcgTDQ1LjMzIDUyLjMzIEw0NS4wNCA1Mi44MCBMNDQuNzcgNTMuMjggTDQ0LjUxIDUzLjc2IEw0NC4yNSA1NC4yNSBMNDQuMDEgNTQuNzUgTDQzLjc4IDU1LjI1IEw0My41NyA1NS43NSBMNDMuMzYgNTYuMjcgTDQzLjE2IDU2Ljc5IEw0Mi45OCA1Ny4zMSBMNDIuODEgNTcuODQgTDQyLjY1IDU4LjM4IEw0Mi41MCA1OC45MiBMNDIuMzcgNTkuNDYgTDQyLjI1IDYwLjAxIEw0Mi4xNCA2MC41NyBMNDIuMDQgNjEuMTMgTDQxLjk1IDYxLjcwIEw0MS44OCA2Mi4yNyBMNDEuODIgNjIuODQgTDQxLjc4IDYzLjQyIEw0MS43NCA2NC4wMSBMNDEuNzIgNjQuNjAgTDQxLjcyIDY1LjE5IEw0MS43MiA2NS44NSBMNDEuNzMgNjYuNTAgTDQxLjc2IDY3LjE2IEw0MS43OSA2Ny44MSBMNDEuODMgNjguNDUgTDQxLjg4IDY5LjEwIEw0MS45MyA2OS43NCBMNDIuMDAgNzAuMzggTDQyLjA3IDcxLjAyIEw0Mi4xNiA3MS42NiBMNDIuMjUgNzIuMjkgTDQyLjM1IDcyLjkyIEw0Mi40NiA3My41NCBMNDIuNTggNzQuMTYgTDQyLjcwIDc0Ljc4IEw0Mi44NCA3NS4zOSBMNDIuOTggNzYuMDAgTDQzLjEzIDc2LjYxIEw0My4yOSA3Ny4yMSBMNDMuNDYgNzcuODAgTDQzLjYzIDc4LjM5IEw0My44MiA3OC45OCBMNDQuMDEgNzkuNTYgTDQ0LjIxIDgwLjEzIEw0NC40MiA4MC43MCBMNDQuNjMgODEuMjcgTDQ0Ljg2IDgxLjgzIEw0NS4wOSA4Mi4zOCBMNDUuMzMgODIuOTIgTDQ1LjU4IDgzLjQ2IEw0NS44MyA4NC4wMCBMNDYuMTAgODQuNTIgTDQ2LjM3IDg1LjA0IEw0Ni42NSA4NS41NSBMNDYuOTMgODYuMDYgTDQ3LjIzIDg2LjU2IEw0Ny41MyA4Ny4wNSBMNDcuODQgODcuNTMgTDQ4LjE2IDg4LjAxIEw0OC40OCA4OC40NyBMNDguODEgODguOTMgTDQ5LjE1IDg5LjM4IEw0OS41MCA4OS44MiBMNDkuODUgOTAuMjUgTDUwLjIyIDkwLjY4IEw1MC41OCA5MS4wOSBMNTAuOTYgOTEuNTAgTDUxLjM0IDkxLjkwIEw1MS43MyA5Mi4yOCBMNTIuMTMgOTIuNjYgTDUyLjU0IDkzLjAzIEw1Mi45NSA5My4zOCBMNTMuMzcgOTMuNzMgTDUzLjc5IDk0LjA3IEw1NC4yMiA5NC4zOSBMNTQuNjYgOTQuNzEgTDU1LjExIDk1LjAxIEw1NS41NiA5NS4zMSBMNTYuMDIgOTUuNTkgTDU2LjQ5IDk1Ljg2IEw1Ni45NiA5Ni4xMiBMNTcuNDQgOTYuMzYgTDU3LjkzIDk2LjYwIEw1OC40MiA5Ni44MiBMNTguOTIgOTcuMDMgTDU5LjQzIDk3LjIzIEw1OS45NCA5Ny40MiBMNjAuNDYgOTcuNTkgTDYwLjk5IDk3Ljc1IEw2MS41MiA5Ny45MCBMNjIuMDYgOTguMDMgTDYyLjYwIDk4LjE2IEw2My4xNSA5OC4yNiBMNjMuNzEgOTguMzYgTDY0LjI3IDk4LjQ0IEw2NC44NCA5OC41MCBMNjUuNDIgOTguNTUgTDY2LjAwIDk4LjU5IEw2Ni41OSA5OC42MSBMNjcuMTggOTguNjIgTDY3LjcyIDk4LjYxIEw2OC4yNCA5OC42MCBMNjguNzUgOTguNTggTDY5LjI2IDk4LjU1IEw2OS43NiA5OC41MSBMNzAuMjUgOTguNDYgTDcwLjcyIDk4LjQwIEw3MS4xOSA5OC4zNCBMNzEuNjYgOTguMjcgTDcyLjExIDk4LjE5IEw3Mi41NSA5OC4xMCBMNzIuOTggOTguMDAgTDczLjQxIDk3LjkwIEw3My44MyA5Ny43OCBMNzQuMjMgOTcuNjYgTDc0LjYzIDk3LjU0IEw3NS4wMiA5Ny40MCBMNzUuNDAgOTcuMjYgTDc1Ljc3IDk3LjExIEw3Ni4xNCA5Ni45NSBMNzYuNDkgOTYuNzkgTDc2LjgzIDk2LjYyIEw3Ny4xNyA5Ni40NCBMNzcuNTAgOTYuMjYgTDc3LjgyIDk2LjA2IEw3OC4xMiA5NS44NyBMNzguNDIgOTUuNjYgTDc4LjcxIDk1LjQ1IEw3OS4wMCA5NS4yMyBMNzkuMjcgOTUuMDEgTDc5LjUzIDk0Ljc4IEw3OS43OSA5NC41NCBMODAuMDQgOTQuMzAgTDgwLjI3IDk0LjA1IEw4MC41MCA5My44MCBMODAuNzIgOTMuNTQgTDgwLjkzIDkzLjI4IEw4MS4xMyA5My4wMSBMODEuMzIgOTIuNzMgTDgxLjUxIDkyLjQ1IEw4MS42OCA5Mi4xNiBMODEuODUgOTEuODcgTDgyLjAxIDkxLjU4IEw4Mi4xNSA5MS4yOCBMODIuMjkgOTAuOTcgTDgyLjQyIDkwLjY2IEw4Mi41NCA5MC4zNCBMODIuNjUgOTAuMDIgTDgyLjc2IDg5LjcwIEw4Mi44NSA4OS4zNyBMODIuOTQgODkuMDQgTDgzLjAxIDg4LjcwIEw4My4wOCA4OC4zNiBMODMuMTQgODguMDEgTDgzLjE5IDg3LjY2IEw4My4yMyA4Ny4zMSBMODMuMjYgODYuOTUgTDgzLjI4IDg2LjU5IEw4My4yOSA4Ni4yMyBMODMuMzAgODUuODYgTDgzLjI5IDg1LjQ5IEw4My4yOCA4NS4xMiBMODMuMjYgODQuNzQgTDgzLjIzIDg0LjM2IEw4My4xOSA4My45NyBMODMuMTQgODMuNTkgTDgzLjA4IDgzLjIwIEw4My4wMSA4Mi44MSBMODIuOTQgODIuNDEgTDgyLjg1IDgyLjAyIEw4Mi43NiA4MS42MiBMODIuNjUgODEuMjEgTDgyLjU0IDgwLjgxIEw4Mi40MiA4MC40MCBMODIuMjkgODAuMDAgTDgyLjE1IDc5LjU5IEw4Mi4wMSA3OS4xNyBMODEuODUgNzguNzYgTDgxLjY4IDc4LjM0IEw4MS41MSA3Ny45MyBMODEuMzkgNzcuNTcgTDgxLjI4IDc3LjIxIEw4MS4xNyA3Ni44NSBMODEuMDcgNzYuNDggTDgwLjk3IDc2LjEyIEw4MC44NyA3NS43NSBMODAuNzggNzUuMzkgTDgwLjcwIDc1LjAyIEw4MC42MiA3NC42NSBMODAuNTQgNzQuMjggTDgwLjQ3IDczLjkxIEw4MC40MCA3My41NCBMODAuMzQgNzMuMTcgTDgwLjI4IDcyLjc5IEw4MC4yMyA3Mi40MiBMODAuMTggNzIuMDQgTDgwLjE0IDcxLjY3IEw4MC4xMCA3MS4yOSBMODAuMDcgNzAuOTIgTDgwLjA0IDcwLjU0IEw4MC4wMiA3MC4xNiBMODAuMDAgNjkuNzkgTDc5Ljk4IDY5LjQxIEw3OS45OCA2OS4wMyBMNzkuOTcgNjguNjUgTDc5Ljk3IDY4LjI4IEw3OS45OCA2Ny45MCBMNzkuOTkgNjcuNTIgTDgwLjAwIDY3LjE0IEw4MC4wMyA2Ni43NiBMODAuMDUgNjYuMzkgTDgwLjA4IDY2LjAxIEw4MC4xMiA2NS42MyBMODAuMTYgNjUuMjUgTDgwLjIxIDY0Ljg4IEw4MC4yNiA2NC41MCBMODAuMzEgNjQuMTMgTDgwLjM3IDYzLjc1IEw4MC40NCA2My4zOCBMODAuNTEgNjMuMDEgTDgwLjU5IDYyLjYzIEw4MC42NyA2Mi4yNiBMODAuNzYgNjEuODkgTDgwLjg1IDYxLjUyIEw4MC45NSA2MS4xNSBMODEuMDYgNjAuNzggTDgxLjE2IDYwLjQyIEw4MS4yOCA2MC4wNSBMODEuNDAgNTkuNjggTDgxLjUyIDU5LjMyIEw4MS42NSA1OC45NiBMODEuNzkgNTguNjAgTDgxLjkzIDU4LjI0IEw4Mi4wOCA1Ny44OCBMODIuMjMgNTcuNTIgTDgyLjM5IDU3LjE3IEw4Mi41NSA1Ni44MiBMODIuNzIgNTYuNDcgTDgyLjkwIDU2LjEyIEw4My4wOCA1NS43NyBMODMuMjYgNTUuNDIgTDgzLjQ1IDU1LjA4IEw4My42NSA1NC43NCBMODMuODUgNTQuNDAgTDg0LjA2IDU0LjA2IEw4NC4yNyA1My43MiBMODQuNDkgNTMuMzkgTDg0LjcyIDUzLjA2IEw4NC45NSA1Mi43MyBMODUuMTkgNTIuNDAgTDg1LjQzIDUyLjA4IEw4NS42OCA1MS43NiBMODUuOTMgNTEuNDQgTDg2LjE5IDUxLjEyIEw4Ni40NiA1MC44MSBMODYuNzMgNTAuNDkgTDg3LjAxIDUwLjE5IEw4Ny4yOSA0OS44OCBMODcuNTggNDkuNTggTDg3Ljg4IDQ5LjI4IEw4OC4xMSA0OS4wNCBMODguMzYgNDguODAgTDg4LjYwIDQ4LjU2IEw4OC44NCA0OC4zMiBMODkuMDkgNDguMDcgTDg5LjMzIDQ3LjgzIEw4OS41OCA0Ny41OSBMODkuODMgNDcuMzQgTDkwLjA4IDQ3LjEwIEw5MC4zNCA0Ni44NiBMOTAuNTkgNDYuNjEgTDkwLjg1IDQ2LjM2IEw5MS4xMCA0Ni4xMiBMOTEuMzYgNDUuODcgTDkxLjYyIDQ1LjYyIEw5MS44OSA0NS4zNyBMOTIuMTUgNDUuMTMgTDkyLjQxIDQ0Ljg4IEw5Mi42OCA0NC42MyBMOTIuOTUgNDQuMzggTDkzLjIyIDQ0LjEzIEw5My40OSA0My44OCBMOTMuNzYgNDMuNjMgTDk0LjAzIDQzLjM4IEw5NC4zMSA0My4xMiBMOTQuNTkgNDIuODcgTDk0Ljg3IDQyLjYyIEw5NS4xNCA0Mi4zNyBMOTUuNDMgNDIuMTIgTDk1LjcxIDQxLjg2IEw5NS45OSA0MS42MSBMOTYuMjggNDEuMzYgTDk2LjU3IDQxLjEwIEw5Ni44NSA0MC44NSBMOTcuMTUgNDAuNjAgTDk3LjQ0IDQwLjM0IEw5Ny43MyA0MC4wOSBMOTguMDIgMzkuODQgTDk4LjMyIDM5LjU4IEw5OC42MiAzOS4zMyBMOTguOTIgMzkuMDggTDk5LjIyIDM4LjgyIEw5OS41MiAzOC41NyBMOTkuODIgMzguMzEgTDEwMC4xMyAzOC4wNiBMMTAwLjQ0IDM3LjgxIEwxMDAuNzQgMzcuNTUgTDEwMS4wNSAzNy4zMCBMMTAxLjM3IDM3LjA1IEwxMDEuNjggMzYuODAgTDEwMS45OSAzNi41NCBMMTAyLjMxIDM2LjI5IEwxMDIuNjIgMzYuMDQgTDEwMi45NCAzNS43OSBMMTAzLjI2IDM1LjUzIEwxMDMuNTggMzUuMjggTDEwMy45MSAzNS4wMyBMMTA0LjIzIDM0Ljc4IEwxMDQuNTYgMzQuNTMgTDEwNC44OSAzNC4yOCBMMTA1LjIxIDM0LjAzIEwxMDUuNTUgMzMuNzggTDEwNS44OCAzMy41MyBMMTA2LjIxIDMzLjI4IEwxMDYuNTUgMzMuMDQgTDEwNi44OCAzMi43OSBMMTA3LjIyIDMyLjU0IEwxMDcuNTYgMzIuMjkgTDEwNy45MCAzMi4wNSBMMTA4LjI0IDMxLjgwIEwxMDguNTkgMzEuNTYgTDEwOC45MyAzMS4zMSBMMTA5LjI4IDMxLjA3IEwxMDkuNjMgMzAuODMgTDEwOS45OCAzMC41OCBMMTEwLjMzIDMwLjM0IEwxMTAuNjggMzAuMTAgTDExMS4wNCAyOS44NiBMMTExLjM5IDI5LjYyIEwxMTEuNzUgMjkuMzgiLz48cGF0aCBkPSJNNDEuODggNjIuMjcgTDQxLjgyIDYyLjg0IEw0MS43OCA2My40MiBMNDEuNzQgNjQuMDEgTDQxLjcyIDY0LjYwIEw0MS43MiA2NS4xOSBMNDEuNzIgNjUuODUgTDQxLjczIDY2LjUwIEw0MS43NiA2Ny4xNiBMNDEuNzkgNjcuODEgTDQxLjgzIDY4LjQ1IEw0MS44OCA2OS4xMCBMNDEuOTMgNjkuNzQgTDQyLjAwIDcwLjM4IEw0Mi4wNyA3MS4wMiBMNDIuMTYgNzEuNjYgTDQyLjI1IDcyLjI5IEw0Mi4zNSA3Mi45MiBMNDIuNDYgNzMuNTQgTDQyLjU4IDc0LjE2IEw0Mi43MCA3NC43OCBMNDIuODQgNzUuMzkgTDQyLjk4IDc2LjAwIEw0My4xMyA3Ni42MSBMNDMuMjkgNzcuMjEgTDQzLjQ2IDc3LjgwIEw0My42MyA3OC4zOSBMNDMuODIgNzguOTggTDQ0LjAxIDc5LjU2IEw0NC4yMSA4MC4xMyBMNDQuNDIgODAuNzAgTDQ0LjYzIDgxLjI3IEw0NC44NiA4MS44MyBMNDUuMDkgODIuMzggTDQ1LjMzIDgyLjkyIEw0NS41OCA4My40NiBMNDUuODMgODQuMDAgTDQ2LjEwIDg0LjUyIEw0Ni4zNyA4NS4wNCBMNDYuNjUgODUuNTUgTDQ2LjkzIDg2LjA2IEw0Ny4yMyA4Ni41NiBMNDcuNTMgODcuMDUgTDQ3Ljg0IDg3LjUzIEw0OC4xNiA4OC4wMSIvPjxwYXRoIGQ9Ik02Ny43NiA3Ni40OCBMNjguMzYgNzYuNDcgTDY4Ljk0IDc2LjQ3IEw2OS41MyA3Ni40NiBMNzAuMTIgNzYuNDUgTDcwLjcwIDc2LjQzIEw3MS4yOSA3Ni40MSBMNzEuODcgNzYuMzkgTDcyLjQ1IDc2LjM2IEw3My4wMyA3Ni4zMyBMNzMuNjAgNzYuMjkgTDc0LjE3IDc2LjI1IEw3NC43NCA3Ni4yMCBMNzUuMzEgNzYuMTUgTDc1Ljg3IDc2LjEwIEw3Ni40MyA3Ni4wNCBMNzYuOTkgNzUuOTggTDc3LjU0IDc1LjkxIEw3OC4xMCA3NS44NCBMNzguNjQgNzUuNzYgTDc5LjE5IDc1LjY4IEw3OS43MyA3NS41OSBMODAuMjYgNzUuNTAgTDgwLjgwIDc1LjQxIEw4MS4zMiA3NS4zMCBMODEuODUgNzUuMjAgTDgyLjM3IDc1LjA5IEw4Mi44OCA3NC45NyBMODMuMzkgNzQuODUgTDgzLjkwIDc0LjcyIEw4NC40MCA3NC41OCBMODQuODkgNzQuNDUgTDg1LjM4IDc0LjMwIEw4NS44NiA3NC4xNSBMODYuMzQgNzMuOTkgTDg2LjgyIDczLjgzIEw4Ny4yOCA3My42NyBMODcuNzUgNzMuNDkgTDg4LjIwIDczLjMxIEw4OC42NSA3My4xMyBMODkuMTAgNzIuOTMgTDg5LjUzIDcyLjc0IEw4OS45NiA3Mi41MyBMOTAuMzkgNzIuMzIgTDkwLjgwIDcyLjExIi8+PHBhdGggZD0iTTg3LjU4IDQ5LjU4IEw4Ny44OCA0OS4yOCBMODguMTEgNDkuMDQgTDg4LjM2IDQ4LjgwIEw4OC42MCA0OC41NiBMODguODQgNDguMzIgTDg5LjA5IDQ4LjA3IEw4OS4zMyA0Ny44MyBMODkuNTggNDcuNTkgTDg5LjgzIDQ3LjM0IEw5MC4wOCA0Ny4xMCBMOTAuMzQgNDYuODYgTDkwLjU5IDQ2LjYxIEw5MC44NSA0Ni4zNiBMOTEuMTAgNDYuMTIgTDkxLjM2IDQ1Ljg3IEw5MS42MiA0NS42MiBMOTEuODkgNDUuMzcgTDkyLjE1IDQ1LjEzIEw5Mi40MSA0NC44OCBMOTIuNjggNDQuNjMgTDkyLjk1IDQ0LjM4IEw5My4yMiA0NC4xMyBMOTMuNDkgNDMuODggTDkzLjc2IDQzLjYzIEw5NC4wMyA0My4zOCBMOTQuMzEgNDMuMTIgTDk0LjU5IDQyLjg3IEw5NC44NyA0Mi42MiBMOTUuMTQgNDIuMzcgTDk1LjQzIDQyLjEyIEw5NS43MSA0MS44NiBMOTUuOTkgNDEuNjEgTDk2LjI4IDQxLjM2IEw5Ni41NyA0MS4xMCBMOTYuODUgNDAuODUgTDk3LjE1IDQwLjYwIEw5Ny40NCA0MC4zNCBMOTcuNzMgNDAuMDkgTDk4LjAyIDM5Ljg0IEw5OC4zMiAzOS41OCBMOTguNjIgMzkuMzMgTDk4LjkyIDM5LjA4IEw5OS4yMiAzOC44MiBMOTkuNTIgMzguNTciLz48L2c+PC9nPjwvc3ZnPg==">
+<style>
+/* =========================================================
+   Cloto · solo hilos
+   ========================================================= */
+:root {
+  --accent:#93b5ea; --accent2:#b9abe6;
+  --ui:-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI Variable Text', 'Segoe UI', system-ui, Roboto, 'Helvetica Neue', sans-serif;
+}
+body[data-theme=light] {
+  --bg:#f4f4f6; --text:#1d1d1f; --muted:#8a8a90; --hover:rgba(0,0,0,.045);
+  --edge:color-mix(in srgb, #3c3c50 30%, #f4f4f6);
+  --aura:.36;
+  --glass:rgba(255,255,255,.7); --line:rgba(0,0,0,.06); --hi:rgba(255,255,255,.8);
+  --shadow:0 1px 3px rgba(40,40,70,.05), 0 12px 36px rgba(40,40,70,.10);
+}
+body[data-theme=dark] {
+  --bg:#17181b; --text:#ececef; --muted:#85868e; --hover:rgba(255,255,255,.045);
+  --edge:color-mix(in srgb, #ffffff 24%, #17181b);
+  --aura:.24;
+  --glass:rgba(46,47,52,.64); --line:rgba(255,255,255,.07); --hi:rgba(255,255,255,.06);
+  --shadow:0 1px 3px rgba(0,0,0,.3), 0 14px 40px rgba(0,0,0,.4);
+}
+
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+html, body { width:100%; height:100%; overflow:hidden; }
+body {
+  background:var(--bg); color:var(--text);
+  font:13px/1.45 var(--ui); -webkit-font-smoothing:antialiased;
+  -webkit-user-select:none; user-select:none; transition:background .3s, color .3s;
+}
+
+/* ---------- fondo etéreo ---------- */
+#aura { position:fixed; inset:-10vmax; overflow:hidden; pointer-events:none; opacity:var(--aura); transition:opacity .6s; }
+#aura i { position:absolute; border-radius:50%; will-change:transform, opacity;
+  background:radial-gradient(closest-side, var(--c) 0%,
+    color-mix(in srgb, var(--c) 78%, transparent) 18%, color-mix(in srgb, var(--c) 50%, transparent) 38%,
+    color-mix(in srgb, var(--c) 24%, transparent) 58%, color-mix(in srgb, var(--c) 8%, transparent) 78%, transparent 100%); }
+#aura i:nth-child(1) { width:70vmax; height:70vmax; left:-20vmax; top:-25vmax; --c:var(--accent);  animation:d1 70s ease-in-out infinite alternate, pulse 23s ease-in-out infinite alternate; }
+#aura i:nth-child(2) { width:65vmax; height:65vmax; right:-22vmax; bottom:-28vmax; --c:var(--accent2); animation:d2 83s ease-in-out infinite alternate, pulse 29s ease-in-out -9s infinite alternate; }
+#aura i:nth-child(3) { width:50vmax; height:50vmax; left:35%; top:25%; --c:color-mix(in srgb, var(--accent) 50%, var(--accent2)); animation:d3 97s ease-in-out infinite alternate, pulse 31s ease-in-out -15s infinite alternate; }
+#aura i:nth-child(4) { width:45vmax; height:45vmax; right:5%; top:-15vmax; --c:var(--accent2); animation:d4 76s ease-in-out infinite alternate, pulse 37s ease-in-out -4s infinite alternate; }
+#aura i:nth-child(5) { width:48vmax; height:48vmax; left:-10vmax; bottom:-20vmax; --c:var(--accent);  animation:d5 89s ease-in-out infinite alternate, pulse 27s ease-in-out -20s infinite alternate; }
+@keyframes d1 { 50% { transform:translate(22vmax,14vmax) scale(1.15); } 100% { transform:translate(8vmax,30vmax) scale(.9); } }
+@keyframes d2 { 50% { transform:translate(-25vmax,-8vmax) scale(.85); } 100% { transform:translate(-10vmax,-26vmax) scale(1.1); } }
+@keyframes d3 { 50% { transform:translate(-26vmax,12vmax) scale(1.3); } 100% { transform:translate(18vmax,-14vmax) scale(.8); } }
+@keyframes d4 { 50% { transform:translate(-30vmax,24vmax) scale(1.2); } 100% { transform:translate(-8vmax,40vmax) scale(.9); } }
+@keyframes d5 { 50% { transform:translate(30vmax,-18vmax) scale(.9); } 100% { transform:translate(45vmax,-4vmax) scale(1.2); } }
+@keyframes pulse { from { opacity:.45; } to { opacity:1; } }
+@media (prefers-reduced-motion: reduce) { #aura i { animation:none; } }
+
+/* ---------- lienzo ---------- */
+#stage { position:fixed; inset:0; touch-action:none; }
+body.panning #stage { cursor:grabbing; }
+body.grabbing, body.grabbing * { cursor:grabbing !important; }
+body.pulling #stage, body.pulling .node, body.pulling .elab, body.pulling .edge .hit { cursor:crosshair; }
+#world { position:absolute; left:0; top:0; transform-origin:0 0; }
+#edges { position:absolute; left:0; top:0; width:1px; height:1px; overflow:visible; pointer-events:none; }
+
+/* hilos */
+.edge { --ec:var(--edge); }
+.edge .hit  { fill:none; stroke:transparent; stroke-width:16; pointer-events:stroke; cursor:grab; }
+.edge .line { fill:none; stroke:var(--ec); stroke-width:var(--sw, 1.3); stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:var(--da, none); }
+.edge.hov .line { stroke-width:calc(var(--sw, 1.3) + .5px); }
+.edge .halo { fill:none; stroke:var(--accent); stroke-opacity:.38; stroke-width:7; stroke-linecap:round; stroke-linejoin:round; pointer-events:none; }
+.debris { fill:none; stroke-width:1.3; stroke-linecap:round; pointer-events:none; }
+
+/* ---------- nodos ---------- */
+.node {
+  position:absolute; min-width:40px; width:max-content; padding:8px 14px; border-radius:9px;
+  font:14px/1.45 var(--ui); transition:background .25s, box-shadow .25s;
+}
+.node.wt { min-width:0; padding:1px 7px; border-radius:7px; font:11px/1.5 var(--ui); letter-spacing:.01em; color:var(--muted); background:var(--bg); text-align:center; }
+.node.wt.sel, .node.wt.editing { color:var(--text); }
+.node.wt .t { min-height:0; min-width:2ch; }
+.node .t { position:relative; z-index:1; white-space:pre; outline:none; min-height:1.45em; min-width:1ch; }
+.node.editing { cursor:text; }
+.node.editing .t { -webkit-user-select:text; user-select:text; cursor:text; caret-color:var(--accent); }
+.node::before { content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; border:1.3px solid transparent; transition:border-color .25s; }
+.node[data-fr="solid"]::before { border-color:var(--nc, var(--edge)); }
+.node[data-fr="dash"]::before { border:1.3px dashed var(--nc, var(--edge)); }
+.node[data-col] { background:color-mix(in srgb, var(--nc) 13%, transparent); }
+.node:hover { background:var(--hover); }
+.node.sel, .node.editing { background:color-mix(in srgb, var(--accent) 13%, transparent); }
+.node.src { animation:breathe 1.6s ease-in-out infinite; }
+@keyframes breathe { 50% { background:color-mix(in srgb, var(--accent) 22%, transparent); } }
+.node.target { background:color-mix(in srgb, var(--accent) 16%, transparent); box-shadow:0 0 0 1.5px color-mix(in srgb, var(--accent) 60%, transparent); }
+
+/* etiquetas de hilo */
+.elab { position:absolute; transform:translate(-50%,-50%); z-index:1; padding:1px 7px; border-radius:7px; min-width:2ch; text-align:center;
+  font:11px/1.5 var(--ui); letter-spacing:.01em; color:var(--muted); white-space:pre; pointer-events:auto; outline:none;
+  background:var(--bg); transition:color .2s, background .2s; }                 /* opaca: el hilo nunca se ve a través */
+.elab.sel { color:var(--text); }
+.elab.src, .elab.target { box-shadow:0 0 0 1.5px color-mix(in srgb, var(--accent) 60%, transparent); }
+.elab.editing { pointer-events:auto; cursor:text; color:var(--text); -webkit-user-select:text; user-select:text; caret-color:var(--accent);
+  background:color-mix(in srgb, var(--accent) 14%, var(--bg)); }
+
+/* buscador: atenúa lo que no coincide */
+.finding .node:not(.fm) { opacity:.25; }
+.finding .elab:not(.fm) { color:color-mix(in srgb, var(--muted) 30%, transparent); }   /* se atenúa el texto, no la caja: sigue tapando el hilo */
+.finding .node, .finding .elab { transition:opacity .2s, background .25s, box-shadow .25s; }
+.node.fc { background:color-mix(in srgb, var(--accent) 22%, transparent); box-shadow:0 0 0 1.5px color-mix(in srgb, var(--accent) 70%, transparent); }
+#find, #pbar, #kbar { position:fixed; top:14px; left:50%; z-index:58; display:flex; align-items:center; gap:10px; padding:7px 14px; border-radius:14px;
+  opacity:0; pointer-events:none; transform:translate(-50%,-6px) scale(.98); transition:opacity .15s, transform .15s cubic-bezier(.2,.9,.3,1.2); }
+#find.open, #pbar.open, #kbar.open { opacity:1; pointer-events:auto; transform:translate(-50%,0); }
+#find input, #pbar input, #kbar input { width:min(240px, 52vw); border:0; outline:0; background:none; color:var(--text); font:13px var(--ui);
+  -webkit-user-select:text; user-select:text; caret-color:var(--accent); }
+#find input::placeholder, #pbar input::placeholder, #kbar input::placeholder { color:var(--muted); }
+#kbar input { width:min(330px, 70vw); }
+#kbar .kl { display:grid; color:var(--muted); }
+#kbar.bad { animation:shake .32s; }
+@keyframes shake { 20%, 60% { transform:translate(calc(-50% - 6px), 0); } 40%, 80% { transform:translate(calc(-50% + 6px), 0); } }
+#find .cnt { font-size:11px; color:var(--muted); min-width:3ch; text-align:right; font-variant-numeric:tabular-nums; }
+
+/* menú circular (clic derecho en un hilo) */
+#ring { position:fixed; z-index:60; width:0; height:0; display:none; }
+#ring.open { display:block; }
+#ring .bg { position:absolute; left:-98px; top:-98px; width:196px; height:196px; border-radius:50%; animation:ringbg .16s ease-out;
+  background:var(--glass); border:1px solid var(--line); box-shadow:inset 0 1px 0 var(--hi), var(--shadow);
+  -webkit-backdrop-filter:blur(24px) saturate(1.7); backdrop-filter:blur(24px) saturate(1.7); }
+#ring .it { position:absolute; border-radius:50%; cursor:pointer; display:grid; place-items:center; animation:ringpop .18s cubic-bezier(.2,.9,.3,1.3) both;
+  transition:transform .1s, box-shadow .15s, background .15s, color .15s; }
+#ring .it:hover { transform:scale(1.14); }
+#ring .it.st { color:var(--muted); background:var(--hover); }
+#ring .it.st:hover, #ring .it.st.on { color:var(--text); }
+#ring .it.c { box-shadow:inset 0 0 0 1px var(--line); }
+#ring .it.on { box-shadow:inset 0 0 0 1px var(--line), 0 0 0 2.5px var(--glass), 0 0 0 4px var(--muted); }
+#ring .it.pick { background:conic-gradient(#e58c8f, #e6ac6a, #7dbf91, #7aa7e6, #a993e3, #df93bf, #e58c8f); box-shadow:inset 0 0 0 1px var(--line); overflow:hidden; }
+#ring .it.pick input { position:absolute; inset:-4px; width:30px; height:30px; opacity:0; cursor:pointer; border:0; padding:0; }
+#ring .ctr { position:absolute; left:-46px; top:-10px; width:92px; text-align:center; font:500 11px/20px var(--ui); color:var(--muted); pointer-events:none; }
+#ring .it.none { background:linear-gradient(135deg, transparent 45%, var(--muted) 45%, var(--muted) 55%, transparent 55%); }
+@keyframes ringpop { from { transform:scale(.3); opacity:0; } }
+@keyframes ringbg { from { transform:scale(.6); opacity:0; } }
+
+/* flechas, islas */
+.edge .knot { fill:var(--ec); pointer-events:none; }
+#isl { position:absolute; left:0; top:0; width:1px; height:1px; overflow:visible; pointer-events:none; }
+.ilab { position:absolute; z-index:1; padding:2px 8px; border-radius:7px; min-width:3ch; font:11px/1.5 var(--ui); letter-spacing:.05em; white-space:pre; outline:none; cursor:grab;
+  color:color-mix(in srgb, var(--nc, var(--muted)) 75%, var(--text)); transition:background .2s; }
+.ilab:empty::before { content:'isla'; opacity:.45; }
+.ilab:hover { background:var(--hover); }
+.ilab.editing { cursor:text; -webkit-user-select:text; user-select:text; caret-color:var(--accent); background:color-mix(in srgb, var(--accent) 14%, var(--bg)); }
+
+/* ayuda: el único botón */
+#helpbtn { position:fixed; left:14px; bottom:14px; z-index:57; width:26px; height:26px; border-radius:50%; border:0; background:none; color:var(--muted);
+  font:500 13px var(--ui); cursor:pointer; opacity:.4; transition:opacity .2s, background .2s, color .2s; }
+#helpbtn:hover, #helpbtn.on { opacity:1; color:var(--text); background:var(--glass); }
+#help { position:fixed; left:14px; bottom:82px; z-index:56; width:min(350px, calc(100vw - 28px)); max-height:calc(100vh - 80px); overflow:auto; padding:6px 16px 12px; border-radius:18px;
+  opacity:0; pointer-events:none; transform:translateY(6px) scale(.98); transform-origin:0 100%; transition:opacity .15s, transform .15s cubic-bezier(.2,.9,.3,1.2); }
+#help.open { opacity:1; pointer-events:auto; transform:none; }
+#help .hl { font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:12px 0 4px; }
+#help .hr { display:flex; justify-content:space-between; gap:16px; padding:2px 0; font-size:12px; }
+#help .hr kbd { font:11px var(--ui); color:var(--muted); text-align:right; }
+
+/* multimedia */
+.node.media { display:flex; flex-direction:column; gap:6px; padding:8px; }
+.node.media .mb { order:-1; position:relative; border-radius:6px; overflow:hidden; line-height:0; pointer-events:none; }
+.node.media .mb img, .node.media .mb video { display:block; max-width:none; height:auto; }
+.node.media .t { padding:0 6px 2px; font-size:12px; color:var(--muted); }
+.node.media:not(.editing) .t:empty { display:none; }
+.node.m-url { cursor:pointer; }
+.node.m-url .t { white-space:pre-wrap; max-width:240px; font-size:13px; color:var(--text); }
+.node.m-url .mb img { width:240px; }
+.node.media .mf { order:2; padding:0 6px 2px; font-size:11px; color:var(--muted); letter-spacing:.01em; }
+.node.media .mb.fc { display:flex; align-items:center; gap:10px; padding:4px 6px; line-height:1.45; overflow:visible; }
+.fc b { font:600 10px var(--ui); letter-spacing:.06em; padding:3px 6px; border-radius:6px; background:var(--hover); color:var(--muted); }
+.fc span { font-size:13px; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text); }
+.mb.missing { white-space:pre-line; width:160px; height:96px; display:grid; place-items:center; border:1.3px dashed var(--edge); border-radius:6px; font-size:11px; line-height:1.4; text-align:center; padding:6px; color:var(--muted); }
+.pl { position:absolute; left:50%; top:50%; width:34px; height:34px; margin:-17px 0 0 -17px; border-radius:50%; background:rgba(20,20,24,.34); }
+.pl::after { content:''; position:absolute; left:14px; top:10px; border-left:10px solid #fff; border-top:7px solid transparent; border-bottom:7px solid transparent; }
+.node.playing .pl { display:none; }
+#lb { position:fixed; inset:0; z-index:70; display:none; place-items:center; background:rgba(10,10,14,.5); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); cursor:zoom-out; }
+#lb.open { display:grid; }
+#lb img, #lb .fr { display:none; }
+#lb.is-img img { display:block; max-width:90vw; max-height:90vh; border-radius:10px; box-shadow:var(--shadow); }
+#lb.is-fr .fr { display:flex; flex-direction:column; align-items:center; gap:10px; }
+#lb iframe { width:min(1100px, 92vw); height:min(80vh, 780px); border:0; border-radius:12px; background:#fff; box-shadow:var(--shadow); }
+#lb .go { font:11px var(--ui); letter-spacing:.01em; color:rgba(255,255,255,.7); text-decoration:none; }
+#lb .go:hover { color:#fff; }
+.mb.wait { width:240px; height:135px; background:var(--hover); animation:shim 1.2s ease-in-out infinite alternate; }
+@keyframes shim { from { opacity:.45; } to { opacity:1; } }
+.node.playing .fc b { background:color-mix(in srgb, var(--accent) 30%, transparent); color:var(--text); }
+#dlbtn { position:fixed; left:14px; bottom:44px; z-index:57; width:26px; height:26px; border-radius:50%; border:0; background:none; color:var(--muted);
+  display:grid; place-items:center; cursor:pointer; opacity:.4; transition:opacity .2s, background .2s, color .2s; }
+#dlbtn:hover { opacity:1; color:var(--text); background:var(--glass); }
+
+#hintweb { display:none; } body.web #hintweb { display:inline; }
+#note { position:fixed; left:50%; bottom:18px; z-index:59; padding:6px 14px; border-radius:12px; font-size:12px; color:var(--text); white-space:nowrap;
+  opacity:0; pointer-events:none; transform:translate(-50%,6px); transition:opacity .2s, transform .2s; }
+#note.on { opacity:1; transform:translate(-50%,0); pointer-events:auto; }
+#note.link { cursor:pointer; }
+
+#marquee { position:fixed; display:none; z-index:40; pointer-events:none; border-radius:4px;
+  border:1px solid color-mix(in srgb, var(--accent) 70%, transparent); background:color-mix(in srgb, var(--accent) 10%, transparent); }
+
+/* ---------- pista (solo con el lienzo vacío) ---------- */
+#hint { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); pointer-events:none; text-align:center;
+  color:var(--muted); font-size:12px; line-height:2.1; letter-spacing:.01em; opacity:0; transition:opacity .6s; }
+#hint.on { opacity:.8; }
+#hint b { font-weight:500; color:var(--text); }
+
+/* ---------- el único menú: colores de hilo + archivo ---------- */
+.glass {
+  background:var(--glass); border:1px solid var(--line); box-shadow:inset 0 1px 0 var(--hi), var(--shadow);
+  -webkit-backdrop-filter:blur(24px) saturate(1.7); backdrop-filter:blur(24px) saturate(1.7);
+}
+</style>
+</head>
+<body data-theme="light">
+
+<div id="aura"><i></i><i></i><i></i><i></i><i></i></div>
+<div id="stage">
+  <div id="world"><svg id="isl"><g id="islg"></g></svg><svg id="edges"><g id="edgeg"></g></svg></div>
+</div>
+<div id="marquee"></div>
+<div id="hint">
+  <b>doble clic</b> crea una caja · <b>mantén y arrastra</b> una caja para sacar un hilo<br>
+  <b>clic derecho</b> abre las opciones · <b>?</b> controles
+  <span id="hintweb"><br>versión de prueba · descarga la app con <b>⤓</b> para guardar tus proyectos en carpetas</span>
+</div>
+<div id="ring"></div>
+<button id="dlbtn" title="Descargar Cloto"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5v8M4.8 7.5L8 10.7l3.2-3.2M3 13h10"/></svg></button>
+<button id="helpbtn" title="Controles">?</button>
+<div id="pbar" class="glass"><input id="pname" type="text" placeholder="Nombre del proyecto · Enter" autocomplete="off" spellcheck="false"></div>
+<div id="note" class="glass"></div>
+<div id="kbar" class="glass"><span class="kl"></span><input id="kpass" type="password" autocomplete="off" spellcheck="false"></div>
+<div id="lb"><img alt=""><div class="fr"><iframe allow="autoplay; fullscreen; encrypted-media; picture-in-picture; clipboard-write" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe><a class="go" target="_blank" rel="noopener"></a></div></div>
+<div id="help" class="glass"></div>
+<div id="find" class="glass"><input id="findq" type="text" placeholder="Buscar en el mapa" autocomplete="off" spellcheck="false"><span class="cnt" id="findn"></span></div>
+<input id="file" type="file" accept=".cloto,.laquesis,.atropos,.json" hidden>
+
+<script>
+(() => {
+'use strict';
+const DESK = window.CLOTO_DESKTOP && window.CLOTO_DESKTOP.token ? window.CLOTO_DESKTOP : null;   // abierto por la app de escritorio
+{ const t = document.getElementById('cloto-desk'); if (t) t.remove(); }
+const SRC = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;     // el propio Cloto, intacto, para «Descargar Cloto»
+const REPO = /^https?:/.test('__CLOTO_REPO__') ? '__CLOTO_REPO__' : '';     // lo rellena GitHub al publicar
+const WEB = !DESK && /^https?:$/.test(location.protocol) && !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);   // versión de prueba en línea
+if (WEB) document.body.classList.add('web');
+if (DESK && location.search) history.replaceState(null, '', location.pathname);   // la llave de un solo uso no queda en la dirección
+if (DESK) {                                                 // en la app, los enlaces se abren en tu navegador
+  const wo = window.open.bind(window);
+  window.open = (u, ...r) => { if (/^https?:/i.test(u) && !String(u).startsWith(location.origin)) { deskPost('open-url', { url: String(u) }); return null; } return wo(u, ...r); };
+}
+
+/* =========================================================
+   Constantes
+   ========================================================= */
+const $ = id => document.getElementById(id);
+const stage = $('stage'), world = $('world'), edgeg = $('edgeg');
+const marqueeEl = $('marquee'), hintEl = $('hint'), fileInput = $('file'), findEl = $('find'), findQ = $('findq'), findN = $('findn');
+
+// tintas de hilo: legibles en claro y en oscuro
+const INKS = [null, '#e58c8f', '#e6ac6a', '#7dbf91', '#7aa7e6', '#a993e3', '#df93bf'];
+const hex = c => typeof c === 'string' && /^#[0-9a-f]{3,8}$/i.test(c) ? c.toLowerCase() : null;
+const safeId = s => typeof s === 'string' && /^[\w-]{1,40}$/.test(s) ? s : '';
+const KINDS = ['cloto', 'laquesis', 'atropos'];
+const FRS = ['none', 'solid', 'dash'];   // marcos de caja
+const STS = ['solid', 'dash', 'dot'], STDA = { solid: '', dash: '7 6', dot: '.1 5.5' };   // tipos de trazo
+const MOD = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent) ? '⌘' : 'Ctrl+';
+const HOLD_MS = 260, DBL_MS = 340;
+
+const ls = {
+  get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} }
+};
+const uid = p => p + Math.random().toString(36).slice(2, 8);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const clamp01 = v => Math.max(0, Math.min(1, v));
+
+/* =========================================================
+   Preferencias: tema y tinta para hilos nuevos
+   ========================================================= */
+let prefs = { bg: matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light', ink: null, custom: null, st: null, snd: true };
+try {
+  const p = JSON.parse(ls.get('cloto:prefs') || 'null');
+  if (p) { if (p.bg === 'dark' || p.bg === 'light') prefs.bg = p.bg; prefs.ink = hex(p.ink); prefs.custom = hex(p.custom); prefs.st = p.st === 'dash' || p.st === 'dot' ? p.st : null; prefs.snd = p.snd !== false; }
+} catch (e) {}
+function applyPrefs() { document.body.dataset.theme = prefs.bg; ls.set('cloto:prefs', JSON.stringify(prefs)); }
+
+/* =========================================================
+   Sonido: todo sintetizado (sin archivos), muy suave. M lo silencia.
+   pop al crear · tictac al escribir · tock al amarrar · puff al soltar un hilo · cuerda tensa al agitar
+   ========================================================= */
+const snd = (() => {
+  let ctx = null, out = null, noise = null, tv = null; const last = {};
+  const gate = (k, ms) => { const n = performance.now(); if (n - (last[k] || 0) < ms) return false; last[k] = n; return true; };
+  function ensure() {
+    if (prefs.snd === false) return null;
+    if (!ctx) {
+      try { ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return null; }
+      const comp = ctx.createDynamicsCompressor(); out = ctx.createGain(); out.gain.value = .55; out.connect(comp); comp.connect(ctx.destination);
+      noise = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+      const d = noise.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    }
+    if (ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  }
+  const env = (g, t, v, a, d) => { g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(v, t + a); g.gain.exponentialRampToValueAtTime(.0001, t + a + d); };
+  function tone(type, f0, f1, dur, v, delay = 0) {
+    const c = ensure(); if (!c) return;
+    const t = c.currentTime + delay, o = c.createOscillator(), g = c.createGain();
+    o.type = type; o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    env(g, t, v, .006, dur); o.connect(g); g.connect(out); o.start(t); o.stop(t + dur + .05);
+  }
+  function hiss(f0, f1, dur, v, q = 1, type = 'bandpass', delay = 0) {
+    const c = ensure(); if (!c) return;
+    const t = c.currentTime + delay, s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
+    s.buffer = noise; s.loop = true; f.type = type; f.Q.value = q;
+    f.frequency.setValueAtTime(f0, t); f.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    env(g, t, v, .004, dur); s.connect(f); f.connect(g); g.connect(out); s.start(t, Math.random()); s.stop(t + dur + .05);
+  }
+  return {
+    wake() { ensure(); },
+    pop() { if (!gate('pop', 45)) return; tone('sine', 640, 230, .11, .32); tone('sine', 1280, 460, .05, .06); },
+    key(k) {                                                    // tecla suave, con un poco de variación para que no suene a máquina
+      if (!gate('key', 18)) return;
+      const r = .85 + Math.random() * .3;
+      if (k === 'Backspace' || k === 'Delete') { hiss(1800 * r, 900, .03, .06, 1.2); tone('sine', 120, 90, .04, .05); }
+      else if (k === ' ' || k === 'Enter' || k === 'Tab') { hiss(1500 * r, 700, .04, .09, 1.2); tone('sine', 110 * r, 70, .07, .1); }
+      else { hiss(3200 * r, 1600 * r, .022, .11, 1.4); tone('sine', 150 * r, 95, .045, .09); }
+    },
+    tock() { if (!gate('tock', 60)) return; tone('sine', 210, 120, .09, .3); hiss(1400, 700, .03, .08, 1.5); },
+    puff() { if (!gate('puff', 70)) return; hiss(2600, 260, .26, .26, .8, 'lowpass'); tone('sine', 110, 55, .16, .12); },
+    chord() { tone('sine', 523, 523, .22, .14); tone('sine', 659, 659, .26, .12, .07); },
+    tick() { tone('sine', 880, 700, .04, .07); },
+    pluck(len) {                                                // rasgar la cuerda: más larga, más grave
+      const f = Math.max(190, Math.min(480, 500 - len * .35));
+      tone('triangle', f, f * .985, .38, .1); tone('sine', f * 2, f * 1.98, .2, .03);
+    },
+    cross() { if (!gate('cross', 90)) return; hiss(4200, 2400, .06, .07, 1.6); tone('sine', 760, 520, .06, .04); },
+    tension(level) {                                           // cuerda tensa: el tono sube y vibra más con la tensión o la agitación
+      if (!ctx) return;
+      const t = ctx.currentTime, l = prefs.snd === false ? 0 : Math.max(0, Math.min(1, level));
+      if (!tv) {
+        if (l < .04) return;
+        const o = ctx.createOscillator(), o2 = ctx.createOscillator(), lfo = ctx.createOscillator(), lg = ctx.createGain(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+        o.type = 'triangle'; o2.type = 'sine'; lfo.frequency.value = 6.5; f.type = 'lowpass'; f.frequency.value = 1100; g.gain.value = 0;
+        lfo.connect(lg); lg.connect(o.frequency); lg.connect(o2.frequency);
+        o.connect(f); o2.connect(f); f.connect(g); g.connect(out);
+        o.start(); o2.start(); lfo.start();
+        tv = { o, o2, lg, g };
+      }
+      tv.g.gain.setTargetAtTime(l < .04 ? 0 : .09 * Math.pow(l, 1.4), t, .06);
+      tv.o.frequency.setTargetAtTime(150 + l * 360, t, .08);
+      tv.o2.frequency.setTargetAtTime((150 + l * 360) * 1.5, t, .08);
+      tv.lg.gain.setTargetAtTime(2 + l * 9, t, .1);
+    }
+  };
+})();
+let mv = { dx: 0, dy: 0, t: 0 }; const pluckAt = {};     // último movimiento del puntero (para rasgar hilos)
+
+/* =========================================================
+   Estado
+   ========================================================= */
+let nodes = [], nmap = new Map(), edges = [], els = new Map(), groups = [];
+let selected = new Set(), selEdges = new Set(), selIdx = new Map();
+let view = { x: 0, y: 0, k: 1 };
+let editing = null, labEdit = null, drag = null, hold = null, pull = null, grab = null, hoverEdge = null;
+let fileHandle = null, fileBase = 'hilo', kind = null;
+let lock = null, dirty = false, lockedStart = false;     // lock: { key, salt, it } si el proyecto tiene contraseña (la contraseña misma nunca se guarda)
+let last = { t: 0, x: 0, y: 0, key: '' }, mouse = { x: innerWidth / 2, y: innerHeight / 2 };
+let hist = [], hi = -1, raf = 0, pendingCommit = false;
+const node = id => nmap.get(id);
+const edgeById = id => edges.find(e => e.id === id);
+const lels = new Map(), gels = new Map(), groupById = id => groups.find(g => g.id === id), grpOf = nid => groups.find(g => g.nodes.includes(nid));                              // etiquetas de hilo (elementos)
+
+/* =========================================================
+   Vista
+   ========================================================= */
+function applyView() { world.style.transform = `translate(${view.x}px,${view.y}px) scale(${view.k})`; }
+const toWorld = (cx, cy) => ({ x: (cx - view.x) / view.k, y: (cy - view.y) / view.k });
+const clampK = k => Math.min(3, Math.max(.15, k));
+function animateTo(t) {
+  cancelAnimationFrame(raf);
+  const s = { ...view }, t0 = performance.now();
+  const step = now => {
+    const p = Math.min(1, (now - t0) / 260), e = 1 - Math.pow(1 - p, 3);
+    view = { x: s.x + (t.x - s.x) * e, y: s.y + (t.y - s.y) * e, k: s.k + (t.k - s.k) * e };
+    applyView();
+    if (p < 1) raf = requestAnimationFrame(step); else persistSoon();
+  };
+  raf = requestAnimationFrame(step);
+}
+function fit() {
+  if (!nodes.length) { animateTo({ x: innerWidth / 2, y: innerHeight / 2, k: 1 }); return; }
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  nodes.forEach(n => { const r = rect(n); x0 = Math.min(x0, r.x); y0 = Math.min(y0, r.y); x1 = Math.max(x1, r.x + r.w); y1 = Math.max(y1, r.y + r.h); });
+  const pad = 90, w = Math.max(1, x1 - x0), h = Math.max(1, y1 - y0);
+  const k = clampK(Math.min(1.4, (innerWidth - pad * 2) / w, (innerHeight - pad * 2) / h));
+  animateTo({ k, x: innerWidth / 2 - (x0 + w / 2) * k, y: innerHeight / 2 - (y0 + h / 2) * k });
+}
+
+/* =========================================================
+   Datos: exportar, guardar en el navegador, historial
+   ========================================================= */
+const exportNode = n => { const o = { id: n.id, x: Math.round(n.x), y: Math.round(n.y), text: n.text }; if (n.w) o.w = true; if (n.color) o.color = n.color; if (n.fr) o.frame = n.fr; if (n.media) o.media = exportMedia(n.media); return o; };
+const exportEdge = e => { const o = { id: e.id, from: e.from, to: e.to }; if (e.dir && e.dir !== 'fwd') o.dir = e.dir; if (e.c) o.color = e.c; if (e.len0) o.len = Math.round(e.len0); if (e.st) o.style = e.st; if (e.lab) o.label = e.lab; if (e.arrow) o.arrow = e.arrow; return o; };
+const exportGroup = g => { const o = { id: g.id, nodes: g.nodes.slice() }; if (g.label) o.label = g.label; if (g.color) o.color = g.color; return o; };
+const snapshot = () => JSON.stringify({ nodes: nodes.map(exportNode), edges: edges.map(exportEdge), groups: groups.map(exportGroup) });
+const fileData = () => ({
+  format: kind || 'cloto', version: 3,
+  nodes: nodes.map(exportNode), edges: edges.map(exportEdge), groups: groups.map(exportGroup),
+  view: { x: Math.round(view.x), y: Math.round(view.y), k: +view.k.toFixed(3) }
+});
+function persist() {                               // con contraseña, en el navegador no queda nada legible: solo el nombre del proyecto
+  ls.set('cloto:board', JSON.stringify(lock || lockedStart ? { locked: true, base: fileBase, kind } : { ...fileData(), kind, base: fileBase }));
+}
+let pt; const persistSoon = () => { clearTimeout(pt); pt = setTimeout(persist, 400); };
+
+const isEnd = id => nmap.has(id) || !!(edgeById(id) && edgeById(id).lab);   // un hilo puede terminar en una caja o en la etiqueta de otro hilo
+function pruneDangling(quiet) {                    // si desaparece una caja o una etiqueta, caen los hilos que colgaban de ella
+  let again = true;
+  while (again) {
+    again = false;
+    edges = edges.filter(e => {
+      if (isEnd(e.from) && isEnd(e.to)) return true;
+      again = true; selEdges.delete(e.id); selIdx.delete(e.id);
+      if (!quiet) dropRope(e, null);
+      return false;
+    });
+  }
+}
+function commit() {
+  pruneDangling();
+  const s = snapshot();
+  if (s === hist[hi]) return;
+  hist = hist.slice(0, hi + 1); hist.push(s);
+  if (hist.length > 200) hist.shift();
+  hi = hist.length - 1;
+  dirty = true; persist(); autoSaveSoon();
+}
+function ingest(d) {
+  const seen = new Set(), idMap = new Map(); nodes = []; nmap = new Map();
+  const mapId = x => idMap.has(String(x)) ? idMap.get(String(x)) : String(x);
+  (d.nodes || []).forEach(n => {
+    const raw = n.id == null ? '' : String(n.id);
+    let id = safeId(raw);                                    // ids de archivos ajenos: solo letras, números, - y _
+    if (!id || seen.has(id)) id = uid('n');
+    seen.add(id); if (raw) idMap.set(raw, id);
+    const o = { id, x: +n.x || 0, y: +n.y || 0, text: n.text == null ? '' : String(n.text).slice(0, 100000) };
+    const c = hex(n.color); if (c) o.color = c;
+    if (n.frame === 'solid' || n.frame === 'dash') o.fr = n.frame;
+    if (n.w === true) o.w = true;
+    const mm = n.w === true ? null : cleanMedia(n.media); if (mm) o.media = mm;
+    nodes.push(o); nmap.set(id, o);
+  });
+  edges = []; const pair = new Set(), ids = new Set();
+  const lbl = new Set((d.edges || []).filter(x => x && typeof x.label === 'string' && x.label.trim()).map(x => safeId(String(x.id))).filter(Boolean));
+  (d.edges || []).forEach(e => {
+    const from = mapId(e.from), to = mapId(e.to), k = from < to ? from + '|' + to : to + '|' + from;
+    if ((!nmap.has(from) && !lbl.has(from)) || (!nmap.has(to) && !lbl.has(to)) || from === to || pair.has(k)) return;
+    pair.add(k);
+    let id = safeId(e.id); if (!id || ids.has(id)) id = uid('e'); ids.add(id);
+    const ed = { id, from, to, dir: typeof e.dir === 'string' ? e.dir : 'fwd', c: hex(e.color), len0: +e.len > 0 ? +e.len : 0, len: 0 };
+    if (e.style === 'dash' || e.style === 'dot') ed.st = e.style;
+    if (e.arrow === 'to' || e.arrow === 'from' || e.arrow === 'both') ed.arrow = e.arrow;
+    if (typeof e.label === 'string' && e.label.trim()) ed.lab = e.label.trim().slice(0, 48);
+    edges.push(ed);
+  });
+  pruneDangling(true);
+  groups = []; const gseen = new Set();
+  (d.groups || []).forEach(g => {
+    let id = safeId(g.id); if (!id || gseen.has(id)) id = uid('g'); gseen.add(id);
+    const ns = [...new Set((Array.isArray(g.nodes) ? g.nodes : []).map(mapId).filter(x => nmap.has(x)))];
+    if (ns.length) groups.push({ id, nodes: ns, label: typeof g.label === 'string' ? g.label.slice(0, 60) : '', color: hex(g.color) });
+  });
+}
+function rebuild() {
+  els.forEach(el => { ro.unobserve(el); el.remove(); }); els.clear();
+  lels.forEach(el => el.remove()); lels.clear(); labEdit = null; gels.forEach(el => el.remove()); gels.clear(); gEdit = null; closeFind();
+  selected = new Set(); selEdges = new Set(); selIdx.clear(); editing = null;
+  nodes.forEach(createEl); kick(); updateHint();
+}
+function restore(s) { endPull(0, 0, true); grab = null; ingest(JSON.parse(s)); rebuild(); persist(); }
+const undo = () => { if (hi > 0) restore(hist[--hi]); };
+const redo = () => { if (hi < hist.length - 1) restore(hist[++hi]); };
+
+/* =========================================================
+   Nodos
+   ========================================================= */
+const plainOK = (() => { const d = document.createElement('div'); d.contentEditable = 'plaintext-only'; return d.contentEditable === 'plaintext-only'; })();
+const ro = new ResizeObserver(() => kick());
+
+function createEl(n) {
+  const el = document.createElement('div');
+  el.className = n.w ? 'node wt' : 'node'; el.dataset.id = n.id;
+  const t = document.createElement('div'); t.className = 't'; t.textContent = n.text;
+  el.appendChild(t);
+  t.addEventListener('blur', () => { if (editing === n.id) finishEdit(); });
+  t.addEventListener('paste', e => { e.preventDefault(); document.execCommand('insertText', false, e.clipboardData.getData('text/plain')); });
+  place(n, el);
+  world.appendChild(el); els.set(n.id, el); ro.observe(el);
+  styleNode(n); refreshMedia(n);
+}
+function styleNode(n) {                                  // marco y color de la caja
+  const el = els.get(n.id); if (!el) return;
+  if (n.fr) el.dataset.fr = n.fr; else delete el.dataset.fr;
+  if (n.color) { el.dataset.col = '1'; el.style.setProperty('--nc', inkOf(n.color)); } else { delete el.dataset.col; el.style.removeProperty('--nc'); }
+}
+const place = (n, el) => { el.style.left = n.x + 'px'; el.style.top = n.y + 'px'; };
+function addNode(o) {
+  const n = { id: uid('n'), x: o.x, y: o.y, text: o.text || '' };
+  nodes.push(n); nmap.set(n.id, n); createEl(n); updateHint(); snd.pop();
+  return n;
+}
+function addNodeCentered(p) {                       // p en coordenadas del mundo
+  const n = addNode({ x: p.x, y: p.y }), el = els.get(n.id);
+  n.x = Math.round(p.x - el.offsetWidth / 2); n.y = Math.round(p.y - el.offsetHeight / 2); place(n, el);
+  return n;
+}
+/* Cada hilo une los elementos que toca, sean cajas o pesos (etiquetas). Si quitas uno, el hilo se rehace uniendo a los demás;
+   un peso puede quedar colgando de un hilo, o solo. */
+function weigh(e, side, born) {                      // la etiqueta del hilo se vuelve un peso suelto; side: el extremo del hilo que se va
+  const P = ropes.get(e.id), h = SEGS >> 1;
+  const mid = P ? { x: P[h].x, y: P[h].y } : (b => b ? { x: b.cx, y: b.cy } : { x: 0, y: 0 })(boxFor(e.from));
+  const n = { id: uid('n'), x: 0, y: 0, text: e.lab, w: true };
+  if (born) born.set(n.id, [e.from, e.to]);
+  nodes.push(n); nmap.set(n.id, n); createEl(n);
+  const el = els.get(n.id); n.x = Math.round(mid.x - el.offsetWidth / 2); n.y = Math.round(mid.y - el.offsetHeight / 2); place(n, el);
+  edges.forEach(x => { if (x !== e) { if (x.from === e.id) x.from = n.id; if (x.to === e.id) x.to = n.id; } });
+  delete e.lab;
+  if (side && P) {                                   // el hilo sigue entre el peso y el otro extremo, tal como estaba
+    ropes.set(e.id, resample(side === 'from' ? P.slice(h) : P.slice(0, h + 1)));
+    e[side] = n.id; e.len0 = e.len = Math.max(24, ropeLen(ropes.get(e.id)));
+  }
+  return n;
+}
+function unweigh(e) {                                // se quita la etiqueta de un hilo: lo que colgaba de ella se amarra al extremo más cercano
+  const att = edges.filter(x => x !== e && (x.from === e.id || x.to === e.id)); if (!att.length) return;
+  const P = ropes.get(e.id), m = P && P[SEGS >> 1], A = boxFor(e.from), B = boxFor(e.to);
+  const pick = m && A && B && Math.hypot(m.x - B.cx, m.y - B.cy) < Math.hypot(m.x - A.cx, m.y - A.cy) ? e.to : e.from;
+  att.forEach(x => {
+    const side = x.from === e.id ? 'from' : 'to', o = side === 'from' ? x.to : x.from;
+    if (o === pick || edges.some(y => y !== x && ((y.from === pick && y.to === o) || (y.from === o && y.to === pick)))) { edges = edges.filter(y => y !== x); selEdges.delete(x.id); }
+    else x[side] = pick;
+  });
+}
+function bridge(X, born) {                           // X se va: sus vecinos quedan unidos entre sí (en orden alrededor de X)
+  const n = node(X); if (!n || !els.has(X)) return;
+  const C = boxOf(n), ends = [];
+  edges.filter(e => e.from === X || e.to === X).forEach(e => {
+    const side = e.from === X ? 'from' : 'to', o = side === 'from' ? e.to : e.from;
+    if (e.lab) {                                     // el peso del hilo no se va con la caja: queda unido al otro extremo
+      if (o === X) return;
+      const w = weigh(e, side, born); ends.push({ id: w.id, e, keep: true }); return;
+    }
+    ends.push({ id: o, e, keep: false });
+  });
+  const seen = new Set(), ns = ends.filter(x => x.id !== X && !seen.has(x.id) && seen.add(x.id));
+  if (ns.length < 2) return;
+  const ang = x => { const b = boxFor(x.id); return b ? Math.atan2(b.cy - C.cy, b.cx - C.cx) : 0; };
+  ns.sort((a, b) => ang(a) - ang(b));
+  const t = ends[0].e;
+  for (let i = 0; i < ns.length - 1; i++) {
+    const a = ns[i].id, b = ns[i + 1].id, A = boxFor(a), B = boxFor(b);
+    if (a === b || !A || !B || edges.some(x => (x.from === a && x.to === b) || (x.from === b && x.to === a))) continue;
+    const len = Math.max(24, gapOf(A, B) * 1.04), ne = { id: uid('e'), from: a, to: b, dir: 'fwd', c: t.c, len0: len, len };
+    if (t.st) ne.st = t.st;
+    edges.push(ne);
+  }
+  const plain = new Set(ends.filter(x => !x.keep).map(x => x.e));
+  edges = edges.filter(e => !plain.has(e));          // los hilos sueltos se sustituyen por el que une a los vecinos
+}
+function removeNodes(ids, quiet, keep) {              // keep: el hilo se rehace con lo que queda (borrar), no cae
+  const s = new Set(ids), born = new Map();
+  if (keep && !quiet) ids.forEach(id => bridge(id, born));
+  edges = edges.filter(e => {
+    const a = s.has(e.from), b = s.has(e.to);
+    if (!a && !b) return true;
+    if (!quiet) dropRope(e, a && b ? null : a ? 'to' : 'from');   // el hilo cae colgando del nodo que queda
+    selEdges.delete(e.id);
+    return false;
+  });
+  born.forEach((ends, id) => { if (!edges.some(e => e.from === id || e.to === id) && ends.every(x => s.has(x))) s.add(id); });   // pesos que se quedaron sin nada porque borraste todo lo que unían
+  nodes = nodes.filter(n => !s.has(n.id));
+  groups.forEach(g => { g.nodes = g.nodes.filter(id => !s.has(id)); }); groups = groups.filter(g => g.nodes.length);
+  s.forEach(id => {
+    nmap.delete(id); selected.delete(id);
+    const el = els.get(id); if (el) { ro.unobserve(el); el.remove(); els.delete(id); }
+  });
+  if (!quiet) { pruneDangling(); snd.puff(); }
+  kick(); updateSel(); updateHint();
+}
+function delSelection() {
+  if (!selected.size && !selEdges.size) return;
+  edges = edges.filter(e => { if (!selEdges.has(e.id)) return true; if (e.lab && edges.some(x => x !== e && (x.from === e.id || x.to === e.id))) weigh(e, null); cutRope(e, selIdx.has(e.id) ? selIdx.get(e.id) : SEGS >> 1); return false; });
+  selEdges.clear(); selIdx.clear();
+  if (selected.size) removeNodes([...selected], false, true); else kick();
+  commit();
+}
+/* ⌫ sin editar: vacía el texto del nodo seleccionado y entra a editar (una caja sin texto no existe: si sales vacía, se va) */
+function clearContent() {
+  let changed = false;
+  selEdges.forEach(id => { const e = edgeById(id); if (e && e.lab) { unweigh(e); delete e.lab; changed = true; } });
+  if (changed) { kick(); commit(); }
+  if (selected.size === 1) { const id = [...selected][0], n = node(id); if (n) { els.get(id).firstChild.textContent = ''; startEdit(id); } }
+}
+function duplicate(ids) {
+  const map = new Map();
+  ids.forEach(id => { const n = node(id); if (n) { const m = addNode({ x: n.x + 32, y: n.y + 32, text: n.text }); if (n.color) m.color = n.color; if (n.fr) m.fr = n.fr; if (n.w) { m.w = true; els.get(m.id).classList.add('wt'); } if (n.media) m.media = { ...n.media }; styleNode(m); refreshMedia(m); map.set(id, m.id); } });
+  edges.slice().forEach(e => { if (map.has(e.from) && map.has(e.to)) edges.push({ ...e, id: uid('e'), from: map.get(e.from), to: map.get(e.to), len: 0, over: 0 }); });
+  kick(); setSel([...map.values()]); commit();
+}
+function link(a, b, save = true, P = null) {
+  if (a === b || !isEnd(a) || !isEnd(b) || !boxFor(a) || !boxFor(b)) return null;
+  if (edges.some(e => (e.from === a && e.to === b) || (e.from === b && e.to === a))) return null;
+  const len = Math.max(24, gapOf(boxFor(a), boxFor(b)) * 1.04);
+  const e = { id: uid('e'), from: a, to: b, dir: 'fwd', c: prefs.ink, len0: len, len };
+  if (prefs.st) e.st = prefs.st;
+  edges.push(e); snd.tock();
+  if (P && P.length > 1) ropes.set(e.id, resample(P));          // el hilo que venías jalando se queda tal cual
+  kick(); if (save) commit();
+  return e;
+}
+function addChild(pid) {
+  const p = node(pid); if (!p) return;
+  const r = rect(p), sib = edges.filter(e => e.from === pid).length;
+  const n = addNode({ x: r.x + r.w + 90, y: r.y + sib * (r.h + 18) });
+  link(pid, n.id, false); startEdit(n.id);
+}
+/* doble clic sobre un hilo: le hace un nudo (nodo nuevo en medio) */
+function splitEdge(id, at, tag) {                  // tag: el nudo es un peso (tag) en vez de una caja
+  const e = edgeById(id); if (!e) return;
+  const P = ropes.get(id);
+  let k = SEGS >> 1;
+  if (P) {
+    let best = Infinity;
+    for (let i = 2; i < SEGS - 1; i++) { const d = Math.hypot(P[i].x - at.x, P[i].y - at.y); if (d < best) { best = d; k = i; } }
+    at = { x: P[k].x, y: P[k].y };
+  }
+  let n;
+  if (tag) {                                          // un tag se centra ya con su tamaño de peso
+    n = addNode({ x: at.x, y: at.y }); n.w = true; const te = els.get(n.id); te.classList.add('wt');
+    n.x = Math.round(at.x - te.offsetWidth / 2); n.y = Math.round(at.y - te.offsetHeight / 2); place(n, te);
+  } else n = addNodeCentered(at);
+  n.split = { id: e.id, from: e.from, to: e.to, dir: e.dir, c: e.c, st: e.st, lab: e.lab, arrow: e.arrow, len0: e.len0, P: P ? P.map(q => ({ ...q })) : null };
+  edges = edges.filter(x => x !== e); ropes.delete(id); selEdges.delete(id);
+  const L = e.len || e.len0 || 80, frac = k / SEGS;
+  const e1 = { id: uid('e'), from: e.from, to: n.id, dir: e.dir, c: e.c, st: e.st, lab: e.lab, arrow: e.arrow === 'from' || e.arrow === 'both' ? 'from' : undefined, len0: Math.max(40, L * frac), len: 0 };
+  const e2 = { id: uid('e'), from: n.id, to: e.to, dir: e.dir, c: e.c, st: e.st, arrow: e.arrow === 'to' || e.arrow === 'both' ? 'to' : undefined, len0: Math.max(40, L * (1 - frac)), len: 0 };
+  if (P) { ropes.set(e1.id, resample(P.slice(0, k + 1))); ropes.set(e2.id, resample(P.slice(k))); }
+  edges.push(e1, e2);
+  if (e.lab) { edges.forEach(x => { if (x.from === e.id) x.from = e1.id; if (x.to === e.id) x.to = e1.id; }); n.split.e1 = e1.id; }
+  kick(); startEdit(n.id);
+}
+
+/* selección: nodos e hilos */
+function setSel(ids, eids = []) { selected = new Set(ids); selEdges = new Set(eids); if (!eids.length) selIdx.clear(); updateSel(); }
+function updateSel() { els.forEach((el, id) => el.classList.toggle('sel', selected.has(id))); kick(); }
+function updateHint() { hintEl.classList.toggle('on', !nodes.length); }
+
+/* edición de texto */
+function startEdit(id) {
+  if (!nmap.has(id)) return;
+  if (editing && editing !== id) finishEdit();
+  if (labEdit) finishLabel();
+  if (gEdit) finishIsle();
+  const el = els.get(id), t = el.firstChild;
+  editing = id; setSel([]);
+  el.classList.add('editing');
+  t.contentEditable = plainOK ? 'plaintext-only' : 'true';
+  t.focus();
+  const r = document.createRange(); r.selectNodeContents(t); r.collapse(false);
+  const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+}
+function finishEdit() {
+  if (!editing) return;
+  const id = editing; editing = null;
+  const n = node(id), el = els.get(id); if (!n || !el) return;
+  const t = el.firstChild;
+  t.contentEditable = 'false'; t.blur(); el.classList.remove('editing');
+  const txt = t.innerText.replace(/\s+$/, '');
+  n.text = txt;
+  if (!txt.trim() && !n.media) {
+    const sp = n.split;                                    // nudo vacío: el hilo vuelve a ser uno
+    removeNodes([id], !!sp, true);
+    if (sp && nmap.has(sp.from) && nmap.has(sp.to)) {
+      edges.push({ id: sp.id, from: sp.from, to: sp.to, dir: sp.dir, c: sp.c, st: sp.st, lab: sp.lab, arrow: sp.arrow, len0: sp.len0, len: 0 });
+      if (sp.P) ropes.set(sp.id, sp.P);
+      if (sp.e1) edges.forEach(x => { if (x.from === sp.e1) x.from = sp.id; if (x.to === sp.e1) x.to = sp.id; });
+      kick();
+    }
+  } else { t.textContent = txt; delete n.split; }
+  commit();
+  const s = getSelection(); if (s) s.removeAllRanges();
+}
+
+/* =========================================================
+   Etiquetas de hilo: doble clic en el centro de un hilo
+   ========================================================= */
+const labelEl = e => {
+  let el = lels.get(e.id);
+  if (!el) {
+    el = document.createElement('div'); el.className = 'elab'; el.dataset.id = e.id;
+    el.addEventListener('blur', () => { if (labEdit === e.id) finishLabel(); });
+    el.addEventListener('paste', ev => { ev.preventDefault(); document.execCommand('insertText', false, ev.clipboardData.getData('text/plain').replace(/\s+/g, ' ')); });
+    world.appendChild(el); lels.set(e.id, el);
+  }
+  return el;
+};
+const placeLabel = (el, P) => { const m = P[SEGS >> 1]; el.style.left = m.x.toFixed(1) + 'px'; el.style.top = m.y.toFixed(1) + 'px'; };
+function startLabel(id) {
+  const e = edgeById(id); if (!e) return;
+  if (editing) finishEdit();
+  if (gEdit) finishIsle();
+  if (labEdit && labEdit !== id) finishLabel();
+  setSel([]); labEdit = id;
+  const el = labelEl(e), P = ropes.get(id);
+  el.textContent = e.lab || ''; if (P) placeLabel(el, P);
+  el.classList.add('editing'); el.contentEditable = plainOK ? 'plaintext-only' : 'true';
+  el.focus();
+  const r = document.createRange(); r.selectNodeContents(el);
+  const s = getSelection(); s.removeAllRanges(); s.addRange(r);        // selecciona todo: escribir reemplaza
+  kick();
+}
+function finishLabel() {
+  if (!labEdit) return;
+  const id = labEdit; labEdit = null;
+  const e = edgeById(id), el = lels.get(id);
+  if (el) { el.contentEditable = 'false'; el.classList.remove('editing'); }
+  const txt = el ? el.innerText.replace(/\s+/g, ' ').trim().slice(0, 48) : '';
+  if (e) { if (txt) e.lab = txt; else { unweigh(e); delete e.lab; } }
+  if (el) { if (txt) el.textContent = txt; else { el.remove(); lels.delete(id); } }
+  const s = getSelection(); if (s) s.removeAllRanges();
+  kick(); commit();
+}
+/* doble clic en un hilo: al centro (o sobre su etiqueta) → etiqueta; en otro punto → nudo */
+function dblEdge(id, cx, cy) {
+  const P = ropes.get(id), w = toWorld(cx, cy), el = lels.get(id), m = P && P[SEGS >> 1];
+  let onLabel = false;
+  if (el) { const b = el.getBoundingClientRect(); onLabel = cx > b.left - 8 && cx < b.right + 8 && cy > b.top - 8 && cy < b.bottom + 8; }
+  if (onLabel) { startLabel(id); return; }                         // etiqueta antigua: se edita
+  const t = (P ? nearestIdx(id, w) : SEGS >> 1) / SEGS;
+  splitEdge(id, w, t >= 1 / 3 && t <= 2 / 3);                       // centro: tag (peso) · orillas: caja de texto
+}
+
+/* =========================================================
+   Buscador contextual (Ctrl+F)
+   ========================================================= */
+let findOpen = false, fm = [], fi = -1;
+const fold = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+function findPoint(it) {
+  if (it.k === 'n') { const n = node(it.id); if (!n || !els.has(n.id)) return null; const r = rect(n); return { x: r.cx, y: r.cy }; }
+  const P = ropes.get(it.id); return P ? { x: P[SEGS >> 1].x, y: P[SEGS >> 1].y } : null;
+}
+function paintFind() {
+  const onN = new Set(fm.filter(m => m.k === 'n').map(m => m.id)), onE = new Set(fm.filter(m => m.k === 'e').map(m => m.id)), cur = fm[fi];
+  document.body.classList.toggle('finding', findOpen && fm.length > 0);
+  els.forEach((el, id) => { el.classList.toggle('fm', findOpen && onN.has(id)); el.classList.toggle('fc', findOpen && !!cur && cur.k === 'n' && cur.id === id); });
+  lels.forEach((el, id) => el.classList.toggle('fm', findOpen && onE.has(id)));
+  findN.textContent = !findQ.value.trim() ? '' : fm.length ? (fi + 1) + '/' + fm.length : '0';
+}
+function gotoFind(step) {
+  if (!fm.length) { paintFind(); return; }
+  fi = (fi + step + fm.length) % fm.length;
+  const it = fm[fi], p = findPoint(it);
+  if (it.k === 'n') setSel([it.id]); else setSel([], [it.id]);
+  paintFind();
+  if (p) {
+    const k = clampK(Math.min(Math.max(view.k, 1), 1.6));               // acerca si estás lejos, sin alejar si ya estás cerca
+    animateTo({ k, x: innerWidth / 2 - p.x * k, y: innerHeight / 2 - p.y * k });
+  }
+}
+function runFind() {
+  const q = fold(findQ.value.trim());
+  fm = []; fi = -1;
+  if (q) {
+    nodes.forEach(n => { if (fold(n.text + ' ' + (n.media ? (n.media.name || '') + ' ' + (n.media.url || '') : '')).includes(q)) fm.push({ k: 'n', id: n.id }); });
+    edges.forEach(e => { if (e.lab && fold(e.lab).includes(q)) fm.push({ k: 'e', id: e.id }); });
+  }
+  if (fm.length) gotoFind(1); else paintFind();
+}
+function openFind() {
+  if (editing) finishEdit();
+  if (labEdit) finishLabel();
+  findOpen = true; findEl.classList.add('open');
+  findQ.focus(); findQ.select();
+  if (findQ.value.trim()) runFind();
+}
+function closeFind() {
+  if (!findOpen) return;
+  findOpen = false; findEl.classList.remove('open'); findQ.blur(); fm = []; fi = -1; paintFind();
+}
+findQ.addEventListener('input', runFind);
+findQ.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); if (!fm.length) runFind(); else gotoFind(e.shiftKey ? -1 : 1); }
+  else if (e.key === 'Escape') { e.preventDefault(); closeFind(); }
+});
+
+/* =========================================================
+   Hilos: física
+   - Se estiran: si los jalas despacio o se enredan, ceden y se alargan.
+   - Nunca se rompen: ceden todo lo que haga falta, por rápido que los jalen.
+   - Al quedar flojos se retraen hasta su largo base (len0).
+   ========================================================= */
+const ropes = new Map(), SEGS = 40, GRAV = .32, DAMP = .93;
+const GIVE = .04;      // estiramiento que aguanta antes de empezar a ceder
+const CREEP = 9;       // ceder mínimo por cuadro (px); si la tensión es grande cede la mitad de lo que falta
+const RETRACT = .5;    // px por cuadro que recupera al quedar flojo
+let simRaf = 0, simCalm = 0, simT = 0, lastDragEnd = 0, debris = [];
+function kick() { simCalm = 0; if (!simRaf) simRaf = requestAnimationFrame(simStep); }
+
+function rect(n) { const el = els.get(n.id), w = el.offsetWidth, h = el.offsetHeight; return { x: n.x, y: n.y, w, h, cx: n.x + w / 2, cy: n.y + h / 2 }; }
+const centerDist = (a, b) => { const ra = rect(a), rb = rect(b); return Math.hypot(rb.cx - ra.cx, rb.cy - ra.cy); };
+const PAD = 2;          // el hilo corre a 2 px del marco, nunca dentro
+const boxOf = n => { const r = rect(n); return { cx: r.cx, cy: r.cy, x0: r.x - PAD, y0: r.y - PAD, x1: r.x + r.w + PAD, y1: r.y + r.h + PAD }; };
+function labBox(id) {                              // la etiqueta de un hilo como caja a la que se amarran otros hilos
+  const el = lels.get(id), P = ropes.get(id); if (!el || !P) return null;
+  const m = P[SEGS >> 1], w = el.offsetWidth, h = el.offsetHeight;
+  return { cx: m.x, cy: m.y, x0: m.x - w / 2 - PAD, y0: m.y - h / 2 - PAD, x1: m.x + w / 2 + PAD, y1: m.y + h / 2 + PAD };
+}
+const boxFor = id => { const n = node(id); return n && els.has(id) ? boxOf(n) : labBox(id); };
+const elOf = id => els.get(id) || lels.get(id);
+const ptBox = (x, y) => ({ cx: x, cy: y, x0: x, y0: y, x1: x, y1: y });
+const inBox = (q, r) => q.x > r.x0 && q.x < r.x1 && q.y > r.y0 && q.y < r.y1;
+const ropeLen = P => { let L = 0; for (let i = 0; i < P.length - 1; i++) L += Math.hypot(P[i + 1].x - P[i].x, P[i + 1].y - P[i].y); return L; };
+const inkOf = c => c ? `color-mix(in srgb, ${c} 90%, var(--bg))` : 'var(--edge)';
+
+/* punto del marco (redondeado) en la dirección de (tx, ty): ahí se amarra el hilo y se desliza por el borde */
+function rim(r, tx, ty) {
+  const hx = (r.x1 - r.x0) / 2, hy = (r.y1 - r.y0) / 2;
+  if (hx <= 0 || hy <= 0) return { x: r.cx, y: r.cy };
+  const dx = tx - r.cx, dy = ty - r.cy, m = Math.hypot(dx, dy);
+  const ux = m ? dx / m : 0, uy = m ? dy / m : 1;
+  let a = 0, b = hx + hy + 2;
+  for (let k = 0; k < 12; k++) { const t = (a + b) / 2; if (insideRound({ x: r.cx + ux * t, y: r.cy + uy * t }, r)) a = t; else b = t; }
+  return { x: r.cx + ux * b, y: r.cy + uy * b };
+}
+const gapOf = (A, B) => { const a = rim(A, B.cx, B.cy), b = rim(B, A.cx, A.cy); return Math.hypot(b.x - a.x, b.y - a.y); };
+function initRope(A, B, len) {
+  const a = rim(A, B.cx, B.cy), b = rim(B, A.cx, A.cy);
+  const dist = Math.hypot(b.x - a.x, b.y - a.y), sag = dist < len ? Math.sqrt(len * len - dist * dist) * .45 : 0, P = [];
+  for (let i = 0; i <= SEGS; i++) { const t = i / SEGS, x = a.x + (b.x - a.x) * t, y = a.y + (b.y - a.y) * t + 4 * sag * t * (1 - t); P.push({ x, y, px: x, py: y }); }
+  return P;
+}
+function resample(src) {                             // reparte cualquier trazo en SEGS tramos iguales
+  const cum = [0];
+  for (let i = 1; i < src.length; i++) cum.push(cum[i - 1] + Math.hypot(src[i].x - src[i - 1].x, src[i].y - src[i - 1].y));
+  const total = cum[cum.length - 1] || 1, out = [];
+  let j = 0;
+  for (let i = 0; i <= SEGS; i++) {
+    const t = total * i / SEGS;
+    while (j < src.length - 2 && cum[j + 1] < t) j++;
+    const span = (cum[j + 1] - cum[j]) || 1, u = clamp01((t - cum[j]) / span);
+    const x = src[j].x + (src[j + 1].x - src[j].x) * u, y = src[j].y + (src[j + 1].y - src[j].y) * u;
+    out.push({ x, y, px: x, py: y });
+  }
+  return out;
+}
+
+/* colisión con la caja como rectángulo de esquinas redondas: el hilo la rodea suave */
+const cornerR = r => Math.min(16, (r.y1 - r.y0) / 2, (r.x1 - r.x0) / 2);
+function surf(r, side, off) {
+  const R = cornerR(r);
+  if (side === 't' || side === 'b') {
+    const x = Math.min(r.x1, Math.max(r.x0, r.x0 + off));
+    const dx = x < r.x0 + R ? r.x0 + R - x : x > r.x1 - R ? x - (r.x1 - R) : 0;
+    const lift = R - Math.sqrt(Math.max(0, R * R - dx * dx));
+    return { x, y: side === 't' ? r.y0 + lift : r.y1 - lift };
+  }
+  const y = Math.min(r.y1, Math.max(r.y0, r.y0 + off));
+  const dy = y < r.y0 + R ? r.y0 + R - y : y > r.y1 - R ? y - (r.y1 - R) : 0;
+  const lift = R - Math.sqrt(Math.max(0, R * R - dy * dy));
+  return { x: side === 'l' ? r.x0 + lift : r.x1 - lift, y };
+}
+function insideRound(q, r) {
+  if (!inBox(q, r)) return false;
+  const R = cornerR(r), cx = Math.min(r.x1 - R, Math.max(r.x0 + R, q.x)), cy = Math.min(r.y1 - R, Math.max(r.y0 + R, q.y));
+  return Math.hypot(q.x - cx, q.y - cy) < R;
+}
+const OPP = { t: 'b', b: 't', l: 'r', r: 'l' };
+function sideOf(q, r) {
+  if (insideRound(q, r)) return null;
+  const hx = (r.x1 - r.x0) / 2, hy = (r.y1 - r.y0) / 2, cx = r.x0 + hx, cy = r.y0 + hy;
+  const ex = (Math.abs(q.x - cx) - hx) / Math.max(1, hy), ey = (Math.abs(q.y - cy) - hy) / Math.max(1, hy);
+  return ey >= ex ? (q.y < cy ? 't' : 'b') : (q.x < cx ? 'l' : 'r');
+}
+/* cajas sólidas: cada punto recuerda de qué lado está de cada caja y SIEMPRE vuelve a ese lado.
+   Si queda dentro, o del lado opuesto (la caja pasó rápido), se empuja al marco por su lado: el hilo se tensa, nunca cruza. */
+const nearestSide = (q, r) => { const l = q.x - r.x0, rr = r.x1 - q.x, t = q.y - r.y0, b = r.y1 - q.y, m = Math.min(l, rr, t, b); return m === l ? 'l' : m === rr ? 'r' : m === t ? 't' : 'b'; };
+const surfAt = (r, side, q) => surf(r, side, side === 't' || side === 'b' ? q.x - r.x0 : q.y - r.y0);
+function collide(P, near, fixed) {
+  for (let i = 1; i < SEGS; i++) {
+    if (fixed(i)) continue;
+    const q = P[i];
+    if (!q.sd) q.sd = {};
+    near.forEach(([id, r]) => {
+      const cur = sideOf(q, r), rec = q.sd[id];
+      if (cur && cur !== OPP[rec]) { q.sd[id] = cur; return; }      // fuera y del mismo lado (o rodeando): bien
+      const nb = (P[i - 1].sd && P[i - 1].sd[id]) || (P[i + 1].sd && P[i + 1].sd[id]);
+      const side = rec || nb || nearestSide(q, r);                   // sin memoria: el lado de su vecino, el hilo no se parte
+      const pnt = surfAt(r, side, q), dx = pnt.x - q.x, dy = pnt.y - q.y;
+      q.x += dx; q.y += dy; q.px += dx * .8; q.py += dy * .8;      // un poco de roce con el marco
+      q.sd[id] = side;
+    });
+  }
+  for (let i = 0; i < SEGS; i++) {                                   // ningún tramo entre dos puntos corta la caja
+    const u = P[i], v = P[i + 1], fu = fixed(i), fv = fixed(i + 1);
+    if (fu && fv) continue;
+    near.forEach(([id, r]) => {
+      const t = clipSeg(u, v, r); if (t == null) return;            // intersección exacta, sin importar lo largo del tramo
+      const m = { x: u.x + (v.x - u.x) * t, y: u.y + (v.y - u.y) * t };
+      if (!insideRound(m, r)) return;
+      const su = (!fu && u.sd && u.sd[id]) || sideOf(u, r), sv = (!fv && v.sd && v.sd[id]) || sideOf(v, r);
+      if (su && sv && su === OPP[sv]) {
+        // ensartado (un extremo arriba y el otro abajo): el punto libre da la vuelta por la esquina más cercana
+        const q = fu ? v : fv ? u : (Math.hypot(u.x - m.x, u.y - m.y) < Math.hypot(v.x - m.x, v.y - m.y) ? u : v);
+        const old = q === u ? su : sv;
+        const lat = (old === 't' || old === 'b') ? (m.x < (r.x0 + r.x1) / 2 ? 'l' : 'r') : (m.y < (r.y0 + r.y1) / 2 ? 't' : 'b');
+        const span = lat === 'l' || lat === 'r' ? r.y1 - r.y0 : r.x1 - r.x0, R = Math.min(cornerR(r), span / 2);
+        const pnt = surf(r, lat, old === 't' || old === 'l' ? R : span - R);
+        q.px += pnt.x - q.x; q.py += pnt.y - q.y; q.x = pnt.x; q.y = pnt.y;
+        if (!q.sd) q.sd = {}; q.sd[id] = lat;
+        return;
+      }
+      const side = (!fu && u.sd && u.sd[id]) || (!fv && v.sd && v.sd[id]) || su || sv || nearestSide(m, r);
+      const pnt = surfAt(r, side, m), dx = pnt.x - m.x, dy = pnt.y - m.y;
+      if (!fu) { const w = fv ? Math.min(2, 1 / (1 - t || 1)) : 1; u.x += dx * w; u.y += dy * w; u.px += dx * .8; u.py += dy * .8; }
+      if (!fv) { const w = fu ? Math.min(2, 1 / (t || 1)) : 1; v.x += dx * w; v.y += dy * w; v.px += dx * .8; v.py += dy * .8; }
+    });
+  }
+}
+function clipSeg(u, v, r) {                         // Liang–Barsky: punto medio del tramo dentro de la caja, o null
+  let t0 = 0, t1 = 1;
+  const dx = v.x - u.x, dy = v.y - u.y, p = [-dx, dx, -dy, dy], q = [u.x - r.x0, r.x1 - u.x, u.y - r.y0, r.y1 - u.y];
+  for (let k = 0; k < 4; k++) {
+    if (p[k] === 0) { if (q[k] < 0) return null; continue; }
+    const t = q[k] / p[k];
+    if (p[k] < 0) { if (t > t1) return null; if (t > t0) t0 = t; }
+    else { if (t < t0) return null; if (t < t1) t1 = t; }
+  }
+  return t1 - t0 > 1e-4 ? (t0 + t1) / 2 : null;
+}
+const forget = (P, near) => {                       // olvida cajas lejanas para que su memoria no quede vieja
+  const ids = new Set(near.map(n => n[0]));
+  for (let i = 1; i < SEGS; i++) { const sd = P[i].sd; if (sd) for (const k in sd) if (!ids.has(k)) delete sd[k]; }
+};
+/* un paso de un hilo: extremos en A y B, y opcionalmente un punto agarrado con el mouse */
+/* peso de la etiqueta: el punto central (y un poco sus vecinos) pesa LABEL_W veces más; cae más y cede menos al tirón */
+const LABEL_W = 6, LABEL_G = 2;       // LABEL_W: cuánto menos cede al tirón · LABEL_G: gravedad extra (sin estirar el hilo)
+function stepRope(P, A, B, len, near, pin, hv = -1) {
+  const fall = i => hv < 0 ? 0 : Math.max(0, 1 - Math.abs(i - hv) / 3), mass = i => 1 + (LABEL_W - 1) * fall(i);
+  const seg = len / SEGS, pi = pin ? pin.i : -1;
+  const fixed = i => i === 0 || i === SEGS || i === pi;
+  let energy = 0;
+  for (let i = 1; i < SEGS; i++) {
+    if (i === pi) continue;
+    const q = P[i], vx = (q.x - q.px) * DAMP, vy = (q.y - q.py) * DAMP;
+    q.px = q.x; q.py = q.y; q.x += vx; q.y += vy + GRAV * (1 + LABEL_G * fall(i));
+    energy += vx * vx + vy * vy;
+  }
+  const anchor = () => {                                       // extremos amarrados al marco, del lado hacia donde jala el hilo
+    const a = rim(A, P[1].x, P[1].y), b = rim(B, P[SEGS - 1].x, P[SEGS - 1].y);
+    P[0].x = P[0].px = a.x; P[0].y = P[0].py = a.y;
+    P[SEGS].x = P[SEGS].px = b.x; P[SEGS].y = P[SEGS].py = b.y;
+  };
+  if (pin) { const q = P[pi]; q.px = q.x; q.py = q.y; q.x = pin.x; q.y = pin.y; }   // al soltar conserva el impulso
+  forget(P, near);
+  for (let k = 0, K = hv < 0 ? 18 : 40; k < K; k++) {     // con peso, más pasadas: que no estire el hilo
+    anchor();
+    if (near.length) collide(P, near, fixed);
+    for (let i = 0; i < SEGS; i++) {
+      const u = P[i], v = P[i + 1], dx = v.x - u.x, dy = v.y - u.y, d = Math.hypot(dx, dy) || .001;
+      if (d <= seg) continue;                                  // flojo: no empuja
+      const f = (d - seg) / d * .9, fu = fixed(i), fv = fixed(i + 1);
+      if (fu && fv) continue;
+      if (fu) { v.x -= dx * f; v.y -= dy * f; }
+      else if (fv) { u.x += dx * f; u.y += dy * f; }
+      else { const iu = 1 / mass(i), iv = 1 / mass(i + 1), su = iu / (iu + iv), sv = 1 - su; u.x += dx * f * su; u.y += dy * f * su; v.x -= dx * f * sv; v.y -= dy * f * sv; }
+    }
+  }
+  anchor();
+  if (near.length) { collide(P, near, fixed); collide(P, near, fixed); }
+  return { L: ropeLen(P), energy };
+}
+const smooth = pts => {
+  let d = `M${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
+  for (let i = 1; i < pts.length - 1; i++) d += `Q${pts[i].x.toFixed(1)} ${pts[i].y.toFixed(1)} ${((pts[i].x + pts[i + 1].x) / 2).toFixed(1)} ${((pts[i].y + pts[i + 1].y) / 2).toFixed(1)}`;
+  return d + `L${pts[pts.length - 1].x.toFixed(1)} ${pts[pts.length - 1].y.toFixed(1)}`;
+};
+
+/* nudo: un círculo pequeño a distancia constante del extremo. Solo el extremo al que «llega» el hilo lo lleva,
+   así ves de dónde viene sin que parezca una flecha */
+const KNOT_D = 17;
+function knotAt(P, end) {
+  const dir = end === 0 ? 1 : -1; let left = Math.min(KNOT_D, ropeLen(P) * .4), i = end;
+  while (i + dir >= 0 && i + dir <= SEGS) {
+    const a = P[i], b = P[i + dir], d = Math.hypot(b.x - a.x, b.y - a.y);
+    if (d >= left && d > 0) { const t = left / d; return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t }; }
+    left -= d; i += dir;
+  }
+  return { x: P[i].x, y: P[i].y };
+}
+const knotsOf = (P, a) => [...(a === 'to' || a === 'both' ? [knotAt(P, SEGS)] : []), ...(a === 'from' || a === 'both' ? [knotAt(P, 0)] : [])];
+/* cruce de hilos: suena cuando un hilo en movimiento pasa a través de otro */
+let crossSet = new Set();
+const segX = (a, b, c, d) => { const o = (p, q, r) => (q.x - p.x) * (r.y - p.y) - (q.y - p.y) * (r.x - p.x); return (o(a, b, c) > 0) !== (o(a, b, d) > 0) && (o(c, d, a) > 0) !== (o(c, d, b) > 0); };
+function ropesCross(P, Q) {
+  const bb = R => { let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity; for (const q of R) { x0 = Math.min(x0, q.x); y0 = Math.min(y0, q.y); x1 = Math.max(x1, q.x); y1 = Math.max(y1, q.y); } return [x0, y0, x1, y1]; };
+  const a = bb(P), b = bb(Q); if (a[2] < b[0] || b[2] < a[0] || a[3] < b[1] || b[3] < a[1]) return false;
+  for (let i = 0; i < SEGS; i += 2) for (let j = 0; j < SEGS; j += 2) if (segX(P[i], P[Math.min(SEGS, i + 2)], Q[j], Q[Math.min(SEGS, j + 2)])) return true;
+  return false;
+}
+function checkCrossings(interacting) {
+  if (!interacting) { crossSet = new Set(); return; }
+  const act = new Map();                                        // hilos que se están moviendo: los de las cajas arrastradas, el agarrado y el que sacas
+  if (drag && drag.moved && drag.type === 'node') edges.forEach(e => { if (drag.orig.has(e.from) || drag.orig.has(e.to)) act.set(e.id, ropes.get(e.id)); });
+  if (grab) act.set(grab.id, ropes.get(grab.id));
+  if (pull && pull.P) act.set('·pull', pull.P);
+  const now = new Set(); let fresh = false;
+  act.forEach((P, id) => {
+    if (!P) return;
+    ropes.forEach((Q, id2) => {
+      if (id2 === id || (act.has(id2) && id2 < id)) return;
+      const ea = edgeById(id), eb = edgeById(id2);
+      if (ea && eb && (ea.from === eb.from || ea.from === eb.to || ea.to === eb.from || ea.to === eb.to)) return;   // comparten caja: se tocan en el amarre
+      if (!ropesCross(P, Q)) return;
+      const k = id < id2 ? id + '|' + id2 : id2 + '|' + id; now.add(k); if (!crossSet.has(k)) fresh = true;
+    });
+  });
+  crossSet = now; if (fresh) snd.cross();
+}
+const knotSvg = (k, extra = '') => `<circle ${extra} cx="${k.x.toFixed(1)}" cy="${k.y.toFixed(1)}" r="3.4"/>`;
+
+/* hilo roto: se parte en k (o en el tramo más tenso) y cae */
+function cutRope(e, k) {
+  const P = ropes.get(e.id); if (!P) return;
+  ropes.delete(e.id);
+  if (k == null) { let worst = -1; k = SEGS >> 1; for (let i = 0; i < SEGS; i++) { const d = Math.hypot(P[i + 1].x - P[i].x, P[i + 1].y - P[i].y); if (d > worst) { worst = d; k = i; } } }
+  const A = boxFor(e.from), B = boxFor(e.to), color = inkOf(e.c), seg = (e.len || e.len0) / SEGS;
+  const a = P.slice(0, k + 1), b = P.slice(k + 1);
+  if (A) while (a.length > 1 && inBox(a[0], A)) a.shift();
+  if (B) while (b.length > 1 && inBox(b[b.length - 1], B)) b.pop();
+  [a, b].forEach((part, side) => {
+    if (part.length < 2) return;
+    const pts = part.map(q => ({ x: q.x, y: q.y, px: q.x - (q.x - q.px) * .5 + (side ? 1.5 : -1.5), py: q.y - (q.y - q.py) * .5 }));
+    debris.push({ pts, seg, color, t: 0, pin: side ? pts.length - 1 : 0 });
+  });
+  snd.puff(); kick();
+}
+/* hilo suelto entero (se borró un nodo): cae colgando un instante del extremo que queda */
+function dropRope(e, keep) {
+  const P = ropes.get(e.id); if (!P) return;
+  ropes.delete(e.id);
+  const A = boxFor(e.from), B = boxFor(e.to);
+  const pts = P.map(q => ({ x: q.x, y: q.y, px: q.px, py: q.py }));
+  if (keep === 'from' && A) while (pts.length > 1 && inBox(pts[0], A)) pts.shift();
+  if (keep === 'to' && B) while (pts.length > 1 && inBox(pts[pts.length - 1], B)) pts.pop();
+  if (pts.length < 2) return;
+  debris.push({ pts, seg: (e.len || e.len0) / SEGS, color: inkOf(e.c), t: 0, pin: keep === 'from' ? 0 : keep === 'to' ? pts.length - 1 : -1 });
+  snd.puff(); kick();
+}
+function drawDebris(f = 1) {
+  let h = '';
+  debris.forEach(d => {
+    d.t += f;
+    const P = d.pts, free = d.pin < 0 || d.t > 10;
+    for (let n = Math.max(1, Math.round(f)); n > 0; n--) P.forEach((q, i) => {
+      if (!free && i === d.pin) return;
+      const vx = (q.x - q.px) * .98, vy = (q.y - q.py) * .98;
+      q.px = q.x; q.py = q.y; q.x += vx; q.y += vy + GRAV * 1.6;
+    });
+    for (let k = 0; k < 6; k++) for (let i = 0; i < P.length - 1; i++) {
+      const u = P[i], v = P[i + 1], dx = v.x - u.x, dy = v.y - u.y, dd = Math.hypot(dx, dy) || .001;
+      const f = (dd - d.seg) / dd / (dd > d.seg ? 2 : 6);
+      u.x += dx * f; u.y += dy * f; v.x -= dx * f; v.y -= dy * f;
+    }
+    const op = Math.max(0, 1 - d.t / 70);
+    h += `<path class="debris" d="${smooth(P)}" style="stroke:${d.color};opacity:${op.toFixed(2)};stroke-dasharray:${d.t > 25 ? (6 - d.t / 14).toFixed(1) + ' ' + ((d.t - 25) / 6).toFixed(1) : 'none'}"/>`;
+  });
+  debris = debris.filter(d => d.t < 70);
+  return h;
+}
+
+let simErr = 0;
+function simStep(now) {
+  try { simStep0(now); simErr = 0; }
+  catch (err) {                                    // un error no debe congelar el lienzo con restos a medio caer
+    console.error(err); debris = [];
+    if (++simErr < 4) simRaf = requestAnimationFrame(simStep);
+  }
+}
+/* los pesos cuelgan como en un resorte: tienen masa, caen, estiran el hilo y rebotan. El hilo conserva el largo que tenía
+   hasta el peso (cuando el peso estaba en medio, el tramo de ese lado) y vuelve a él en cuanto se suelta.
+   Un peso sin ningún hilo se queda donde está */
+const WGRAV = .5, WDAMP = .975, WK = 3.4, WMAX = 45;       // gravedad · freno · rigidez (relativa al largo) · velocidad máxima
+let weightsMoving = false;
+function stepWeights(f) {
+  let moving = false;
+  nodes.forEach(n => {
+    if (!n.w) return;
+    const el = els.get(n.id); if (!el) return;
+    const inc = edges.filter(e => e.from === n.id || e.to === n.id);
+    const held = editing === n.id || (drag && drag.type === 'node' && drag.moved && drag.orig && drag.orig.has(n.id));
+    if (!inc.length || held) { n.vx = n.vy = 0; return; }
+    const w = el.offsetWidth, h = el.offsetHeight;
+    let cx = n.x + w / 2, cy = n.y + h / 2, fx = 0, fy = WGRAV;
+    const W = { cx, cy, x0: cx - w / 2 - PAD, y0: cy - h / 2 - PAD, x1: cx + w / 2 + PAD, y1: cy + h / 2 + PAD };
+    inc.forEach(e => {
+      const O = boxFor(e.from === n.id ? e.to : e.from), len = e.len0 || e.len || 0; if (!O || !len) return;
+      const gap = gapOf(W, O); if (gap <= len) return;                      // flojo: no tira; estirado: tira como resorte
+      const dx = O.cx - cx, dy = O.cy - cy, d = Math.hypot(dx, dy) || 1, k = WK * (gap - len) / len;
+      fx += dx / d * k; fy += dy / d * k;
+    });
+    let vx = ((n.vx || 0) + fx * f) * WDAMP, vy = ((n.vy || 0) + fy * f) * WDAMP;
+    const sp = Math.hypot(vx, vy); if (sp > WMAX) { vx *= WMAX / sp; vy *= WMAX / sp; }
+    n.vx = vx; n.vy = vy;
+    n.x += vx * f; n.y += vy * f; place(n, el);
+    if (sp > .05) moving = true;
+  });
+  return moving;
+}
+function settleWeights() {                          // el peso dejó de moverse: su posición nueva se guarda sin crear un paso más en el historial
+  nodes.forEach(n => { if (n.w) { n.x = Math.round(n.x); n.y = Math.round(n.y); const el = els.get(n.id); if (el) place(n, el); n.vx = n.vy = 0; } });
+  if (hi >= 0 && hist[hi] !== undefined) hist[hi] = snapshot();
+  dirty = true; persist(); autoSaveSoon();
+}
+function simStep0(now) {
+  simRaf = 0;
+  const f = simT ? Math.min(3, Math.max(.5, (now - simT) / 16.7)) : 1; simT = now;
+  const wmove = stepWeights(f);
+  if (weightsMoving && !wmove) settleWeights();
+  weightsMoving = wmove;
+  const boxes = new Map();
+  nodes.forEach(n => { if (els.has(n.id)) boxes.set(n.id, boxOf(n)); });
+  const nearFor = (P, skip) => {
+    let bx0 = Infinity, by0 = Infinity, bx1 = -Infinity, by1 = -Infinity;
+    P.forEach(q => { bx0 = Math.min(bx0, q.x); by0 = Math.min(by0, q.y); bx1 = Math.max(bx1, q.x); by1 = Math.max(by1, q.y); });
+    const out = [];
+    boxes.forEach((r, id) => { if (id !== skip && r.x1 > bx0 - 160 && r.x0 < bx1 + 160 && r.y1 > by0 - 160 && r.y0 < by1 + 160) out.push([id, r]); });
+    return out;
+  };
+  const anchors = new Map(boxes);
+  edges.forEach(e => { if (e.lab) { const b = labBox(e.id); if (b) anchors.set(e.id, b); } });
+  drawIslands();
+  let h = '', energy = 0, busy = wmove, tlevel = 0;
+  const alive = new Set();
+
+  for (const e of edges) {
+    const A = anchors.get(e.from), B = anchors.get(e.to);
+    if (!A || !B) continue;
+    const dist = gapOf(A, B);                                          // de marco a marco
+    let P = ropes.get(e.id);
+    if (!e.len) { e.len0 = Math.max(e.len0 || 0, 24, dist); e.len = Math.max(e.len0, P ? ropeLen(P) : 0); }
+    if (!P) { e.len = Math.max(e.len, dist); P = initRope(A, B, e.len); ropes.set(e.id, P); }
+
+    const pin = grab && grab.id === e.id ? grab : null;
+    const r = stepRope(P, A, B, e.len, nearFor(P, null), pin, e.lab ? SEGS >> 1 : -1);         // también choca con sus propios nodos
+    energy += r.energy;
+
+    // tensión: cuánto excede el hilo a lo que mide ahora; nunca se rompe, solo cede
+    const excess = r.L - e.len * (1 + GIVE), brk = 50 / view.k + e.len * .25;   // brk solo gradúa el adelgazamiento visual
+    const wEnd = (nmap.get(e.from) || {}).w || (nmap.get(e.to) || {}).w;   // un peso cuelga: el hilo que lo sostiene no cede al balanceo
+    if (excess > 0 && !wEnd) {                                // jalado: se estira, tan rápido como lo jalen
+      const need = r.L / (1 + GIVE) - e.len;
+      e.len += Math.min(need, Math.max(CREEP / view.k * f, need * .5)); busy = true;
+    } else if (!pin && r.L < e.len * (1 + GIVE / 2) && e.len > e.len0 + .5) {
+      const target = Math.max(e.len0, dist * 1.05);                    // flojo: se retrae hacia su largo base (len0)
+      if (e.len > target + .5) { const gap = e.len - target; e.len -= Math.min(gap, Math.max(RETRACT, gap * .06) * f); busy = true; }
+    }
+    if (pin) busy = true;
+    alive.add(e.id);
+    if (e.lab || labEdit === e.id) {                                   // etiqueta flotando en el centro del hilo
+      const le = labelEl(e);
+      if (labEdit !== e.id && le.textContent !== e.lab) le.textContent = e.lab;
+      le.classList.toggle('sel', selEdges.has(e.id)); placeLabel(le, P);
+    } else if (lels.has(e.id)) { lels.get(e.id).remove(); lels.delete(e.id); }
+
+    const d = smooth(P), kn = knotsOf(P, e.arrow);
+    const tense = clamp01(excess / brk);
+    tlevel = Math.max(tlevel, tense * 2.5, Math.min(1, Math.sqrt(r.energy / SEGS) / 7) * .8);
+    let st = e.c ? `--ec:${inkOf(e.c)};` : '';
+    if (STDA[e.st]) st += `--da:${STDA[e.st]};`;
+    if (tense > 0) st += `--sw:${(1.3 - tense * .8).toFixed(2)}`;     // más tenso = más delgado
+    const sel = selEdges.has(e.id);
+    h += `<g class="edge${sel ? ' sel' : ''}${hoverEdge === e.id ? ' hov' : ''}" data-id="${e.id}"${st ? ` style="${st}"` : ''}>` +
+         (sel ? `<path class="halo" d="${d}"/>` : '') + `<path class="hit" d="${d}"/><path class="line" d="${d}"/>${kn.map(k => knotSvg(k, 'class="knot"')).join('')}</g>`;
+  }
+
+  lels.forEach((el, id) => { if (!alive.has(id) && labEdit !== id) { el.remove(); lels.delete(id); } });
+
+  // el hilo que vas sacando de un nodo
+  if (pull) {
+    const A = anchors.get(pull.from);
+    if (A) {
+      const B = ptBox(pull.x, pull.y), len = Math.max(20, gapOf(A, B) * 1.06);
+      if (!pull.P) pull.P = initRope(A, B, len);
+      const pr = stepRope(pull.P, A, B, len, nearFor(pull.P, pull.over), null);
+      tlevel = Math.max(tlevel, Math.min(1, Math.sqrt(pr.energy / SEGS) / 7) * .8);
+      const d = inBox(B, A) ? '' : smooth(pull.P);
+      if (d) h +=`<g class="edge" style="--ec:${inkOf(prefs.ink)}"><path class="line" d="${d}"/></g>`;
+    }
+    busy = true;
+  }
+
+  h += drawDebris(f);
+  ropes.forEach((_, id) => { if (!alive.has(id)) ropes.delete(id); });
+  edgeg.innerHTML = h;
+  const interacting = (drag && drag.moved && drag.type !== 'pan') || grab || pull;
+  checkCrossings(interacting);
+  snd.tension(interacting ? tlevel : 0);
+  simCalm = energy < .01 * Math.max(1, alive.size) && !debris.length && !busy ? simCalm + 1 : 0;
+  if (simCalm < 40) simRaf = requestAnimationFrame(simStep); else simT = 0;
+}
+function nearestIdx(id, m) {
+  const P = ropes.get(id); if (!P) return SEGS >> 1;
+  let best = Infinity, k = SEGS >> 1;
+  for (let i = 1; i < SEGS; i++) { const d = Math.hypot(P[i].x - m.x, P[i].y - m.y); if (d < best) { best = d; k = i; } }
+  return k;
+}
+
+/* =========================================================
+   Sacar un hilo de un nodo (mantener y arrastrar, o Alt + arrastrar)
+   ========================================================= */
+function startPull(id) {
+  cancelHold(); drag = null;
+  const m = toWorld(mouse.x, mouse.y);
+  pull = { from: id, x: m.x, y: m.y, P: null, over: null };
+  document.body.classList.add('pulling');
+  const el = elOf(id); if (el) el.classList.add('src');
+  setSel([]); kick();
+}
+function pullOver(id) {
+  if (!pull || pull.over === id) return;
+  if (pull.over) { const o = elOf(pull.over); if (o) o.classList.remove('target'); }
+  pull.over = id && id !== pull.from ? id : null;
+  if (pull.over) { const o = elOf(pull.over); if (o) o.classList.add('target'); }
+}
+function endPull(cx, cy, cancel) {
+  if (!pull) return;
+  const p = pull;
+  pullOver(null); pull = null;
+  document.body.classList.remove('pulling');
+  const el = elOf(p.from); if (el) el.classList.remove('src');
+  if (!cancel) {
+    const hit = document.elementFromPoint(cx, cy), tEl = hit && hit.closest && hit.closest('.node, .elab');
+    if (tEl && tEl.dataset.id !== p.from) { link(p.from, tEl.dataset.id, true, p.P); kick(); return; }   // suelto en un nodo: se amarra
+    const A = boxFor(p.from), m = toWorld(cx, cy);
+    if (!tEl && A && p.P && !inBox(m, A) && Math.hypot(m.x - A.cx, m.y - A.cy) > 40) {                 // suelto en el vacío: nodo nuevo
+      const n = addNodeCentered(m);
+      link(p.from, n.id, false, p.P); startEdit(n.id); return;
+    }
+  }
+  if (p.P) {                                                                                             // nada: el hilo cae
+    const A = boxFor(p.from), pts = p.P.map(q => ({ ...q }));
+    if (A) while (pts.length > 1 && inBox(pts[0], A)) pts.shift();
+    if (pts.length > 1) debris.push({ pts, seg: ropeLen(pts) / (pts.length - 1), color: inkOf(prefs.ink), t: 0, pin: -1 });
+    snd.puff();
+  }
+  kick();
+}
+function armHold(id, x, y) {
+  cancelHold();
+  hold = { x, y, timer: setTimeout(() => { hold = null; if (drag && (drag.type === 'node' || drag.type === 'rope') && !drag.moved && boxFor(id)) startPull(id); }, HOLD_MS) };
+}
+function cancelHold() { if (hold) { clearTimeout(hold.timer); hold = null; } }
+
+/* =========================================================
+   El único menú: colores de hilo + guardar / abrir
+   ========================================================= */
+function inkTargets() {                              // hilos seleccionados, o los de los nodos seleccionados
+  const ids = new Set(selEdges);
+  if (selected.size) edges.forEach(e => { if (selected.has(e.from) || selected.has(e.to)) ids.add(e.id); });
+  return edges.filter(e => ids.has(e.id));
+}
+function currentInk(t) {
+  if (!t.length) return prefs.ink;
+  const c = t[0].c || null;
+  return t.every(e => (e.c || null) === c) ? c : undefined;
+}
+function setInk(c, save, quiet) {
+  const t = inkTargets();
+  if (t.length) { t.forEach(e => { e.c = c; }); kick(); if (save) commit(); }
+  else { prefs.ink = c; applyPrefs(); }
+}
+function currentSt(t) {
+  if (!t.length) return prefs.st || 'solid';
+  const s = t[0].st || 'solid';
+  return t.every(e => (e.st || 'solid') === s) ? s : undefined;
+}
+function setStroke(s) {
+  const t = inkTargets();
+  if (t.length) { t.forEach(e => { if (s === 'solid') delete e.st; else e.st = s; }); kick(); commit(); }
+  else { prefs.st = s === 'solid' ? null : s; applyPrefs(); }
+}
+function cycleStroke() { const cur = currentSt(inkTargets()); setStroke(cur === undefined ? 'solid' : STS[(STS.indexOf(cur) + 1) % STS.length]); }
+const strokeIco = s => `<svg viewBox="0 0 24 6" width="24" height="6"><path d="M2 3H22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"${s === 'dash' ? ' stroke-dasharray="4 3.5"' : s === 'dot' ? ' stroke-dasharray=".1 4"' : ''}/></svg>`;
+/* =========================================================
+   Anillos (clic derecho): todo lo contextual vive en el lienzo.
+   Arriba las opciones directas; «⋯» abre un segundo anillo de manipulación.
+   ========================================================= */
+const ringEl = $('ring'); let ringOpen = false, ringSt = null;
+const ic = d => `<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const txt = t => `<span style="font:600 9px var(--ui);letter-spacing:.03em">${t}</span>`;
+const ICO = {
+  more: ic('<circle cx="3.5" cy="8" r=".6"/><circle cx="8" cy="8" r=".6"/><circle cx="12.5" cy="8" r=".6"/>'),
+  back: ic('<path d="M10 3L5 8l5 5"/>'),
+  save: ic('<path d="M8 2.5v7M5 6.8l3 3 3-3M3 13h10"/>'),
+  open: ic('<path d="M2 4.5h4l1.2 1.5H14v6.5H2z"/>'),
+  export: ic('<path d="M8 10V2.5M5 5.2l3-2.7 3 2.7M3 9v4h10V9"/>'),
+  fit: ic('<path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/>'),
+  theme: ic('<circle cx="8" cy="8" r="5"/><path d="M8 3a5 5 0 0 1 0 10z" fill="currentColor"/>'),
+  plus: ic('<path d="M8 3v10M3 8h10"/>'),
+  group: ic('<rect x="2" y="3" width="12" height="10" rx="3" stroke-dasharray="2 2"/><circle cx="6" cy="8" r="1"/><circle cx="10" cy="8" r="1"/>'),
+  leave: ic('<rect x="2" y="3" width="8" height="8" rx="2.5" stroke-dasharray="2 2"/><path d="M8 8l6 5M10.5 13H14V9.5"/>'),
+  ungroup: ic('<rect x="2" y="3" width="12" height="10" rx="3" stroke-dasharray="2 2"/><path d="M3 14L13 2"/>'),
+  select: ic('<rect x="2.5" y="3" width="11" height="10" rx="2.5" stroke-dasharray="2 2"/><path d="M6 8h4"/>'),
+  rename: ic('<path d="M3 13l.8-3L11 2.8 13.2 5 6 12.2z"/>'),
+  child: ic('<circle cx="3.5" cy="8" r="1.6"/><circle cx="12.5" cy="8" r="1.6"/><path d="M5.1 8h5.8"/>'),
+  dup: ic('<rect x="5.5" y="5.5" width="8" height="8" rx="2"/><path d="M10.5 3.5H5a2 2 0 0 0-2 2V11"/>'),
+  trash: ic('<path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.5 4.5l.6 8.5h5.8l.6-8.5"/>'),
+  label: ic('<path d="M3 12.5L8 3l5 9.5M5 9.5h6"/>'),
+  minus: ic('<path d="M3 8h10"/>'),
+  lock: ic('<rect x="3.5" y="7" width="9" height="6.5" rx="1.6"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/>'),
+  unlock: ic('<rect x="3.5" y="7" width="9" height="6.5" rx="1.6"/><path d="M5.5 7V5a2.5 2.5 0 0 1 4.9-.6"/>'),
+  eye: ic('<path d="M1.5 8S4 3.5 8 3.5 14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8z"/><circle cx="8" cy="8" r="2"/>'),
+  link: ic('<path d="M6 3H3v10h10v-3M9 3h4v4M13 3L7 9"/>'),
+  cam: ic('<rect x="2" y="4.5" width="12" height="8.5" rx="2"/><circle cx="8" cy="8.8" r="2.2"/><path d="M5.5 4.5L6.5 3h3l1 1.5"/>'),
+  img: ic('<rect x="2.5" y="3.5" width="11" height="9" rx="1.6"/><circle cx="6" cy="7" r="1"/><path d="M3 11.4l3.4-3 2.8 2.4 1.9-1.5 2.2 2"/>'),
+  paste: ic('<rect x="3.5" y="3" width="9" height="11" rx="1.6"/><path d="M6 3V2h4v1M6 7.5h4M6 10h4"/>'),
+  folder: ic('<path d="M2 4.5h4l1.2 1.5H14v6.5H2z"/><circle cx="8" cy="9.3" r="1.2"/>'),
+  sound: ic('<path d="M3 6.5h2.5L9 3.5v9L5.5 9.5H3z"/><path d="M11.5 6a3 3 0 0 1 0 4"/>')
+};
+const arrowIco = v => `<svg viewBox="0 0 24 12" width="24" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 6H21"/>${v === 'to' || v === 'both' ? '<circle cx="16.5" cy="6" r="2.3" fill="currentColor" stroke="none"/>' : ''}${v === 'from' || v === 'both' ? '<circle cx="7.5" cy="6" r="2.3" fill="currentColor" stroke="none"/>' : ''}</svg>`;
+const frameIco = v => `<svg viewBox="0 0 22 14" width="22" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">${v === 'none' ? '<path d="M5 5H17M5 9H13"/>' : `<rect x="1.5" y="1.5" width="19" height="11" rx="4"${v === 'dash' ? ' stroke-dasharray="3 2.5"' : ''}/>`}</svg>`;
+const STNAME = { solid: 'Sólido', dash: 'Discontinuo', dot: 'Punteado' };
+const FRNAME = { none: 'Sin marco', solid: 'Marco', dash: 'Marco discontinuo' };
+const ARS = ['none', 'to', 'from', 'both'];
+const ARNAME = { none: 'Sin nudo', to: 'Nudo al final', from: 'Nudo al inicio', both: 'Nudo en ambos' };
+
+/* o: { cx, cy, items:[{ico|color, tip, on, run, keep}], lead (cuántas centrar arriba), back, pick:{live, done} } */
+function showRing(o) {
+  const items = o.items.slice();
+  if (o.back) items.push({ ico: ICO.back, tip: 'Volver', run: o.back, keep: true });
+  ringSt = { items, pick: o.pick || null };
+  const N = items.length + (o.pick ? 1 : 0), lead = o.lead || o.items.length, R = 68, step = 2 * Math.PI / N, M = 108;
+  ringEl.style.left = Math.min(innerWidth - M, Math.max(M, o.cx)) + 'px';
+  ringEl.style.top = Math.min(innerHeight - M, Math.max(M, o.cy)) + 'px';
+  const at = (i, sz) => {
+    const a = -Math.PI / 2 + (i - (lead - 1) / 2) * step;
+    return `left:${(Math.cos(a) * R - sz / 2).toFixed(1)}px;top:${(Math.sin(a) * R - sz / 2).toFixed(1)}px;width:${sz}px;height:${sz}px;animation-delay:${i * 14}ms`;
+  };
+  ringEl.innerHTML = '<i class="bg"></i><b class="ctr"></b>' + items.map((it, i) => {
+    const sw = it.color !== undefined;
+    return `<i class="it ${sw ? 'c' + (it.color ? '' : ' none') : 'st'}${it.on ? ' on' : ''}" data-i="${i}" data-tip="${esc(it.tip || '')}" style="${at(i, sw ? 22 : 30)}${sw && it.color ? ';background:' + it.color : ''}">${sw ? '' : it.ico}</i>`;
+  }).join('') + (o.pick ? `<label class="it c pick" data-tip="Otro color" style="${at(items.length, 22)}"><input type="color" value="${prefs.custom || '#7aa7e6'}"></label>` : '');
+  ringOpen = true; ringEl.classList.add('open');
+}
+function closeRing() { if (!ringOpen) return; ringOpen = false; ringEl.classList.remove('open'); }
+ringEl.addEventListener('click', e => {
+  const el = e.target.closest('[data-i]'); if (!el || !ringSt) return;
+  const it = ringSt.items[+el.dataset.i]; if (!it) return;
+  snd.tick();
+  if (!it.keep) closeRing();
+  it.run();
+});
+ringEl.addEventListener('mouseover', e => { const t = e.target.closest('[data-tip]'), c = ringEl.querySelector('.ctr'); if (c) c.textContent = t ? t.dataset.tip : ''; });
+ringEl.addEventListener('input', e => { if (e.target.type === 'color' && ringSt && ringSt.pick) ringSt.pick.live(hex(e.target.value)); });
+ringEl.addEventListener('change', e => {
+  if (e.target.type !== 'color' || !ringSt || !ringSt.pick) return;
+  const c = hex(e.target.value); prefs.custom = c; applyPrefs(); ringSt.pick.done(c); closeRing();
+});
+
+const inkList = () => { const l = INKS.slice(); if (prefs.custom && !INKS.includes(prefs.custom)) l.push(prefs.custom); return l; };
+const inkItems = (cur, apply) => inkList().map(v => ({ color: v, on: v === cur, tip: v ? '' : 'Sin color', run: () => apply(v) }));
+const moreItem = run => ({ ico: ICO.more, tip: 'Más', keep: true, run });
+const selNodes = () => [...selected].map(node).filter(Boolean);
+const uniform = (arr, f) => arr.length && arr.every(n => f(n) === f(arr[0])) ? f(arr[0]) : undefined;
+function prepRing() { if (editing) finishEdit(); if (labEdit) finishLabel(); if (gEdit) finishIsle(); closeFind(); closeHelp(); closePbar(); }
+
+/* hilo: trazo + color · ⋯ flechas, etiqueta, cortar */
+function ringEdge(id, cx, cy) {
+  prepRing();
+  if (!selEdges.has(id)) { setSel([], [id]); selIdx.set(id, nearestIdx(id, toWorld(cx, cy))); }
+  const t = inkTargets(), cur = currentInk(t), curSt = currentSt(t);
+  showRing({ cx, cy, lead: 3,
+    items: [...STS.map(v => ({ ico: strokeIco(v), tip: STNAME[v], on: v === curSt, run: () => setStroke(v) })),
+            moreItem(() => ringEdgeMore(id, cx, cy)), ...inkItems(cur, c => setInk(c, true))],
+    pick: { live: c => setInk(c, false, true), done: c => setInk(c, true) } });
+}
+function ringEdgeMore(id, cx, cy) {
+  const cur = currentArrow(inkTargets());
+  showRing({ cx, cy, back: () => ringEdge(id, cx, cy),
+    items: [...ARS.map(v => ({ ico: arrowIco(v), tip: ARNAME[v], on: v === cur, run: () => setArrow(v) })),
+            { ico: ICO.label, tip: 'Tag en medio', run: () => { const P = ropes.get(id); if (P) splitEdge(id, { x: P[SEGS >> 1].x, y: P[SEGS >> 1].y }, true); } },
+            { ico: ICO.trash, tip: 'Cortar hilo', run: delSelection }] });
+}
+/* caja: marco + color · ⋯ isla, hija, duplicar, borrar */
+function ringNode(id, cx, cy) {
+  prepRing();
+  if (!selected.has(id)) setSel([id]);
+  const ns = selNodes(), curFr = uniform(ns, n => n.fr || 'none'), cur = uniform(ns, n => n.color || null);
+  showRing({ cx, cy, lead: 3,
+    items: [...FRS.map(v => ({ ico: frameIco(v), tip: FRNAME[v], on: v === curFr, run: () => setFrame(v) })),
+            moreItem(() => ringNodeMore(id, cx, cy)), ...inkItems(cur, setNodeColor)],
+    pick: { live: c => selNodes().forEach(n => { n.color = c; styleNode(n); }), done: setNodeColor } });
+}
+function ringNodeMore(id, cx, cy) {
+  const ns = selNodes(), items = [];
+  if (ns.length > 1) items.push({ ico: ICO.group, tip: 'Agrupar en isla', run: groupSel });
+  if (ns.some(n => grpOf(n.id))) items.push({ ico: ICO.leave, tip: 'Sacar de la isla', run: ungroupSel });
+  if (ns.length === 1) items.push({ ico: ICO.child, tip: 'Caja hija', run: () => addChild(id) });
+  if (ns.length === 1 && ns[0].media) {
+    const n = ns[0], m = n.media, size = f => () => { m.w = Math.max(60, Math.min(900, Math.round((m.w || 200) * f))); refreshMedia(n); kick(); commit(); };
+    if (m.kind === 'image' || m.kind === 'video') items.push({ ico: ICO.plus, tip: 'Más grande', keep: true, run: () => { size(1.25)(); ringNodeMore(id, cx, cy); } }, { ico: ICO.minus, tip: 'Más pequeño', keep: true, run: () => { size(.8)(); ringNodeMore(id, cx, cy); } });
+    if (m.kind === 'url') items.push({ ico: ICO.eye, tip: 'Ver aquí', run: () => mediaAction(n) },
+                                     { ico: ICO.cam, tip: 'Capturar de nuevo', run: () => enrich(id, true) },
+                                     { ico: ICO.link, tip: 'Visitar', run: () => window.open(m.url, '_blank', 'noopener') });
+    else items.push({ ico: m.kind === 'pdf' || m.kind === 'image' ? ICO.eye : ICO.link, tip: m.kind === 'video' || m.kind === 'audio' ? 'Reproducir' : 'Abrir', run: () => mediaAction(n) });
+    items.push({ ico: ICO.label, tip: m.kind === 'url' ? 'Título' : 'Leyenda', run: () => startEdit(id) });
+  }
+  items.push({ ico: ICO.dup, tip: 'Duplicar', run: () => duplicate([...selected]) }, { ico: ICO.trash, tip: 'Borrar', run: delSelection });
+  showRing({ cx, cy, items, back: () => ringNode(id, cx, cy) });
+}
+/* isla: renombrar / seleccionar / deshacer + color */
+function ringIsle(gid, cx, cy) {
+  prepRing();
+  const g = groupById(gid); if (!g) return;
+  selectIsle(g);
+  const paint = save => c => { g.color = c; kick(); if (save) commit(); };
+  showRing({ cx, cy, lead: 3,
+    items: [{ ico: ICO.rename, tip: 'Renombrar', run: () => renameIsle(gid) },
+            { ico: ICO.select, tip: 'Seleccionar contenido', run: () => selectIsle(g) },
+            { ico: ICO.ungroup, tip: 'Deshacer isla', run: () => { groups = groups.filter(x => x !== g); kick(); commit(); } },
+            ...inkItems(g.color || null, paint(true))],
+    pick: { live: paint(false), done: paint(true) } });
+}
+/* lienzo vacío: archivo y vista */
+function ringCanvas(cx, cy) {
+  prepRing();
+  showRing({ cx, cy, items: [
+    { ico: ICO.save, tip: 'Guardar', run: save },
+    { ico: ICO.open, tip: 'Abrir', run: openFile },
+    { ico: ICO.export, tip: 'Exportar', keep: true, run: () => ringExport(cx, cy) },
+    { ico: ICO.fit, tip: 'Ajustar vista', run: fit },
+    { ico: ICO.theme, tip: 'Claro / oscuro', run: toggleTheme },
+    { ico: ICO.sound, tip: prefs.snd === false ? 'Activar sonido' : 'Silenciar', run: toggleSound },
+    { ico: ICO.plus, tip: 'Nueva caja', run: () => startEdit(addNodeCentered(toWorld(cx, cy)).id) },
+    { ico: ICO.img, tip: 'Insertar imagen o archivo', keep: true, run: () => ringInsert(cx, cy) },
+    ...(WEB ? [] : [{ ico: ICO.folder, tip: DESK ? 'Carpeta de proyectos' : dir ? 'Cambiar carpeta Cloto' : 'Conectar carpeta Cloto', run: () => { noFolder = false; connectFolder(); } }]),
+    { ico: ICO.rename, tip: 'Nombre del proyecto', run: () => openName(false) },
+    ...(lock ? [{ ico: ICO.lock, tip: 'Cambiar contraseña', run: () => openKbar('set1') }, { ico: ICO.unlock, tip: 'Quitar contraseña', run: unprotect }]
+             : canLock() ? [{ ico: ICO.lock, tip: 'Proteger con contraseña', run: () => openKbar('set1') }] : [])] });
+}
+function ringInsert(cx, cy) {
+  const at = toWorld(cx, cy);
+  showRing({ cx, cy, back: () => ringCanvas(cx, cy), items: [
+    { ico: ICO.img, tip: DESK ? 'Elegir archivos (carpeta assets)' : 'Elegir archivos', run: () => pickFiles(at) },
+    { ico: ICO.paste, tip: 'Pegar del portapapeles', run: () => pasteFromClipboard(at) },
+    ...(DESK ? [{ ico: ICO.folder, tip: 'Abrir la carpeta assets', run: () => deskPost('reveal', { path: 'assets', open: true }) }] : [])] });
+}
+function ringExport(cx, cy) {
+  showRing({ cx, cy, back: () => ringCanvas(cx, cy), items: [
+    { ico: txt('PNG'), tip: 'Imagen PNG', run: exportPNG },
+    { ico: txt('SVG'), tip: 'Vector SVG', run: exportSVG },
+    { ico: txt('MD'), tip: 'Esquema Markdown', run: exportMD }] });
+}
+function setFrame(v) { const ns = selNodes(); ns.forEach(n => { if (v === 'none') delete n.fr; else n.fr = v; styleNode(n); }); if (ns.length) { kick(); commit(); } }
+function setNodeColor(c) { const ns = selNodes(); ns.forEach(n => { if (c) n.color = c; else delete n.color; styleNode(n); }); if (ns.length) commit(); }
+const toggleSound = () => { prefs.snd = prefs.snd === false; applyPrefs(); if (prefs.snd) snd.pop(); else snd.tension(0); };
+const toggleTheme = () => { prefs.bg = prefs.bg === 'dark' ? 'light' : 'dark'; applyPrefs(); kick(); };
+window.addEventListener('pointerdown', e => {
+  snd.wake();
+  if (ringOpen && !e.target.closest('#ring')) closeRing();
+  if (helpOpen && !e.target.closest('#help, #helpbtn')) closeHelp();
+}, true);
+
+/* =========================================================
+   Puntero
+   ========================================================= */
+stage.addEventListener('pointerdown', e => {
+  const x = e.clientX, y = e.clientY;
+  const pan = () => { cancelAnimationFrame(raf); drag = { type: 'pan', sx: x, sy: y, ox: view.x, oy: view.y, moved: false }; };
+  if (e.button === 1) { e.preventDefault(); pan(); return; }
+  if (e.button !== 0) return;
+  if (findOpen) closeFind();
+  if (pbarOpen) closePbar();
+  if (pull) { endPull(x, y); return; }                       // modo clic-clic: segundo clic amarra
+
+  const nodeEl = e.target.closest('.node'), edgeEl = e.target.closest('.edge, .elab'), gEl = e.target.closest('.ilab');
+  if (nodeEl && nodeEl.classList.contains('editing')) {         // editando: un clic coloca el cursor, arrastrar mueve la caja sin salir de la edición
+    const id = nodeEl.dataset.id, n = node(id);
+    if (!e.target.closest('.t')) e.preventDefault();             // el borde de la caja no debe quitarle el foco al texto
+    if (n) { cancelAnimationFrame(raf); drag = { type: 'node', id, sx: x, sy: y, orig: new Map([[id, { x: n.x, y: n.y }]]), moved: false, editDrag: true }; }
+    return;
+  }
+  if (e.target.closest('.elab.editing, .ilab.editing')) return;
+
+  const key = nodeEl ? 'n' + nodeEl.dataset.id : edgeEl ? 'e' + edgeEl.dataset.id : gEl ? 'g' + gEl.dataset.id : 'c';
+  const now = performance.now();
+  const dbl = key === last.key && now - last.t < DBL_MS && Math.hypot(x - last.x, y - last.y) < 14;
+  last = { t: dbl ? 0 : now, x, y, key };
+
+  if (dbl) {                                                  // doble clic: crea / edita / anuda
+    cancelHold(); drag = null; e.preventDefault();
+    if (editing) finishEdit();
+    if (labEdit) finishLabel();
+    if (gEdit) finishIsle();
+    if (key === 'c') { setSel([]); drag = { type: 'dbl', sx: x, sy: y, base: new Set(), moved: false }; }
+    else if (nodeEl && nmap.has(nodeEl.dataset.id)) { const n = node(nodeEl.dataset.id); clearTimeout(openT); if (n.media) mediaAction(n); else startEdit(n.id); }
+    else if (edgeEl) dblEdge(edgeEl.dataset.id, x, y);
+    else if (gEl) renameIsle(gEl.dataset.id);
+    return;
+  }
+  if (editing) finishEdit();
+  if (labEdit) finishLabel();
+  if (gEdit) finishIsle();
+  cancelAnimationFrame(raf);
+
+  if (nodeEl && nmap.has(nodeEl.dataset.id)) {
+    const id = nodeEl.dataset.id;
+    if (e.altKey) { startPull(id); return; }
+    if (e.shiftKey) {
+      if (selected.has(id)) { selected.delete(id); updateSel(); return; }
+      selected.add(id); updateSel();
+    } else if (!selected.has(id)) setSel([id]);
+    const orig = new Map(); selected.forEach(i => { const n = node(i); if (n) orig.set(i, { x: n.x, y: n.y }); });
+    drag = { type: 'node', id, sx: x, sy: y, orig, moved: false, shift: e.shiftKey };
+    armHold(id, x, y);
+  } else if (edgeEl && edgeById(edgeEl.dataset.id)) {
+    const id = edgeEl.dataset.id;
+    const onLab = edgeEl.classList.contains('elab');
+    if (onLab && e.altKey) { startPull(id); return; }
+    drag = { type: 'rope', id, sx: x, sy: y, moved: false, shift: e.shiftKey, i: nearestIdx(id, toWorld(x, y)) };
+    if (onLab) armHold(id, x, y);                              // mantener sobre la etiqueta: saca un hilo de ella
+  } else if (gEl && groupById(gEl.dataset.id)) {              // nombre de la isla: selecciona y arrastra todo su contenido
+    selectIsle(groupById(gEl.dataset.id));
+    const orig = new Map(); selected.forEach(i => { const n = node(i); if (n) orig.set(i, { x: n.x, y: n.y }); });
+    drag = { type: 'node', id: null, sx: x, sy: y, orig, moved: false, shift: false, isle: true };
+  } else if (e.shiftKey) {
+    drag = { type: 'marquee', sx: x, sy: y, base: new Set(selected), moved: false };
+  } else {
+    setSel([]); pan();
+  }
+});
+
+window.addEventListener('pointermove', e => {
+  mv = { dx: e.clientX - mouse.x, dy: e.clientY - mouse.y, t: performance.now() };
+  mouse = { x: e.clientX, y: e.clientY };
+  if (hold && Math.hypot(e.clientX - hold.x, e.clientY - hold.y) > 5) cancelHold();
+  if (pull) {
+    const m = toWorld(e.clientX, e.clientY); pull.x = m.x; pull.y = m.y;
+    const t = e.target.closest && e.target.closest('.node, .elab'); pullOver(t ? t.dataset.id : null);
+    kick(); return;
+  }
+  if (!drag) return;
+  const dx = e.clientX - drag.sx, dy = e.clientY - drag.sy;
+  if (!drag.moved) {
+    if (Math.hypot(dx, dy) < 5) return;
+    drag.moved = true; cancelHold();
+    if (drag.type === 'pan') document.body.classList.add('panning');
+    if (drag.type === 'rope') document.body.classList.add('grabbing');
+    if (drag.editDrag) { document.body.classList.add('grabbing'); const sl = getSelection(); if (sl) sl.removeAllRanges(); }
+    if (drag.type === 'dbl') drag.type = 'marquee';
+  }
+  if (drag.type === 'pan') { view.x = drag.ox + dx; view.y = drag.oy + dy; applyView(); }
+  else if (drag.type === 'node') {
+    drag.orig.forEach((o, id) => { const n = node(id); if (!n) return; n.x = Math.round(o.x + dx / view.k); n.y = Math.round(o.y + dy / view.k); place(n, els.get(id)); });
+    kick();
+  } else if (drag.type === 'rope') {                          // agarrar el hilo: lo estira cuanto haga falta
+    const m = toWorld(e.clientX, e.clientY);
+    grab = edgeById(drag.id) ? { id: drag.id, i: drag.i, x: m.x, y: m.y } : null;
+    kick();
+  } else if (drag.type === 'marquee') {
+    const x0 = Math.min(drag.sx, e.clientX), y0 = Math.min(drag.sy, e.clientY), w = Math.abs(dx), h = Math.abs(dy);
+    marqueeEl.style.cssText = `display:block;left:${x0}px;top:${y0}px;width:${w}px;height:${h}px`;
+    const hit = [];
+    els.forEach((el, id) => { const b = el.getBoundingClientRect(); if (b.right > x0 && b.left < x0 + w && b.bottom > y0 && b.top < y0 + h) hit.push(id); });
+    setSel([...drag.base, ...hit]);
+  }
+});
+
+window.addEventListener('pointerup', e => {
+  cancelHold();
+  if (pull) {
+    const A = boxFor(pull.from), m = toWorld(e.clientX, e.clientY);
+    if (A && inBox(m, A)) return;                             // soltaste sin moverte: sigue el hilo hasta el próximo clic
+    endPull(e.clientX, e.clientY); return;
+  }
+  if (!drag) return;
+  const d = drag; drag = null;
+  marqueeEl.style.display = 'none';
+  document.body.classList.remove('panning', 'grabbing');
+  if (d.type === 'node') {
+    if (d.editDrag) {
+      if (d.moved && editing === d.id) {                          // devuelve el cursor al texto; se guarda al terminar la edición
+        const t = els.get(d.id).firstChild; t.focus();
+        const r = document.createRange(); r.selectNodeContents(t); r.collapse(false);
+        const sl = getSelection(); sl.removeAllRanges(); sl.addRange(r);
+      }
+    }
+    else if (d.moved) { commit(); lastDragEnd = performance.now(); }
+    else if (!d.shift && !d.isle && selected.size > 1) setSel([d.id]);
+    if (!d.moved && !d.editDrag && !d.shift && !d.isle && d.id) {          // clic en una tarjeta de enlace: lo visita (si no era el primer clic de un doble clic)
+      const n = node(d.id);
+      if (n && n.media && n.media.kind === 'url' && n.media.url) { clearTimeout(openT); openT = setTimeout(() => window.open(n.media.url, '_blank', 'noopener'), DBL_MS + 30); }
+    }
+  }
+  if (d.type === 'rope') {
+    grab = null; kick();
+    if (!d.moved && edgeById(d.id)) {                         // clic en un hilo: seleccionarlo
+      if (d.shift) { const s = new Set(selEdges); s.has(d.id) ? s.delete(d.id) : s.add(d.id); setSel([...selected], [...s]); }
+      else setSel([], [d.id]);
+      selIdx.set(d.id, d.i);
+    } else lastDragEnd = performance.now();
+  }
+  if (d.type === 'pan' && d.moved) persistSoon();
+  if (d.type === 'dbl' && !d.moved) { e.preventDefault(); startEdit(addNodeCentered(toWorld(d.sx, d.sy)).id); }
+  if (pendingCommit) { pendingCommit = false; commit(); }
+});
+window.addEventListener('pointercancel', () => { cancelHold(); grab = null; drag = null; endPull(0, 0, true); marqueeEl.style.display = 'none'; document.body.classList.remove('panning', 'grabbing'); });
+window.addEventListener('contextmenu', e => {
+  if (e.target.closest('.node.editing, .elab.editing, .ilab.editing, #find, #pbar, #kbar')) return;   // sobre un texto: menú nativo (copiar / pegar)
+  e.preventDefault();
+  if (pull) { endPull(0, 0, true); return; }
+  if (e.target.closest('#ring, #help, #helpbtn')) return;
+  const t = e.target, cx = e.clientX, cy = e.clientY, g = t.closest('.edge, .elab'), nd = t.closest('.node'), il = t.closest('.ilab');
+  if (g && edgeById(g.dataset.id)) ringEdge(g.dataset.id, cx, cy);
+  else if (nd && nmap.has(nd.dataset.id)) ringNode(nd.dataset.id, cx, cy);
+  else if (il && groupById(il.dataset.id)) ringIsle(il.dataset.id, cx, cy);
+  else if (t.closest('#stage')) ringCanvas(cx, cy);
+});
+
+edgeg.addEventListener('pointerover', e => {
+  const g = e.target.closest('.edge'); hoverEdge = g ? g.dataset.id : null;
+  if (!g || drag || pull || performance.now() - mv.t > 70 || Math.hypot(mv.dx, mv.dy) < 1.5) return;   // solo si el puntero se movió: el redibujo del hilo no cuenta
+  const id = g.dataset.id, now = performance.now(), P = ropes.get(id), ed = edgeById(id);
+  if (!P || now - (pluckAt[id] || 0) < 260) return;
+  pluckAt[id] = now; snd.pluck(ed ? (ed.len || ed.len0) : 300);
+  const i = nearestIdx(id, toWorld(e.clientX, e.clientY)), cap = v => Math.max(-25, Math.min(25, v)) / view.k * .5;
+  for (let j = Math.max(1, i - 2); j <= Math.min(SEGS - 1, i + 2); j++) { P[j].px -= cap(mv.dx); P[j].py -= cap(mv.dy); }   // el roce la hace vibrar
+  kick();
+});
+edgeg.addEventListener('pointerout', () => { hoverEdge = null; });
+
+stage.addEventListener('wheel', e => {
+  e.preventDefault(); cancelAnimationFrame(raf);
+  const dy = e.deltaMode === 1 ? e.deltaY * 33 : e.deltaY;
+  const k = clampK(view.k * Math.exp(-dy * (e.ctrlKey ? .01 : .0012)));
+  const wx = (e.clientX - view.x) / view.k, wy = (e.clientY - view.y) / view.k;
+  view = { k, x: e.clientX - wx * k, y: e.clientY - wy * k };
+  applyView(); persistSoon();
+}, { passive: false });
+
+/* =========================================================
+   Teclado
+   ========================================================= */
+window.addEventListener('keydown', e => {
+  const mod = e.ctrlKey || e.metaKey, k = e.key.toLowerCase();
+  snd.wake();
+  if (!mod && (editing || labEdit || gEdit || e.target === findQ || e.target === pname || e.target === kpass) && (e.key.length === 1 || /^(Backspace|Delete|Enter|Tab)$/.test(e.key))) snd.key(e.key);
+  if (mod && k === 's') { e.preventDefault(); save(); return; }
+  if (mod && k === 'o') { e.preventDefault(); openFile(); return; }
+  if (mod && k === 'f') { e.preventDefault(); openFind(); return; }
+  if (mod && k === 'e') { e.preventDefault(); prepRing(); ringExport(mouse.x, mouse.y); return; }
+  if (e.target === findQ || e.target === pname || e.target === kpass) return;                                      // el buscador maneja sus propias teclas
+  if (labEdit) { if (e.key === 'Escape' || e.key === 'Enter') { e.preventDefault(); finishLabel(); } return; }
+  if (gEdit) { if (e.key === 'Escape' || e.key === 'Enter') { e.preventDefault(); finishIsle(); } return; }
+
+  if (editing) {
+    if (e.key === 'Escape' || (mod && e.key === 'Enter')) { e.preventDefault(); finishEdit(); }
+    else if (e.key === 'Tab') {
+      e.preventDefault();
+      const id = editing, el = els.get(id);
+      if (el && el.firstChild.innerText.trim()) { finishEdit(); addChild(id); }
+    }
+    return;
+  }
+
+  if (e.key === 'Escape') { if (lbOpen) closeLb(); else if (ringOpen) closeRing(); else if (helpOpen) closeHelp(); else if (pull) endPull(0, 0, true); else setSel([]); return; }
+  if (mod && k === 'z') { e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
+  if (mod && k === 'y') { e.preventDefault(); redo(); return; }
+  if (mod && k === 'a') { e.preventDefault(); setSel(nodes.map(n => n.id)); return; }
+  if (mod && k === 'd') { e.preventDefault(); if (selected.size) duplicate([...selected]); return; }
+  if (mod && k === 'g') { e.preventDefault(); if (e.shiftKey) ungroupSel(); else groupSel(); return; }
+  if (mod || e.altKey) return;
+
+  // ⌫ con foco en un texto solo edita texto; Supr (o ⌫ sin foco de edición) borra la selección
+  const typing = e.target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName || '');
+  if (typing) return;
+  if (e.key === 'Backspace') { e.preventDefault(); clearContent(); }
+  else if (e.key === 'Delete') { e.preventDefault(); delSelection(); }
+  else if (e.key === 'Enter' && selected.size === 1) { e.preventDefault(); startEdit([...selected][0]); }
+  else if (e.key === 'Tab' && selected.size === 1) { e.preventDefault(); addChild([...selected][0]); }
+  else if (/^[0-6]$/.test(e.key)) setInk(INKS[+e.key], true);          // 0 = sin color · 1–6 tintas
+  else if (k === 't') toggleTheme();
+  else if (k === 'm') toggleSound();
+  else if (k === 'd') cycleArrow();
+  else if (e.key === '?') toggleHelp();
+  else if (k === 'l') cycleStroke();
+  else if (k === 'f') fit();
+});
+
+/* =========================================================
+   Archivos: .cloto (abre también .laquesis y .atropos)
+   ========================================================= */
+const OPEN_PICKER = { types: [{ description: 'Proyecto de Cloto', accept: { 'application/octet-stream': ['.cloto', '.laquesis', '.atropos', '.json'] } }] };
+const fileName = () => fileBase + '.' + (kind || 'cloto');
+function updateTitle() { document.title = (fileHandle || fileBase !== 'hilo' ? 'Cloto · ' + fileName() : 'Cloto') + (lock ? ' · protegido' : ''); }
+
+async function save() {
+  if (editing) finishEdit();
+  persist();
+  if (!dir && !noFolder && !WEB && window.showDirectoryPicker && window.top === window) { if (!(await connectFolder())) noFolder = true; }
+  if (dir) { if (!isNamed()) { openName(true); return; } if (await saveProject()) return; }
+  let blob; try { blob = await buildPack(); } catch (e) { note(String(e && e.message).includes('4 GB') ? 'El proyecto pasa de 4 GB' : 'No se pudo preparar el proyecto'); return; }
+  if (window.showSaveFilePicker && window.top === window) {           // sin carpeta: el .cloto completo, donde elijas
+    try {
+      const opts = { suggestedName: fileName(), types: [{ description: 'Proyecto de Cloto', accept: { 'application/octet-stream': ['.' + (kind || 'cloto')] } }] };
+      if (fileHandle) opts.startIn = fileHandle;
+      let h;
+      try { h = await window.showSaveFilePicker(opts); }
+      catch (err) { if (err.name !== 'TypeError' || !opts.startIn) throw err; delete opts.startIn; h = await window.showSaveFilePicker(opts); }
+      const w = await h.createWritable(); await w.write(blob); await w.close();
+      fileHandle = h; rebase(safeName(h.name.replace(/\.[^.]+$/, '')) || fileBase); dirty = false; updateTitle(); persist(); note('Guardado · ' + h.name + (lock ? ' · protegido' : ''));
+      return;
+    } catch (err) { if (err && err.name === 'AbortError') return; }
+  }
+  saveBlob(blob, fileName()); dirty = false;
+}
+async function openFile() {
+  if (DESK) { const r = await deskOpenDialog(); if (r) { fileHandle = null; openPack(r.blob, r.name); } return; }
+  if (window.showOpenFilePicker && window.top === window) {
+    try {
+      const [h] = await window.showOpenFilePicker({ ...OPEN_PICKER, ...(dir ? { startIn: dir } : {}) });
+      const f = await h.getFile(); fileHandle = h; openPack(f, f.name); return;
+    } catch (err) { if (err && err.name === 'AbortError') return; }
+  }
+  fileInput.click();
+}
+function load(text, name, extra = {}) {
+  let d; try { d = JSON.parse(text); } catch (e) { return; }
+  if (!d || !Array.isArray(d.nodes)) return;
+  if (editing) finishEdit();
+  endPull(0, 0, true); ropes.clear(); debris = [];
+  if (name) { idb.delPrefix(cachePrefix()); resetAssets(); fileBase = safeName(name.replace(/\.[^.]+$/, '')) || 'proyecto'; projDir = null; projName = ''; }      // antes de dibujar
+  lock = extra.lock || null; lockedStart = false; closeKbar();
+  if (extra.assets) extra.assets.forEach((b, nm) => { assetBlobs.set(nm, b); if (!dir) cachePut(nm, b); });
+  ingest(d); rebuild();
+  const ext = (((name || '').match(/\.([^.]+)$/) || [])[1] || '').toLowerCase();
+  kind = KINDS.includes(d.format) ? d.format : KINDS.includes(ext) ? ext : null;
+  updateTitle();
+  hist = []; hi = -1; commit();
+  if (d.view && isFinite(d.view.k)) { view = { x: +d.view.x || 0, y: +d.view.y || 0, k: clampK(+d.view.k) }; applyView(); persist(); }
+  else fit();
+  dirty = false;
+}
+fileInput.addEventListener('change', () => { const f = fileInput.files[0]; fileInput.value = ''; if (f) { fileHandle = null; openPack(f, f.name); } });
+window.addEventListener('dragover', e => { const t = e.dataTransfer && [...e.dataTransfer.types]; if (t && (t.includes('Files') || t.includes('text/uri-list'))) e.preventDefault(); });
+window.addEventListener('drop', async e => {
+  const dt = e.dataTransfer; if (!dt) return;
+  const files = [...dt.files], uri = (dt.getData('text/uri-list') || '').split('\n').find(l => l && !l.startsWith('#'));
+  if (!files.length && !uri) return;
+  e.preventDefault();
+  const at = toWorld(e.clientX, e.clientY);
+  let proj = files.find(f => /\.(cloto|laquesis|atropos)$/i.test(f.name));
+  if (!proj && files.length === 1 && /\.json$/i.test(files[0].name)) { try { const d = JSON.parse(await files[0].text()); if (d && Array.isArray(d.nodes)) proj = files[0]; } catch (err) {} }
+  if (proj) { fileHandle = null; openPack(proj, proj.name); return; }
+  if (files.length) addFiles(files, at); else addUrl(uri, at);
+});
+/* pegar: archivos del portapapeles (files o items), una imagen dentro del HTML copiado de una página, o texto / enlace */
+function clipFiles(cd) {
+  const out = [...(cd.files || [])];
+  if (!out.length && cd.items) [...cd.items].forEach(it => { if (it.kind === 'file') { const f = it.getAsFile(); if (f) out.push(f); } });
+  return out;
+}
+const clipName = (f, i = 0) => (!f.name || /^(image|imagen)\.\w+$/i.test(f.name))
+  ? new File([f], 'captura-' + Date.now() + (i ? '-' + i : '') + '.' + ((f.type.split('/')[1] || 'png').replace('jpeg', 'jpg').replace(/[^a-z0-9]/gi, '') || 'png'), { type: f.type || 'image/png' }) : f;
+function clipImgSrc(cd) {
+  const h = cd.getData && cd.getData('text/html'); if (!h) return null;
+  try { const im = new DOMParser().parseFromString(h, 'text/html').querySelector('img[src]'); return im ? im.getAttribute('src') : null; } catch (e) { return null; }
+}
+async function pasteImgSrc(src, at) {
+  try {
+    if (/^data:image\//i.test(src)) { const b = await (await fetch(src)).blob(); addFiles([clipName(new File([b], 'image.' + (b.type.split('/')[1] || 'png'), { type: b.type }))], at); return true; }
+    if (/^https?:\/\//i.test(src)) {
+      try { const r = await fetch(src); const b = r.ok ? await r.blob() : null; if (b && /^image\//.test(b.type)) { addFiles([clipName(new File([b], 'image', { type: b.type }))], at); return true; } } catch (e) {}
+      addUrl(src, at); return true;                             // el sitio no deja bajarla: queda como enlace a la imagen
+    }
+  } catch (e) {}
+  return false;
+}
+function pasteText(t, at) {
+  if (cleanUrl(t)) addUrl(t, at);
+  else { const n = addNodeCentered(at); n.text = t.slice(0, 2000); els.get(n.id).firstChild.textContent = n.text; commit(); }
+}
+async function pasteFromClipboard(at, quiet) {              // clic en «Pegar»: lee el portapapeles sin depender de Ctrl+V
+  at = at || toWorld(mouse.x, mouse.y);
+  try {
+    if (navigator.clipboard && navigator.clipboard.read) {
+      const files = []; let text = '';
+      for (const it of await navigator.clipboard.read()) {
+        const ty = it.types.find(x => /^image\//.test(x));
+        if (ty) { const b = await it.getType(ty); files.push(clipName(new File([b], 'image.' + ty.split('/')[1], { type: ty }), files.length)); }
+        else if (it.types.includes('text/plain')) text = await (await it.getType('text/plain')).text();
+      }
+      if (files.length) { addFiles(files, at); return true; }
+      if (text.trim()) { pasteText(text.trim(), at); return true; }
+    }
+  } catch (e) {}
+  if (DESK) {                                                // el visor no deja leerlo: lo pide la app
+    try {
+      const r = await fetch('/api/clipboard', { method: 'POST', headers: { 'X-Cloto': DESK.token } });
+      if (r.status === 200) { const b = await r.blob(); addFiles([clipName(new File([b], 'image.png', { type: b.type || 'image/png' }))], at); return true; }
+    } catch (e) {}
+  }
+  if (!quiet) note('No encuentro nada que pegar: copia la imagen otra vez o arrástrala al lienzo');
+  return false;
+}
+window.addEventListener('paste', e => {
+  const tg = e.target, typing = tg && /^(INPUT|TEXTAREA)$/.test(tg.tagName || '') && tg.getClientRects().length > 0;   // un campo oculto que conservó el foco no cuenta
+  if (editing || labEdit || gEdit || kbarOpen || typing || (tg && tg.isContentEditable)) return;
+  const cd = e.clipboardData; if (!cd) return;
+  const at = toWorld(mouse.x, mouse.y), files = clipFiles(cd);
+  if (files.length) { e.preventDefault(); addFiles(files.map(clipName), at); return; }
+  const t = (cd.getData('text/plain') || '').trim(), src = clipImgSrc(cd);
+  if (src && (!t || t === src)) { e.preventDefault(); pasteImgSrc(src, at); return; }
+  if (!t) { e.preventDefault(); pasteFromClipboard(at, true); return; }   // el evento llegó vacío: se intenta con el portapapeles directo
+  e.preventDefault();
+  pasteText(t, at);
+});
+/* insertar archivos con un selector: en la app empieza en la carpeta «assets» de tus proyectos */
+async function pickFiles(at) {
+  at = at || toWorld(mouse.x, mouse.y);
+  let files = [];
+  try {
+    if (DESK) {
+      const r = await fetch('/api/dialog/pick', { method: 'POST', headers: { 'X-Cloto': DESK.token } });
+      if (r.status === 200) for (const it of await r.json()) {
+        const rr = await fetch('/api/picked?id=' + encodeURIComponent(it.id), { headers: { 'X-Cloto': DESK.token } });
+        if (rr.ok) files.push(new File([await rr.blob()], it.name, { type: it.mime || '' }));
+      }
+      if (files.length) addFiles(files, at);
+      return;
+    }
+    if (window.showOpenFilePicker && window.top === window) {
+      let start = null; try { start = dir ? await dir.getDirectoryHandle('assets').catch(() => dir) : null; } catch (e) {}
+      try { files = await Promise.all((await window.showOpenFilePicker({ multiple: true, ...(start ? { startIn: start } : {}) })).map(h => h.getFile())); }
+      catch (e) { if (e && e.name === 'AbortError') return; }
+      if (files.length) { addFiles(files, at); return; }
+    }
+  } catch (e) {}
+  const inp = document.createElement('input'); inp.type = 'file'; inp.multiple = true;
+  inp.addEventListener('change', () => { if (inp.files.length) addFiles([...inp.files], at); });
+  inp.click();
+}
+window.addEventListener('pagehide', persist);
+window.addEventListener('beforeunload', e => { if (dirty && lock) { e.preventDefault(); e.returnValue = ''; } });   // protegido y sin guardar: avisa antes de cerrar
+window.addEventListener('blur', cancelHold);
+
+/* =========================================================
+   Nudos (opcionales): el hilo termina donde lo soltaste; el nudo marca a dónde «llega»
+   ========================================================= */
+function currentArrow(t) {
+  if (!t.length) return 'none';
+  const a = t[0].arrow || 'none';
+  return t.every(e => (e.arrow || 'none') === a) ? a : undefined;
+}
+function setArrow(v) {
+  const t = inkTargets();
+  t.forEach(e => { if (v === 'none') delete e.arrow; else e.arrow = v; });
+  if (t.length) { kick(); commit(); }
+}
+function cycleArrow() { const t = inkTargets(); if (!t.length) return; const c = currentArrow(t); setArrow(c === undefined ? 'none' : ARS[(ARS.indexOf(c) + 1) % ARS.length]); }
+
+/* =========================================================
+   Islas: marco suave que envuelve a un grupo de cajas (subtramas)
+   ========================================================= */
+const ISL_PAD = 30, islg = $('islg');
+let gEdit = null;
+function convexHull(pts) {
+  pts = pts.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  if (pts.length < 3) return pts;
+  const cr = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+  const lo = [], up = [];
+  for (const p of pts) { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], p) <= 0) lo.pop(); lo.push(p); }
+  for (let i = pts.length - 1; i >= 0; i--) { const p = pts[i]; while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], p) <= 0) up.pop(); up.push(p); }
+  up.pop(); lo.pop();
+  return lo.concat(up);
+}
+function islGeom(g) {                               // casco convexo de las cajas + margen redondeado
+  const pts = []; let x0 = Infinity, y0 = Infinity;
+  g.nodes.forEach(id => {
+    const n = node(id); if (!n || !els.has(id)) return;
+    const r = rect(n); x0 = Math.min(x0, r.x); y0 = Math.min(y0, r.y);
+    pts.push([r.x, r.y], [r.x + r.w, r.y], [r.x + r.w, r.y + r.h], [r.x, r.y + r.h]);
+  });
+  if (!pts.length) return null;
+  const hull = convexHull(pts);
+  return { d: 'M' + hull.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('L') + 'Z', lx: x0 - ISL_PAD + 12, ly: y0 - ISL_PAD - 12 };
+}
+function gLabelEl(g) {
+  let el = gels.get(g.id);
+  if (!el) {
+    el = document.createElement('div'); el.className = 'ilab'; el.dataset.id = g.id;
+    el.addEventListener('blur', () => { if (gEdit === g.id) finishIsle(); });
+    el.addEventListener('paste', ev => { ev.preventDefault(); document.execCommand('insertText', false, ev.clipboardData.getData('text/plain').replace(/\s+/g, ' ')); });
+    world.appendChild(el); gels.set(g.id, el);
+  }
+  return el;
+}
+function drawIslands() {
+  let h = ''; const alive = new Set();
+  groups.forEach(g => {
+    const o = islGeom(g); if (!o) return;
+    alive.add(g.id);
+    const c = g.color ? inkOf(g.color) : 'var(--edge)';
+    h += `<g opacity=".16"><path d="${o.d}" style="fill:${c};stroke:${c};stroke-width:${ISL_PAD * 2};stroke-linejoin:round"/></g>`;
+    const el = gLabelEl(g);
+    if (gEdit !== g.id && el.textContent !== g.label) el.textContent = g.label;
+    el.style.left = o.lx.toFixed(1) + 'px'; el.style.top = o.ly.toFixed(1) + 'px';
+    if (g.color) el.style.setProperty('--nc', inkOf(g.color)); else el.style.removeProperty('--nc');
+  });
+  islg.innerHTML = h;
+  gels.forEach((el, id) => { if (!alive.has(id) && gEdit !== id) { el.remove(); gels.delete(id); } });
+}
+const selectIsle = g => setSel(g.nodes.filter(id => nmap.has(id)));
+function groupSel() {
+  const ids = [...selected].filter(id => nmap.has(id)); if (ids.length < 2) return;
+  const g = { id: uid('g'), nodes: ids, label: '', color: null };
+  groups.push(g); snd.chord(); kick(); commit(); renameIsle(g.id);
+}
+function ungroupSel() {
+  const s = new Set(selected); let ch = false;
+  groups.forEach(g => { const n = g.nodes.filter(id => !s.has(id)); if (n.length !== g.nodes.length) { g.nodes = n; ch = true; } });
+  groups = groups.filter(g => g.nodes.length);
+  if (ch) { kick(); commit(); }
+}
+function renameIsle(gid) {
+  const g = groupById(gid); if (!g) return;
+  if (editing) finishEdit();
+  if (labEdit) finishLabel();
+  if (gEdit && gEdit !== gid) finishIsle();
+  setSel([]); gEdit = gid; drawIslands();
+  const el = gLabelEl(g); el.textContent = g.label || '';
+  el.classList.add('editing'); el.contentEditable = plainOK ? 'plaintext-only' : 'true'; el.focus();
+  const r = document.createRange(); r.selectNodeContents(el);
+  const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+}
+function finishIsle() {
+  if (!gEdit) return;
+  const id = gEdit; gEdit = null;
+  const g = groupById(id), el = gels.get(id);
+  if (el) { el.contentEditable = 'false'; el.classList.remove('editing'); }
+  const t = el ? el.innerText.replace(/\s+/g, ' ').trim().slice(0, 60) : '';
+  if (g) g.label = t;
+  if (el) el.textContent = t;
+  const s = getSelection(); if (s) s.removeAllRanges();
+  kick(); commit();
+}
+
+/* =========================================================
+   Exportar: PNG / SVG (desde el modelo, con los hilos tal como están) y Markdown
+   ========================================================= */
+const THEME = { light: { bg: '#f4f4f6', text: '#1d1d1f', muted: '#8a8a90', edge: '#bdbdc4' }, dark: { bg: '#17181b', text: '#ececef', muted: '#85868e', edge: '#4f4f52' } };
+const rgb = c => { c = c.slice(1); c = c.length >= 6 ? c.slice(0, 6) : c.slice(0, 3).split('').map(x => x + x).join(''); return [0, 2, 4].map(i => parseInt(c.substr(i, 2), 16)); };
+const mixHex = (a, b, t) => { const A = rgb(a), B = rgb(b); return '#' + A.map((v, i) => Math.round(v * t + B[i] * (1 - t)).toString(16).padStart(2, '0')).join(''); };
+function saveBlob(blob, name) {
+  if (DESK) { deskSaveBlob(blob, name); return; }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+}
+function buildSVG(imgs = new Map()) {
+  const T = THEME[prefs.bg] || THEME.light;
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  const grow = (x, y) => { x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y); };
+  nodes.forEach(n => { if (!els.has(n.id)) return; const r = rect(n); grow(r.x, r.y); grow(r.x + r.w, r.y + r.h); });
+  groups.forEach(g => g.nodes.forEach(id => { const n = node(id); if (n && els.has(id)) { const r = rect(n); grow(r.x - ISL_PAD, r.y - ISL_PAD - 24); grow(r.x + r.w + ISL_PAD, r.y + r.h + ISL_PAD); } }));
+  ropes.forEach(P => P.forEach(q => grow(q.x, q.y)));
+  if (!isFinite(x0)) return null;
+  const pad = 36; x0 -= pad; y0 -= pad; x1 += pad; y1 += pad;
+  const w = Math.ceil(x1 - x0), h = Math.ceil(y1 - y0);
+  const F = 'font-family="-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Helvetica,Arial,sans-serif"';
+  let o = '';
+  groups.forEach(g => {
+    const q = islGeom(g); if (!q) return;
+    const c = g.color ? mixHex(g.color, T.bg, .9) : T.edge;
+    o += `<g opacity=".16"><path d="${q.d}" fill="${c}" stroke="${c}" stroke-width="${ISL_PAD * 2}" stroke-linejoin="round"/></g>`;
+    if (g.label) o += `<text x="${(q.lx + 8).toFixed(1)}" y="${(q.ly + 14).toFixed(1)}" ${F} font-size="11" letter-spacing=".55" fill="${c}">${esc(g.label)}</text>`;
+  });
+  edges.forEach(e => {
+    const P = ropes.get(e.id); if (!P) return;
+    const c = e.c ? mixHex(e.c, T.bg, .9) : T.edge, da = STDA[e.st], line = 'fill="none" stroke="' + c + '" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"';
+    o += `<path d="${smooth(P)}" ${line}${da ? ` stroke-dasharray="${da}"` : ''}/>`;
+    knotsOf(P, e.arrow).forEach(k => { o += knotSvg(k, `fill="${c}"`); });
+    if (e.lab) {
+      const el = lels.get(e.id), m = P[SEGS >> 1], lw = el ? el.offsetWidth : e.lab.length * 6.5 + 14, lh = el ? el.offsetHeight : 17;
+      o += `<rect x="${(m.x - lw / 2).toFixed(1)}" y="${(m.y - lh / 2).toFixed(1)}" width="${lw}" height="${lh}" rx="7" fill="${T.bg}"/>` +
+           `<text x="${m.x.toFixed(1)}" y="${(m.y + 4).toFixed(1)}" text-anchor="middle" ${F} font-size="11" fill="${T.muted}">${esc(e.lab)}</text>`;
+    }
+  });
+  nodes.forEach(n => {
+    if (!els.has(n.id)) return;
+    const r = rect(n), sc = n.color ? mixHex(n.color, T.bg, .9) : T.edge, el = els.get(n.id), nb = el.getBoundingClientRect(), k = view.k;
+    if (n.fr || n.color) o += `<rect x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" rx="9" fill="${n.color ? mixHex(n.color, T.bg, .13) : 'none'}"${n.fr ? ` stroke="${sc}" stroke-width="1.3"${n.fr === 'dash' ? ' stroke-dasharray="5 4"' : ''}` : ''}/>`;
+    const at = e2 => { const b = e2.getBoundingClientRect(); return { x: r.x + (b.left - nb.left) / k, y: r.y + (b.top - nb.top) / k, w: b.width / k, h: b.height / k }; };
+    const words = (e2, str, fill) => { const q = at(e2), fs = parseFloat(getComputedStyle(e2).fontSize) || 14;
+      return `<text xml:space="preserve" ${F} font-size="${fs}" fill="${fill}">` + String(str).split('\n').map((l, i) => `<tspan x="${(q.x).toFixed(1)}" y="${(q.y + fs * 1.04 + i * fs * 1.45).toFixed(1)}">${esc(l)}</tspan>`).join('') + '</text>'; };
+    const m = n.media, mb = el.querySelector('.mb');
+    if (m && mb) {
+      const q = at(mb);
+      if (imgs.has(n.id) && mb.querySelector('img')) { const im = at(mb.querySelector('img')); o += `<image href="${imgs.get(n.id)}" x="${im.x.toFixed(1)}" y="${im.y.toFixed(1)}" width="${im.w.toFixed(1)}" height="${im.h.toFixed(1)}" preserveAspectRatio="none"/>`; }
+      else if (m.kind === 'video' || mb.classList.contains('missing')) o += `<rect x="${q.x.toFixed(1)}" y="${q.y.toFixed(1)}" width="${q.w.toFixed(1)}" height="${q.h.toFixed(1)}" rx="6" fill="${T.edge}" fill-opacity=".25"/>` + `<text x="${(q.x + q.w / 2).toFixed(1)}" y="${(q.y + q.h / 2 + 4).toFixed(1)}" text-anchor="middle" ${F} font-size="11" fill="${T.muted}">${esc((m.kind === 'video' ? '▶ ' : '') + (m.name || ''))}</text>`;
+      else if (mb.classList.contains('fc')) o += words(mb.querySelector('b'), mb.querySelector('b').textContent, T.muted) + words(mb.querySelector('span'), mb.querySelector('span').textContent, T.text);
+      const t = el.firstChild; if (n.text) o += words(t, n.text, m.kind === 'url' ? T.text : T.muted);
+      const mf = el.querySelector('.mf'); if (mf) o += words(mf, mf.textContent, T.muted);
+    } else if (n.w) o += `<rect x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" rx="7" fill="${T.bg}"/><text xml:space="preserve" ${F} font-size="11" fill="${T.muted}">` + n.text.split('\n').map((l, i) => `<tspan x="${r.x + 7}" y="${(r.y + 13.5 + i * 16.5).toFixed(1)}">${esc(l)}</tspan>`).join('') + '</text>';
+    else o += `<text xml:space="preserve" ${F} font-size="14" fill="${T.text}">` + n.text.split('\n').map((l, i) => `<tspan x="${r.x + 14}" y="${(r.y + 22.5 + i * 20.3).toFixed(1)}">${esc(l)}</tspan>`).join('') + '</text>';
+  });
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="${x0.toFixed(1)} ${y0.toFixed(1)} ${w} ${h}"><rect x="${x0.toFixed(1)}" y="${y0.toFixed(1)}" width="${w}" height="${h}" fill="${T.bg}"/>${o}</svg>`;
+  return { svg, w, h };
+}
+async function exportSVG() { const r = buildSVG(await imgMap()); if (r) saveBlob(new Blob([r.svg], { type: 'image/svg+xml;charset=utf-8' }), fileBase + '.svg'); }
+async function exportPNG() {
+  const r = buildSVG(await imgMap()); if (!r) return;
+  const img = new Image(), url = URL.createObjectURL(new Blob([r.svg], { type: 'image/svg+xml;charset=utf-8' }));
+  img.onload = () => {
+    const k = 2, c = document.createElement('canvas'); c.width = Math.round(r.w * k); c.height = Math.round(r.h * k);
+    const g = c.getContext('2d'); g.scale(k, k); g.drawImage(img, 0, 0, r.w, r.h);
+    URL.revokeObjectURL(url);
+    c.toBlob(b => { if (b) saveBlob(b, fileBase + '.png'); });
+  };
+  img.src = url;
+}
+/* Markdown: esquema jerárquico. El grafo no es un árbol, así que se recorre en profundidad desde las raíces
+   (cajas sin flecha entrante, de arriba a la izquierda); lo que cierra un ciclo o sale de la isla queda como «↪ ver». */
+function buildMD() {
+  const byId = new Map(nodes.map(n => [n.id, n])), out = new Map(), indeg = new Map();
+  nodes.forEach(n => { out.set(n.id, []); indeg.set(n.id, 0); });
+  edges.forEach(e => {
+    if (!byId.has(e.from) || !byId.has(e.to)) return;
+    if (e.arrow === 'to') { out.get(e.from).push([e.to, e]); indeg.set(e.to, indeg.get(e.to) + 1); }
+    else if (e.arrow === 'from') { out.get(e.to).push([e.from, e]); indeg.set(e.from, indeg.get(e.from) + 1); }
+    else { out.get(e.from).push([e.to, e]); out.get(e.to).push([e.from, e]); }
+  });
+  const cmp = (a, b) => { const A = byId.get(a), B = byId.get(b); return A.y - B.y || A.x - B.x; };
+  const mdLines = n => {
+    const m = n.media, cap = n.text.trim().split('\n');
+    if (!m) return cap;
+    const label = cap[0] || m.name || m.url || '…', a = m.name ? 'assets/' + encodeURI(m.name) : '';
+    const head = m.kind === 'url' ? `[${label}](${m.url})` : m.kind === 'image' ? `![${cap[0] || ''}](${a})` : `[${label}](${a})`;
+    return [head, ...cap.slice(1).filter(Boolean)];
+  };
+  const first = id => { const n = byId.get(id), m = n.media, c = n.text.trim().split('\n')[0]; return c || (m && (m.name || m.url)) || '…'; };
+  const lab = e => e.lab ? `*(${e.lab})* ` : '';
+  const lines = ['# ' + fileBase];
+  const outline = S => {
+    const seen = new Set(), used = new Set(), pre = d => '  '.repeat(d);     // por isla: una caja en dos islas aparece en ambas
+    const ref = (d, t, e) => lines.push(`${pre(d)}- ↪ ${lab(e)}ver: «${first(t)}»`);
+    const walk = (id, d, e) => {
+      seen.add(id);
+      const L = mdLines(byId.get(id));
+      lines.push(`${pre(d)}- ${e ? lab(e) : ''}${L[0] || '…'}`);
+      L.slice(1).forEach(l => lines.push(`${pre(d)}  ${l}`));
+      out.get(id).slice().sort((a, b) => cmp(a[0], b[0])).forEach(([t, ed]) => {
+        if (!S.has(t)) { ref(d + 1, t, ed); return; }                    // vínculo hacia otra isla: se muestra desde ambos lados
+        if (used.has(ed.id)) return; used.add(ed.id);
+        if (!seen.has(t)) walk(t, d + 1, ed); else ref(d + 1, t, ed);
+      });
+    };
+    [...S].sort((a, b) => (indeg.get(a) > 0) - (indeg.get(b) > 0) || cmp(a, b)).forEach(id => { if (!seen.has(id)) walk(id, 0, null); });
+  };
+  const inIsle = new Set(groups.flatMap(g => g.nodes));
+  if (groups.length) {
+    const top = g => Math.min(...g.nodes.map(id => byId.get(id).y));
+    groups.slice().sort((a, b) => top(a) - top(b)).forEach(g => { lines.push('', '## ' + (g.label || 'Isla'), ''); outline(new Set(g.nodes)); });
+    const rest = nodes.filter(n => !inIsle.has(n.id)).map(n => n.id);
+    if (rest.length) { lines.push('', '## Sin isla', ''); outline(new Set(rest)); }
+  } else { lines.push(''); outline(new Set(nodes.map(n => n.id))); }
+  return lines.join('\n') + '\n';
+}
+function exportMD() { if (nodes.length) saveBlob(new Blob([buildMD()], { type: 'text/markdown;charset=utf-8' }), fileBase + '.md'); }
+
+/* =========================================================
+   Ayuda: el único botón
+   ========================================================= */
+const HELP = [
+  ['Lienzo', [['crear caja', 'doble clic'], ['mover · zoom', 'arrastrar · rueda'], ['seleccionar varias', '⇧ + arrastrar'], ['ajustar vista · tema · sonido', 'F · T · M'], ['buscar', '^F'], ['deshacer · rehacer', '^Z · ^⇧Z']]],
+  ['Cajas', [['sacar un hilo', 'mantén y arrastra · Alt'], ['editar', 'doble clic · Enter'], ['caja hija', 'Tab'], ['vaciar y editar · borrar (el hilo se rehace)', '⌫ · Supr'], ['marco, color, más', 'clic derecho'], ['duplicar', '^D']]],
+  ['Hilos', [['tag (peso) en medio', 'doble clic en el tercio central'], ['caja para seguir extendiendo', 'doble clic en los tercios de las orillas'], ['color, trazo, nudo', 'clic derecho'], ['trazo · nudo', 'L · D'], ['cortar', 'Supr']]],
+  ['Islas', [['agrupar · desagrupar', '^G · ^⇧G'], ['mover todo', 'arrastra su nombre'], ['renombrar', 'doble clic en el nombre']]],
+  ['Archivo', [['guardar · abrir', '^S · ^O'], ['exportar PNG, SVG, MD', '^E · clic derecho en vacío'], ['contraseña del proyecto', 'clic derecho en vacío'], ...(WEB ? [['descargar la app', 'botón ⤓']] : [['carpeta · nombre del proyecto', 'clic derecho en vacío'], DESK ? ['abrir la carpeta del proyecto', 'botón ⤓'] : ['descargar Cloto', 'botón ⤓']])]],
+  ['Multimedia', [['imagen, vídeo, audio, PDF, archivo', 'arrástralo al lienzo'], ['enlace o imagen', '^V · clic derecho → Insertar'], ['visitar enlace', 'clic en la tarjeta'], ['ver la página · ampliar · reproducir', 'doble clic'], ['leyenda · título', 'Enter']]]
+];
+const helpEl = $('help'), helpBtn = $('helpbtn'); let helpOpen = false;
+helpEl.innerHTML = HELP.map(([t, rows]) => `<div class="hl">${t}</div>` + rows.map(([a, b]) => `<div class="hr"><span>${a}</span><kbd>${b.replace(/\^/g, MOD)}</kbd></div>`).join('')).join('');
+function openHelp() { closeRing(); helpOpen = true; helpEl.classList.add('open'); helpBtn.classList.add('on'); }
+function closeHelp() { if (!helpOpen) return; helpOpen = false; helpEl.classList.remove('open'); helpBtn.classList.remove('on'); }
+const toggleHelp = () => helpOpen ? closeHelp() : openHelp();
+helpBtn.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); toggleHelp(); });
+
+/* =========================================================
+   Multimedia y carpeta Cloto
+   cloto/cloto.html  ·  cloto/<proyecto>/<proyecto>.cloto  ·  cloto/<proyecto>/assets/…
+   Los archivos se guardan junto al proyecto y el .cloto solo los nombra. Sin carpeta (otro navegador) viajan dentro del .cloto.
+   ========================================================= */
+const MKINDS = ['image', 'video', 'audio', 'pdf', 'file', 'url'];
+const assetBlobs = new Map(), burl = new Map();
+let dir = null, projDir = null, projName = '', permOK = false, permAsked = false, noFolder = false, openT = 0, lbOpen = false, pbarOpen = false, pThen = false;
+const pbar = $('pbar'), pname = $('pname'), lbEl = $('lb'), lbImg = lbEl.querySelector('img'), lbFr = lbEl.querySelector('iframe'), lbGo = lbEl.querySelector('.go');
+const isNamed = () => fileBase !== 'hilo';
+const RESERVED = /^(con|prn|aux|nul|com\d|lpt\d)(\.|$)/i;            // nombres que Windows no permite
+const safeName = t => { let v = String(t || '').replace(/[\u0000-\u001f\u007f\\/:*?"<>|]+/g, '-').replace(/^[.\s]+/, '').trim().slice(0, 60).replace(/[.\s]+$/, ''); return RESERVED.test(v) ? '_' + v : v; };
+
+function exportMedia(m) { const o = {}; ['kind', 'name', 'mime', 'size', 'w', 'url', 'thumb', 'snap'].forEach(k => { if (m[k] !== undefined && m[k] !== '') o[k] = m[k]; }); return o; }
+function cleanMedia(m) {
+  if (!m || typeof m !== 'object' || !MKINDS.includes(m.kind)) return null;
+  const o = { kind: m.kind }, nm = v => typeof v === 'string' ? cleanAsset(v) : '';
+  if (nm(m.name)) o.name = nm(m.name);
+  if (typeof m.mime === 'string') o.mime = m.mime.slice(0, 80);
+  if (+m.size > 0) o.size = +m.size;
+  if (+m.w > 0) o.w = Math.min(2000, +m.w);
+  if (typeof m.url === 'string' && /^https?:\/\//i.test(m.url)) o.url = m.url.slice(0, 2000);
+  if (typeof m.thumb === 'string' && /^https:\/\//i.test(m.thumb)) o.thumb = m.thumb.slice(0, 2000);
+  if (nm(m.snap)) o.snap = nm(m.snap);
+  if (o.kind === 'url' && !o.url) return null;                // enlace sin dirección válida (p. ej. javascript:): se descarta
+  if (typeof m.data === 'string' && m.data.startsWith('data:')) o.data = m.data;
+  if (typeof m.sdata === 'string' && m.sdata.startsWith('data:')) o.sdata = m.sdata;
+  return o;
+}
+const cleanUrl = t => { t = String(t || '').trim(); if (/\s/.test(t)) return ''; if (/^www\./i.test(t)) t = 'https://' + t; return /^https?:\/\/[^/]+\.[^/]{2,}/i.test(t) ? t.slice(0, 2000) : ''; };
+const hostOf = u => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch (e) { return u; } };
+function ytId(u) {
+  try {
+    const x = new URL(u), h = x.hostname.replace(/^(www|m)\./, ''); let id = '';
+    if (h === 'youtu.be') id = x.pathname.slice(1).split('/')[0];
+    else if (h.endsWith('youtube.com')) id = x.searchParams.get('v') || ((x.pathname.match(/^\/(?:shorts|embed|live)\/([\w-]+)/) || [])[1] || '');
+    return /^[\w-]{6,20}$/.test(id) ? id : '';
+  } catch (e) { return ''; }
+}
+const vimeoId = u => (String(u).match(/^https?:\/\/(?:www\.|player\.)?vimeo\.com\/(?:video\/)?(\d{5,12})/i) || [])[1] || '';
+const IMG_URL = /\.(png|jpe?g|gif|webp|avif|svg)(?:[?#]|$)/i;
+const EXT = { image: /\.(png|jpe?g|gif|webp|avif|svg|bmp|ico|heic|heif|tiff?)$/i, video: /\.(mp4|m4v|mov|webm|mkv|avi|ogv|3gp)$/i, audio: /\.(mp3|wav|m4a|aac|ogg|oga|opus|flac)$/i };
+const kindOf = f => {                                      // por tipo y, si el sistema no lo dice, por extensión
+  const t = f.type || '', n = f.name || '';
+  return t.startsWith('image/') || (!t && EXT.image.test(n)) ? 'image'
+       : t.startsWith('video/') || EXT.video.test(n) ? 'video'
+       : t.startsWith('audio/') || EXT.audio.test(n) ? 'audio'
+       : t === 'application/pdf' || /\.pdf$/i.test(n) ? 'pdf' : 'file';
+};
+
+/* --- navegador (IndexedDB): el permiso de la carpeta y, solo en proyectos SIN contraseña, una copia de lo que aún no se guarda --- */
+let dbp = null;
+const idb = {
+  open: () => dbp || (dbp = new Promise((res, rej) => { const r = indexedDB.open('cloto', 1); r.onupgradeneeded = () => r.result.createObjectStore('kv'); r.onsuccess = () => res(r.result); r.onerror = () => { dbp = null; rej(r.error); }; })),
+  async run(mode, fn) { try { const db = await this.open(); return await new Promise(res => { const t = db.transaction('kv', mode), q = fn(t.objectStore('kv')); t.oncomplete = () => res(q && q.result); t.onerror = t.onabort = () => res(null); }); } catch (e) { return null; } },
+  get(k) { return this.run('readonly', st => st.get(k)); },
+  set(k, v) { return this.run('readwrite', st => st.put(v, k)); },
+  delPrefix(p) { return this.run('readwrite', st => st.delete(IDBKeyRange.bound(p, p + '\uffff'))); },
+  async sweep(keep) {                                      // borra copias que ya no pertenecen al proyecto actual
+    const ks = await this.run('readonly', st => st.getAllKeys(IDBKeyRange.bound('a:', 'a:\uffff'))) || [];
+    await this.run('readwrite', st => { ks.forEach(k => { if (!keep || !String(k).startsWith(keep)) st.delete(k); }); });
+  }
+};
+const cachePrefix = () => 'a:' + (safeName(fileBase) || 'hilo') + '/';
+const cachePut = (name, b) => lock ? null : idb.set(cachePrefix() + name, b);      // con contraseña nunca se guarda nada en claro
+const cacheGet = name => lock ? null : idb.get(cachePrefix() + name);
+const clearCache = () => idb.delPrefix(cachePrefix());
+const usedAssets = () => { const s = new Set(); nodes.forEach(n => { if (n.media) { if (n.media.name) s.add(n.media.name); if (n.media.snap) s.add(n.media.snap); } }); return s; };
+function keepAsset(name, b) { assetBlobs.set(name, b); cachePut(name, b); }
+function resetAssets() { burl.forEach(u => URL.revokeObjectURL(u)); burl.clear(); assetBlobs.clear(); packFor = ''; packP = null; }
+function rebase(nb) {                                      // el proyecto cambia de nombre: la copia del navegador se va con él
+  if (nb === fileBase) return;
+  idb.delPrefix(cachePrefix());
+  fileBase = nb; projDir = null; projName = ''; packFor = ''; packP = null;
+  if (!lock) assetBlobs.forEach((b, n) => cachePut(n, b));
+}
+
+async function okPerm(ask) {
+  if (!dir) return false;
+  if (permOK) return true;
+  const o = { mode: 'readwrite' };
+  try {
+    if ((await dir.queryPermission(o)) === 'granted') return permOK = true;
+    if (ask && navigator.userActivation && navigator.userActivation.isActive && (await dir.requestPermission(o)) === 'granted') return permOK = true;
+  } catch (e) {}
+  return false;
+}
+async function connectFolder() {
+  if (DESK) {                                              // la app elige la carpeta con el diálogo del sistema
+    const r = await deskPost('dialog/folder'); if (!r || !r.root) return false;
+    DESK.root = r.root; projDir = null; projName = ''; packFor = ''; packP = null; refreshAllMedia(); note('Proyectos en ' + r.root); return true;
+  }
+  try {
+    const h = await window.showDirectoryPicker({ id: 'cloto', mode: 'readwrite' });
+    dir = h; permOK = true; projDir = null; projName = ''; packFor = ''; packP = null; await idb.set('dir', h);
+    refreshAllMedia(); if (isNamed()) saveProject();
+    return true;
+  } catch (e) { return false; }
+}
+/* proyectos de antes: carpeta <proyecto>/assets/ (se leen para convertirlos al guardar) */
+async function ensureProject(create) {
+  if (!dir || !(await okPerm(true))) return null;
+  if (projDir && projName === fileBase) return projDir;
+  try { projDir = await dir.getDirectoryHandle(safeName(fileBase) || 'proyecto', { create: !!create }); projName = fileBase; return projDir; } catch (e) { return null; }
+}
+async function readAsset(name) {
+  try { const pd = await ensureProject(false); if (!pd) return null; const a = await pd.getDirectoryHandle('assets'); return await (await a.getFileHandle(name)).getFile(); } catch (e) { return null; }
+}
+/* al volver a abrir Cloto, los archivos salen del .cloto guardado en la carpeta (se lee una vez) */
+let packP = null, packFor = '';
+function readPackFromFolder() {
+  if (!dir || lock || lockedStart || !isNamed()) return Promise.resolve();
+  if (packFor === fileBase && packP) return packP;
+  packFor = fileBase;
+  return packP = (async () => {
+    if (!(await okPerm(false))) { packFor = ''; return; }
+    try {
+      const f = await (await dir.getFileHandle(fileName())).getFile();
+      if (await packKind(f) !== 'zip') return;
+      (await unzip(f)).forEach((b, k) => { const a = assetOf(k); if (a && !assetBlobs.has(a)) assetBlobs.set(a, typed(b, a)); });
+    } catch (e) {}
+  })();
+}
+async function getBlob(name) {                              // memoria → el .cloto en la carpeta → carpeta de antes → copia del navegador
+  if (!name) return null;
+  let b = assetBlobs.get(name); if (b) return b;
+  await readPackFromFolder(); b = assetBlobs.get(name);
+  if (!b) b = await readAsset(name);
+  if (!b) b = await cacheGet(name);
+  if (b) assetBlobs.set(name, b);
+  return b || null;
+}
+async function assetURL(name) {
+  if (!name) return null;
+  if (burl.has(name)) return burl.get(name);
+  const b = await getBlob(name); if (!b) return null;
+  const u = URL.createObjectURL(b); burl.set(name, u); return u;
+}
+/* guardar: el proyecto completo en un solo .cloto, dentro de la carpeta */
+async function saveProject(quiet) {
+  if (editing) finishEdit();
+  persist();
+  if (!dir || !(await okPerm(true))) return false;
+  try {
+    const blob = await buildPack(), nm = fileName();
+    const w = await (await dir.getFileHandle(nm, { create: true })).createWritable(); await w.write(blob); await w.close();
+    dirty = false; packFor = ''; packP = null; if (!lock) clearCache(); updateTitle();
+    if (!quiet) note('Guardado · ' + nm + (lock ? ' · protegido' : ''), DESK ? () => deskPost('reveal', { path: nm }) : null);
+    return true;
+  } catch (e) { note(String(e && e.message).includes('4 GB') ? 'El proyecto pasa de 4 GB' : 'No se pudo guardar'); return false; }
+}
+let autoT = 0;
+function autoSaveSoon() {                                  // protegido y con carpeta: se guarda solo (cifrado) unos segundos después de cada cambio
+  if (!lock || !dir || !isNamed()) return;
+  clearTimeout(autoT); autoT = setTimeout(() => { if (dirty && lock) saveProject(true); }, 5000);
+}
+async function setProject(raw, thenSave) {
+  const nm = safeName(raw); closePbar(); if (!nm) return;
+  if (nm !== fileBase) { for (const a of usedAssets()) await getBlob(a); rebase(nm); updateTitle(); persist(); }   // todo a memoria antes de cambiar de nombre
+  if (thenSave || dir) await saveProject();
+}
+function openName(then) { closeFind(); pThen = !!then; pbarOpen = true; pbar.classList.add('open'); pname.value = isNamed() ? fileBase : ''; pname.focus(); pname.select(); }
+function closePbar() { if (!pbarOpen) return; pbarOpen = false; pbar.classList.remove('open'); pname.blur(); }
+pname.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); setProject(pname.value, pThen); } else if (e.key === 'Escape') { e.preventDefault(); closePbar(); } });
+const toDataURL = b => new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => res(null); r.readAsDataURL(b); });
+function cleanAsset(v) {                                    // nombre de archivo seguro en cualquier sistema (sin rutas, sin caracteres raros)
+  let t = String(v || '').replace(/[\u0000-\u001f\u007f\\/:*?"<>|]+/g, '_').replace(/^[.\s]+/, '').slice(0, 120).replace(/[.\s]+$/, '');
+  return RESERVED.test(t) ? '_' + t : t;
+}
+async function uniqueAsset(raw) {
+  const clean = cleanAsset(raw).slice(0, 80) || 'archivo', dot = clean.lastIndexOf('.');
+  const base = dot > 0 ? clean.slice(0, dot) : clean, ext = dot > 0 ? clean.slice(dot) : '';
+  const used = usedAssets();
+  let name = base + ext, i = 1;
+  while (assetBlobs.has(name) || used.has(name)) name = base + '-' + (++i) + ext;
+  return name;
+}
+async function embedToBlob(m) {                             // .cloto viejos (JSON con los archivos en texto): pasan a memoria
+  for (const [dk, nk] of [['data', 'name'], ['sdata', 'snap']]) {
+    if (m[dk] && m[nk] && !assetBlobs.has(m[nk])) { try { keepAsset(m[nk], typed(await (await fetch(m[dk])).blob(), m[nk])); } catch (e) {} }
+    delete m[dk];
+  }
+}
+
+/* =========================================================
+   Formato .cloto: un ZIP con cloto.json (el mapa) y assets/ (los archivos).
+   Con contraseña, ese ZIP va cifrado:  «CLOTOENC» · versión · vueltas · salt (16 bytes) · iv (12) · AES-256-GCM(zip)
+   La llave sale de la contraseña + el salt con PBKDF2-SHA256 (600 000 vueltas). GCM además detecta cualquier alteración.
+   ========================================================= */
+const MIME = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', webp: 'image/webp', avif: 'image/avif', svg: 'image/svg+xml', bmp: 'image/bmp',
+  ico: 'image/x-icon', heic: 'image/heic', heif: 'image/heif', tif: 'image/tiff', tiff: 'image/tiff', mp4: 'video/mp4', m4v: 'video/mp4', mov: 'video/quicktime',
+  webm: 'video/webm', mkv: 'video/x-matroska', ogv: 'video/ogg', avi: 'video/x-msvideo', '3gp': 'video/3gpp', mp3: 'audio/mpeg', wav: 'audio/wav', m4a: 'audio/mp4',
+  aac: 'audio/aac', ogg: 'audio/ogg', oga: 'audio/ogg', opus: 'audio/ogg', flac: 'audio/flac', pdf: 'application/pdf' };
+const typed = (b, name) => new Blob([b], { type: MIME[(String(name).split('.').pop() || '').toLowerCase()] || 'application/octet-stream' });   // el tipo lo decide Cloto por la extensión, nunca el archivo
+const assetOf = k => { const m = /^assets\/([^/\\]+)$/.exec(k); return m && cleanAsset(m[1]) === m[1] ? m[1] : null; };
+const LIM = 0xFFFFFFF0;
+const crcCache = new WeakMap();
+async function crcOf(b) {
+  if (crcCache.has(b)) return crcCache.get(b);
+  let c = 0xFFFFFFFF;
+  for (let o = 0; o < b.size; o += 8 << 20) { const u8 = new Uint8Array(await b.slice(o, o + (8 << 20)).arrayBuffer()); for (let i = 0; i < u8.length; i++) c = CRC[(c ^ u8[i]) & 255] ^ (c >>> 8); }
+  c = (c ^ 0xFFFFFFFF) >>> 0; crcCache.set(b, c); return c;
+}
+async function zipBlobs(files) {                            // método «store»: los archivos van tal cual, sin copiarse en memoria
+  const enc = new TextEncoder(), parts = [], cen = []; let off = 0;
+  const w16 = (a, n) => a.push(n & 255, (n >> 8) & 255), w32 = (a, n) => a.push(n & 255, (n >>> 8) & 255, (n >>> 16) & 255, (n >>> 24) & 255);
+  for (const f of files) {
+    const nm = enc.encode(f.name), crc = await crcOf(f.blob), sz = f.blob.size, h = [], c = [];
+    if (sz > LIM || off + sz > LIM) throw new Error('El proyecto pasa de 4 GB');
+    w32(h, 0x04034b50); w16(h, 20); w16(h, 0x0800); w16(h, 0); w16(h, 0); w16(h, 33); w32(h, crc); w32(h, sz); w32(h, sz); w16(h, nm.length); w16(h, 0);
+    w32(c, 0x02014b50); w16(c, 20); w16(c, 20); w16(c, 0x0800); w16(c, 0); w16(c, 0); w16(c, 33); w32(c, crc); w32(c, sz); w32(c, sz); w16(c, nm.length); w16(c, 0); w16(c, 0); w16(c, 0); w16(c, 0); w32(c, 0); w32(c, off);
+    parts.push(new Uint8Array(h), nm, f.blob); cen.push(new Uint8Array(c), nm);
+    off += h.length + nm.length + sz;
+  }
+  const e = [], csz = cen.reduce((a, q) => a + q.length, 0);
+  w32(e, 0x06054b50); w16(e, 0); w16(e, 0); w16(e, files.length); w16(e, files.length); w32(e, csz); w32(e, off); w16(e, 0);
+  return new Blob([...parts, ...cen, new Uint8Array(e)], { type: 'application/zip' });
+}
+async function inflate(b, size) {                           // por si alguien re-comprimió el .cloto; nunca más de lo que el ZIP declara
+  if (typeof DecompressionStream === 'undefined') throw new Error('zip');
+  const r = b.stream().pipeThrough(new DecompressionStream('deflate-raw')).getReader(), parts = []; let got = 0;
+  for (;;) { const { done, value } = await r.read(); if (done) break; got += value.length; if (got > size) { r.cancel(); throw new Error('zip'); } parts.push(value); }
+  return new Blob(parts);
+}
+async function unzip(blob) {                                // lector de ZIP con límites: un archivo malicioso no puede salirse ni inflarse
+  const n = blob.size, tl = Math.min(n, 65557), tail = new DataView(await blob.slice(n - tl).arrayBuffer());
+  let e = -1; for (let i = tl - 22; i >= 0; i--) if (tail.getUint32(i, true) === 0x06054b50) { e = i; break; }
+  if (e < 0) throw new Error('zip');
+  const cnt = tail.getUint16(e + 10, true), csz = tail.getUint32(e + 12, true), coff = tail.getUint32(e + 16, true);
+  if (cnt > 20000 || coff + csz > n) throw new Error('zip');
+  const cd = new DataView(await blob.slice(coff, coff + csz).arrayBuffer()), dec = new TextDecoder(), out = new Map();
+  for (let k = 0, q = 0; k < cnt; k++) {
+    if (q + 46 > csz || cd.getUint32(q, true) !== 0x02014b50) throw new Error('zip');
+    const method = cd.getUint16(q + 10, true), comp = cd.getUint32(q + 20, true), size = cd.getUint32(q + 24, true);
+    const nl = cd.getUint16(q + 28, true), xl = cd.getUint16(q + 30, true), cl = cd.getUint16(q + 32, true), lho = cd.getUint32(q + 42, true);
+    const name = dec.decode(new Uint8Array(cd.buffer, q + 46, Math.min(nl, csz - q - 46))); q += 46 + nl + xl + cl;
+    if (name !== 'cloto.json' && !assetOf(name)) continue;                   // solo lo que Cloto conoce
+    const lh = new DataView(await blob.slice(lho, lho + 30).arrayBuffer());
+    if (lh.byteLength < 30 || lh.getUint32(0, true) !== 0x04034b50) throw new Error('zip');
+    const start = lho + 30 + lh.getUint16(26, true) + lh.getUint16(28, true);
+    if (start + comp > n) throw new Error('zip');
+    const raw = blob.slice(start, start + comp);
+    if (method === 0) out.set(name, raw); else if (method === 8) out.set(name, await inflate(raw, size));
+  }
+  return out;
+}
+async function packKind(b) {
+  const h = new Uint8Array(await b.slice(0, 8).arrayBuffer());
+  if (String.fromCharCode(...h) === 'CLOTOENC') return 'enc';
+  if (h[0] === 0x50 && h[1] === 0x4b && h[2] === 3 && h[3] === 4) return 'zip';
+  return new TextDecoder().decode(h).replace(/^\uFEFF/, '').trimStart().startsWith('{') ? 'json' : null;
+}
+async function embedThumbs() {                              // miniaturas remotas (YouTube, capturas): se guardan dentro, así abrir el proyecto no consulta a nadie
+  for (const n of nodes) {
+    const m = n.media; if (!m || m.kind !== 'url' || m.snap || !m.thumb || m._tried) continue;
+    m._tried = 1;
+    try {
+      const r = await fetch(m.thumb), b = r.ok ? await r.blob() : null;
+      if (b && /^image\//.test(b.type) && b.size < 8 << 20) { m.snap = await uniqueAsset('vista-' + hostOf(m.url) + '.' + ((b.type.split('/')[1] || 'png').replace('jpeg', 'jpg').replace(/\+.*/, ''))); keepAsset(m.snap, b); }
+    } catch (e) {}
+  }
+}
+async function buildPack() {
+  await embedThumbs();
+  const files = [{ name: 'cloto.json', blob: new Blob([JSON.stringify(fileData(), null, 2)], { type: 'application/json' }) }];
+  for (const nm of usedAssets()) { const b = await getBlob(nm); if (b) files.push({ name: 'assets/' + nm, blob: b }); }
+  const zip = await zipBlobs(files);
+  return lock ? seal(zip) : zip;
+}
+/* abrir: .cloto paquete, paquete con contraseña, o .cloto de antes (JSON) */
+async function openPack(blob, name) {
+  try {
+    const k = await packKind(blob);
+    if (k === 'enc') { if (!canLock()) { note('Este navegador no puede abrir proyectos con contraseña'); return; } openKbar('unlock', { blob, name }); return; }
+    if (k === 'zip') { await finishPack(await unzip(blob), name, null); return; }
+    if (k === 'json' && blob.size < 300 << 20) { load(await blob.text(), name); return; }
+    note('Ese archivo no es un proyecto de Cloto');
+  } catch (e) { note('No se pudo abrir ' + (name || 'el archivo')); }
+}
+async function finishPack(ent, name, lk) {
+  const j = ent.get('cloto.json'); if (!j) { note('Ese archivo no es un proyecto de Cloto'); return; }
+  const assets = new Map(); ent.forEach((b, k) => { const a = assetOf(k); if (a) assets.set(a, typed(b, a)); });
+  load(await j.text(), name, { assets, lock: lk || null });
+}
+
+/* --- cifrado (WebCrypto, del propio navegador) --- */
+const KDF_IT = 600000, ENC_MAGIC = new TextEncoder().encode('CLOTOENC');
+const canLock = () => !!(window.crypto && crypto.subtle);
+async function deriveKey(pass, salt, it) {
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass.normalize('NFC')), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({ name: 'PBKDF2', hash: 'SHA-256', salt, iterations: it }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+}
+function encHeader(salt, iv, it) { const h = new Uint8Array(41); h.set(ENC_MAGIC, 0); h[8] = 1; new DataView(h.buffer).setUint32(9, it); h.set(salt, 13); h.set(iv, 29); return h; }
+async function seal(zip) {                                  // iv nuevo en cada guardado; la cabecera va autenticada (no se puede alterar)
+  const iv = crypto.getRandomValues(new Uint8Array(12)), h = encHeader(lock.salt, iv, lock.it);
+  const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv, additionalData: h }, lock.key, await zip.arrayBuffer());
+  return new Blob([h, ct], { type: 'application/octet-stream' });
+}
+async function unseal(blob, pass) {
+  const h = new Uint8Array(await blob.slice(0, 41).arrayBuffer());
+  if (h.length < 41 || h[8] !== 1) throw new Error('formato');
+  const it = new DataView(h.buffer).getUint32(9);
+  if (it < 100000 || it > 5000000) throw new Error('formato');              // un archivo alterado no puede dejarte esperando para siempre
+  const salt = h.slice(13, 29), iv = h.slice(29, 41), key = await deriveKey(pass, salt, it);
+  let pt; try { pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv, additionalData: h }, key, await blob.slice(41).arrayBuffer()); }
+  catch (e) { const er = new Error('clave'); er.wrong = true; throw er; }
+  return { zip: new Blob([pt]), lock: { key, salt, it } };
+}
+async function protect(pass) {
+  if (!canLock()) { note('Este navegador no permite cifrar'); return; }
+  note('Protegiendo…');
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  lock = { key: await deriveKey(pass, salt, KDF_IT), salt, it: KDF_IT };
+  await idb.sweep(null); persist(); updateTitle(); snd.chord();             // borra toda copia en claro que hubiera en el navegador
+  if (dir) { if (!isNamed()) openName(true); else await saveProject(); }
+  else note('Protegido con contraseña · guarda con ' + MOD + 'S');
+}
+function unprotect() {
+  lock = null; persist(); updateTitle();
+  if (dir && isNamed()) saveProject(); else { assetBlobs.forEach((b, n) => cachePut(n, b)); note('Sin contraseña · guarda para aplicarlo'); }
+}
+/* barra de contraseña: proteger (dos veces) o desbloquear */
+const kbar = $('kbar'), kpass = $('kpass'), klab = kbar.querySelector('.kl');
+let kbarOpen = false, kMode = null, kFirst = '', kBlob = null, kName = '';
+klab.innerHTML = ICO.lock;
+function openKbar(mode, o = {}) {
+  closeFind(); closePbar(); closeRing();
+  kMode = mode; kbarOpen = true; kpass.value = ''; kbar.classList.add('open');
+  if (o.blob) { kBlob = o.blob; kName = o.name || 'proyecto'; }
+  kpass.autocomplete = mode === 'unlock' ? 'current-password' : 'new-password';
+  kpass.placeholder = mode === 'unlock' ? 'Contraseña de «' + kName.replace(/\.[^.]+$/, '') + '»'
+                    : mode === 'set2' ? 'Repite la contraseña' : 'Nueva contraseña · si la olvidas, el proyecto no se recupera';
+  kpass.focus();
+}
+function closeKbar() { if (!kbarOpen) return; kbarOpen = false; kbar.classList.remove('open'); kpass.value = ''; kFirst = ''; kBlob = null; kpass.blur(); }
+const kBad = msg => { kbar.classList.remove('bad'); void kbar.offsetWidth; kbar.classList.add('bad'); kpass.value = ''; kpass.placeholder = msg; snd.puff(); };
+kpass.addEventListener('keydown', async e => {
+  if (e.key === 'Escape') {
+    e.preventDefault(); const m = kMode; closeKbar();
+    if (m === 'unlock' && lockedStart) { lockedStart = false; fileBase = 'hilo'; persist(); updateTitle(); }
+    return;
+  }
+  if (e.key !== 'Enter' || kpass.disabled) return;
+  e.preventDefault(); const v = kpass.value;
+  if (kMode === 'set1') { if (v.length < 8) { kBad('Mínimo 8 caracteres'); return; } kFirst = v; openKbar('set2'); return; }
+  if (kMode === 'set2') { if (v !== kFirst) { kFirst = ''; openKbar('set1'); kBad('No coinciden · escribe una nueva'); return; } closeKbar(); await protect(v); return; }
+  if (kMode === 'unlock') {
+    kpass.disabled = true; kpass.placeholder = 'Abriendo…'; kpass.value = '';
+    try { const r = await unseal(kBlob, v), name = kName; closeKbar(); await finishPack(await unzip(r.zip), name, r.lock); snd.chord(); }
+    catch (er) { kBad(er.wrong ? 'Contraseña incorrecta (o archivo dañado)' : 'No se pudo abrir el archivo'); }
+    finally { kpass.disabled = false; if (kbarOpen) kpass.focus(); }
+  }
+});
+async function startUnlock() {                              // al abrir Cloto: el último proyecto tenía contraseña
+  if (!dir) { lockedStart = false; return; }
+  if (!(await okPerm(false))) return;                       // en el navegador: el primer clic pide permiso y vuelve aquí
+  try {
+    const f = await (await dir.getFileHandle(fileName())).getFile();
+    if (await packKind(f) === 'enc') openKbar('unlock', { blob: f, name: f.name }); else { lockedStart = false; openPack(f, f.name); }
+  } catch (e) { lockedStart = false; persist(); }
+}
+const refreshAllMedia = () => nodes.forEach(n => { if (n.media) refreshMedia(n); });
+function centerNode(n) {
+  const el = els.get(n.id); if (!el || !n._c) return;
+  n.x = Math.round(n._c.x - el.offsetWidth / 2); n.y = Math.round(n._c.y - el.offsetHeight / 2); place(n, el); delete n._c;
+  hist[hi] = snapshot(); persist(); kick();
+}
+function fileCard(mb, m, glyph) {
+  mb.className = 'mb fc';
+  const ext = ((m.name || '').match(/\.([^.]+)$/) || [])[1] || 'archivo';
+  mb.innerHTML = `<b>${esc(glyph || ext.slice(0, 5).toUpperCase())}</b><span>${esc(m.name || '')}</span>`;
+}
+function refreshMedia(n) {
+  const el = els.get(n.id); if (!el) return;
+  el.querySelectorAll('.mb, .mf').forEach(x => x.remove());
+  el.classList.remove('media', 'playing', ...MKINDS.map(k => 'm-' + k));
+  const m = n.media; if (!m) return;
+  el.classList.add('media', 'm-' + m.kind);
+  const mb = document.createElement('div'); mb.className = 'mb'; el.appendChild(mb);
+  const done = () => { centerNode(n); kick(); };
+  const missing = () => { if (!mb.isConnected) return; mb.className = 'mb missing'; mb.textContent = (m.name || 'archivo') + '\nno encontrado'; done(); };
+  const asFile = () => { if (!mb.isConnected) return; fileCard(mb, m); done(); };      // el navegador no sabe mostrarlo (p. ej. .mov HEVC, .heic): queda como archivo
+  const picture = (tag, w) => {
+    const x = document.createElement(tag); x.draggable = false;
+    if (tag === 'video') { x.muted = true; x.loop = true; x.playsInline = true; x.preload = 'metadata'; const pl = document.createElement('i'); pl.className = 'pl'; mb.append(x, pl); } else mb.appendChild(x);
+    if (w) x.style.width = w + 'px';
+    x.addEventListener(tag === 'img' ? 'load' : 'loadedmetadata', () => {
+      if (tag === 'video' && !x.videoWidth) { asFile(); return; }
+      mb.classList.remove('wait');
+      if (m.kind !== 'url' && !m.w) { m.w = Math.min(tag === 'img' ? 260 : 320, x.naturalWidth || x.videoWidth || 240); x.style.width = m.w + 'px'; }
+      done();
+    });
+    return x;
+  };
+  if (m.kind === 'image' || m.kind === 'video') {
+    const x = picture(m.kind === 'image' ? 'img' : 'video', m.w);
+    x.addEventListener('error', () => assetBlobs.has(m.name) ? asFile() : missing());
+    embedToBlob(m).then(() => assetURL(m.name)).then(u => { if (!mb.isConnected) return; if (u) x.src = m.kind === 'video' ? u + '#t=0.1' : u; else missing(); });   // #t=0.1: muestra un cuadro, no negro
+  } else if (m.kind === 'audio') {
+    fileCard(mb, m, '♪');
+    const au = document.createElement('audio'); au.preload = 'none'; au.addEventListener('ended', () => el.classList.remove('playing')); mb.appendChild(au);
+    embedToBlob(m); done();
+  } else if (m.kind === 'pdf' || m.kind === 'file') {
+    fileCard(mb, m); embedToBlob(m); done();
+  } else {                                                    // enlace: captura de la página (o miniatura del vídeo) + dominio
+    const mf = document.createElement('div'); mf.className = 'mf'; mf.textContent = hostOf(m.url || '') + (m.err ? ' · sin vista previa' : ' ↗'); el.appendChild(mf);
+    if (m.snap || m.thumb || m.loading) {
+      const x = picture('img', 240); mb.classList.add('wait');
+      x.addEventListener('error', () => { if (x.dataset.s === 'snap' && m.thumb) { x.dataset.s = 't'; x.src = m.thumb; } else if (!m.loading) { mb.remove(); done(); } });
+      if (m.snap) embedToBlob(m).then(() => assetURL(m.snap)).then(u => { if (!mb.isConnected) return; if (u) { x.dataset.s = 'snap'; x.src = u; } else if (m.thumb) x.src = m.thumb; else if (!m.loading) { mb.remove(); done(); } });
+      else if (m.thumb) x.src = m.thumb;
+    } else { mb.remove(); done(); }
+  }
+}
+
+/* --- crear: soltar / pegar archivos y enlaces --- */
+async function addFiles(files, at) {
+  let i = 0;
+  for (const f of files) {
+    const name = await uniqueAsset(f.name), kind = kindOf(f), p = { x: at.x + i * 26, y: at.y + i * 26 }; i++;
+    keepAsset(name, f);
+    const n = addNode({ x: p.x, y: p.y, text: '' });
+    n.media = { kind, name, mime: f.type || '', size: f.size }; n._c = p;
+    refreshMedia(n);
+  }
+  commit();
+}
+function addUrl(raw, at) {
+  const u = cleanUrl(raw); if (!u) return null;
+  const n = addNode({ x: at.x, y: at.y, text: hostOf(u) }), yt = ytId(u), vm = vimeoId(u);
+  n.media = { kind: 'url', url: u };
+  if (yt) n.media.thumb = 'https://i.ytimg.com/vi/' + yt + '/mqdefault.jpg';
+  else if (vm) n.media.thumb = 'https://vumbnail.com/' + vm + '.jpg';
+  else if (IMG_URL.test(u)) n.media.thumb = u;                 // enlace directo a una imagen: se ve tal cual
+  n._c = at; refreshMedia(n); commit();
+  if (!lock && (!IMG_URL.test(u) || yt || vm)) enrich(n.id, !(yt || vm));   // título siempre; captura solo de páginas · protegido: solo si lo pides
+  return n;
+}
+/* vista previa: microlink.io abre la página en su servidor y devuelve título + captura. La captura se guarda en assets/ si el navegador lo permite */
+const ML = 'https://api.microlink.io/?url=';
+async function probe(url, shot) {
+  const q = ML + encodeURIComponent(url);
+  try {
+    const r = await fetch(q + (shot ? '&screenshot=true' : '')), j = await r.json(), d = j && j.status === 'success' && j.data;
+    if (!d) return shot ? { thumb: q + '&screenshot=true&meta=false&embed=screenshot.url' } : {};
+    const out = {}; if (d.title) out.title = String(d.title).replace(/\s+/g, ' ').trim().slice(0, 140);
+    const src = shot && ((d.screenshot && d.screenshot.url) || (d.image && d.image.url));
+    if (src && /^https:\/\//i.test(src)) {
+      out.thumb = src;
+      try {
+        const ri = await fetch(src); const bl = ri.ok ? await ri.blob() : null;
+        if (bl && /^image\//.test(bl.type)) { out.snap = await uniqueAsset('vista-' + hostOf(url) + '.' + (bl.type.split('/')[1] || 'png').replace('jpeg', 'jpg').replace(/\+.*/, '')); keepAsset(out.snap, bl); }
+      } catch (e) {}                                          // el servidor no deja leerla: se queda como imagen remota
+    } else if (shot) out.err = 1;
+    return out;
+  } catch (e) {                                               // sin permiso para leer la respuesta: la captura se pide directo como imagen
+    return shot ? { thumb: q + '&screenshot=true&meta=false&embed=screenshot.url' } : {};
+  }
+}
+async function enrich(id, shot) {
+  let n = node(id); if (!n || !n.media || n.media.kind !== 'url') return;
+  const url = n.media.url;
+  if (shot) { n.media.loading = 1; delete n.media.err; refreshMedia(n); }
+  const res = await probe(url, shot);
+  n = node(id); if (!n || !n.media || n.media.url !== url) return;          // la caja ya no está (deshacer, borrar)
+  const m = n.media; delete m.loading;
+  if (res.title && (!n.text.trim() || n.text === hostOf(url)) && editing !== id) { n.text = res.title; els.get(id).firstChild.textContent = n.text; }
+  if (res.thumb) { m.thumb = res.thumb; delete m.snap; }
+  if (res.snap) m.snap = res.snap;
+  if (res.err) { m.err = 1; setTimeout(() => { const k = node(id); if (k && k.media && k.media.err) { delete k.media.err; if (els.has(id)) refreshMedia(k); } }, 4000); }
+  refreshMedia(n); commit();
+  if (shot) res.err ? snd.puff() : snd.tock();
+}
+/* visor: imagen, página web, vídeo de YouTube/Vimeo o PDF, encima del lienzo */
+function frameSrc(u) {
+  const y = ytId(u); if (y) return 'https://www.youtube-nocookie.com/embed/' + y + '?autoplay=1&rel=0';
+  const v = vimeoId(u); if (v) return 'https://player.vimeo.com/video/' + v + '?autoplay=1';
+  return u;
+}
+function openLb(o) {
+  closeRing();
+  if (o.img) { lbImg.src = o.img; lbEl.className = 'open is-img'; }
+  else {
+    if (o.url) lbFr.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-presentation'); else lbFr.removeAttribute('sandbox');
+    lbFr.src = o.frame; lbEl.className = 'open is-fr';
+    lbGo.style.display = o.url ? '' : 'none';
+    if (o.url) { lbGo.href = o.url; lbGo.textContent = '¿no se ve? algunos sitios no se dejan mostrar dentro de otra página · abrir en una pestaña ↗'; }
+  }
+  lbOpen = true;
+}
+let lbTmp = null;
+function closeLb() { if (!lbOpen) return; lbOpen = false; lbEl.className = ''; lbFr.src = 'about:blank'; lbImg.removeAttribute('src'); if (lbTmp) { URL.revokeObjectURL(lbTmp); lbTmp = null; } }
+lbEl.addEventListener('click', () => setTimeout(closeLb, 0));
+lbGo.addEventListener('click', e => { if (DESK) { e.preventDefault(); window.open(lbGo.href); } });
+async function mediaAction(n) {
+  const m = n.media, el = els.get(n.id);
+  if (m.kind === 'url') { openLb({ frame: frameSrc(m.url), url: m.url }); return; }
+  if (m.kind === 'image' && el.querySelector('.mb img')) { const u = await assetURL(m.name); if (u) openLb({ img: u }); return; }
+  if (m.kind === 'pdf') { const b = await getBlob(m.name); if (b) { lbTmp = URL.createObjectURL(new Blob([b], { type: 'application/pdf' })); openLb({ frame: lbTmp }); } return; }
+  const v = el && el.querySelector('.mb video, .mb audio');
+  if (v) {
+    if (!v.getAttribute('src')) { const u = await assetURL(m.name); if (!u) return; v.src = u; }
+    if (v.paused) { v.muted = false; v.play().catch(() => el.classList.remove('playing')); el.classList.add('playing'); } else { v.pause(); el.classList.remove('playing'); }
+    return;
+  }
+  const b = await getBlob(m.name); if (!b) return;
+  if (DESK) { deskOpenBlob(b, m.name); return; }                        // en la app: con el programa de tu sistema
+  saveBlob(b, m.name);                                                  // en el navegador: se descarga. Nunca se abre como página: un .svg o .html podría traer código
+}
+
+/* imágenes de los hilos y cajas para exportar (PNG/SVG) */
+async function imgMap() {
+  const out = new Map();
+  for (const n of nodes) { const m = n.media, nm = m && (m.kind === 'image' ? m.name : m.kind === 'url' ? m.snap : ''); if (nm) { const b = await getBlob(nm); if (b) out.set(n.id, await toDataURL(b)); } }
+  return out;
+}
+
+/* =========================================================
+   App de escritorio: la carpeta de proyectos se usa directo a través del lanzador (cloto.py), sin permisos del navegador.
+   DeskDir / DeskFile imitan lo poco que Cloto usa de la API de carpetas del navegador.
+   ========================================================= */
+async function deskPost(op, body) {
+  try { const r = await fetch('/api/' + op, { method: 'POST', headers: { 'X-Cloto': DESK.token, 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) }); return r.ok ? await r.json() : null; }
+  catch (e) { return null; }
+}
+const deskFS = (op, path, init = {}) => fetch('/api/fs/' + op + '?path=' + encodeURIComponent(path), { ...init, headers: { 'X-Cloto': DESK.token } });
+const notFound = () => new DOMException('No existe', 'NotFoundError');
+const joinP = (a, b) => a ? a + '/' + b : b;
+class DeskDir {
+  constructor(path, name) { this.kind = 'directory'; this.path = path; this.name = name; }
+  async queryPermission() { return 'granted'; }
+  async requestPermission() { return 'granted'; }
+  async getDirectoryHandle(name, o = {}) {
+    const p = joinP(this.path, name), r = await deskFS(o.create ? 'mkdir' : 'stat', p, o.create ? { method: 'POST' } : {});
+    if (!r.ok || (await r.json()).kind !== 'directory') throw notFound();
+    return new DeskDir(p, name);
+  }
+  async getFileHandle(name, o = {}) {
+    const p = joinP(this.path, name);
+    if (!o.create) { const r = await deskFS('stat', p); if (!r.ok || (await r.json()).kind !== 'file') throw notFound(); }
+    return new DeskFile(p, name);
+  }
+}
+class DeskFile {
+  constructor(path, name) { this.kind = 'file'; this.path = path; this.name = name; }
+  async getFile() { const r = await deskFS('read', this.path); if (!r.ok) throw notFound(); const b = await r.blob(); return new File([b], this.name, { type: b.type }); }
+  async createWritable() {
+    const parts = [], path = this.path;
+    return { write: async d => { parts.push(d); }, close: async () => { const r = await deskFS('write', path, { method: 'PUT', body: new Blob(parts) }); if (!r.ok) throw new Error('No se pudo escribir'); } };
+  }
+}
+async function deskSaveBlob(blob, name) {                  // exportar en la app: va a proyectos/exportados/
+  try {
+    const nm = cleanAsset(name) || 'exportado', ex = await dir.getDirectoryHandle('exportados', { create: true });
+    const w = await (await ex.getFileHandle(nm, { create: true })).createWritable(); await w.write(blob); await w.close();
+    note('Guardado · exportados/' + nm + (lock ? ' (sin contraseña)' : '') + '  ↗', () => deskPost('reveal', { path: 'exportados/' + nm }));
+  } catch (e) { note('No se pudo guardar ' + name); }
+}
+async function deskOpenDialog() {                         // diálogo del sistema: devuelve el archivo elegido tal cual
+  try {
+    const r = await fetch('/api/dialog/open', { method: 'POST', headers: { 'X-Cloto': DESK.token } });
+    if (r.status !== 200) return null;
+    return { blob: await r.blob(), name: decodeURIComponent(r.headers.get('X-Cloto-Name') || 'proyecto.cloto') };
+  } catch (e) { return null; }
+}
+async function deskOpenBlob(b, name) {                    // abrir un archivo del proyecto con el programa del sistema (copia temporal privada)
+  try { await fetch('/api/open-temp?name=' + encodeURIComponent(name), { method: 'PUT', body: b, headers: { 'X-Cloto': DESK.token } }); } catch (e) {}
+}
+/* aviso breve abajo al centro (clic: acción opcional) */
+const noteEl = $('note'); let noteT = 0, noteFn = null;
+function note(t, fn) { noteEl.textContent = t; noteFn = fn || null; noteEl.classList.toggle('link', !!fn); noteEl.classList.add('on'); clearTimeout(noteT); noteT = setTimeout(() => noteEl.classList.remove('on'), 3400); }
+noteEl.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); if (noteFn) noteFn(); noteEl.classList.remove('on'); });
+
+/* =========================================================
+   Descargar Cloto: la carpeta lista (cloto.html + instrucciones) en un .zip
+   ========================================================= */
+const CRC = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+const crc32 = u8 => { let c = 0xFFFFFFFF; for (let i = 0; i < u8.length; i++) c = CRC[(c ^ u8[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+function zipStore(files) {
+  const enc = new TextEncoder(), parts = [], cen = []; let off = 0;
+  const w16 = (a, n) => a.push(n & 255, (n >> 8) & 255), w32 = (a, n) => a.push(n & 255, (n >>> 8) & 255, (n >>> 16) & 255, (n >>> 24) & 255);
+  files.forEach(f => {
+    const nm = enc.encode(f.name), crc = crc32(f.data), sz = f.data.length, h = [], c = [];
+    w32(h, 0x04034b50); w16(h, 20); w16(h, 0x0800); w16(h, 0); w16(h, 0); w16(h, 33); w32(h, crc); w32(h, sz); w32(h, sz); w16(h, nm.length); w16(h, 0);
+    parts.push(new Uint8Array(h), nm, f.data);
+    w32(c, 0x02014b50); w16(c, 20); w16(c, 20); w16(c, 0x0800); w16(c, 0); w16(c, 0); w16(c, 33); w32(c, crc); w32(c, sz); w32(c, sz); w16(c, nm.length); w16(c, 0); w16(c, 0); w16(c, 0); w16(c, 0); w32(c, 0); w32(c, off);
+    cen.push(new Uint8Array(c), nm);
+    off += h.length + nm.length + sz;
+  });
+  const e = [], csz = cen.reduce((a, q) => a + q.length, 0);
+  w32(e, 0x06054b50); w16(e, 0); w16(e, 0); w16(e, files.length); w16(e, files.length); w32(e, csz); w32(e, off); w16(e, 0);
+  return new Blob([...parts, ...cen, new Uint8Array(e)], { type: 'application/zip' });
+}
+function downloadCloto() {
+  const enc = new TextEncoder();
+  const readme = 'CLOTO\n\n1. Abre cloto.html con Chrome o Edge.\n2. Clic derecho en el lienzo vacío → «Conectar carpeta Cloto» y elige esta misma carpeta (cloto).\n3. Cada proyecto es un solo archivo, con sus imágenes, vídeos y PDF dentro:\n     cloto/<proyecto>.cloto\n   Puedes protegerlo con contraseña (clic derecho en el lienzo vacío).\n4. Todo es tuyo: copia la carpeta y llévala a otra computadora. No hay nube ni cuenta.\n';
+  saveBlob(zipStore([{ name: 'cloto/cloto.html', data: enc.encode(SRC) }, { name: 'cloto/LEEME.txt', data: enc.encode(readme) }]), 'cloto.zip');
+}
+/* ⤓: en la app abre la carpeta del proyecto · en línea lleva a descargar la app · como archivo descarga Cloto */
+const dlBtn = $('dlbtn');
+if (DESK) { dlBtn.title = 'Abrir la carpeta de proyectos'; dlBtn.innerHTML = ICO.open; }
+else if (WEB) dlBtn.title = 'Descargar la app de Cloto';
+dlBtn.addEventListener('pointerdown', e => {
+  e.preventDefault(); e.stopPropagation();
+  if (DESK) deskPost('reveal', { path: isNamed() ? fileName() : '' });
+  else if (WEB && REPO) window.open(REPO + '/releases/latest', '_blank', 'noopener');
+  else downloadCloto();
+});
+window.addEventListener('pointerdown', () => {                // al reabrir, el navegador pide de nuevo permiso sobre la carpeta: se pide con el primer clic
+  if (dir && !permOK && !permAsked && (lockedStart || nodes.some(n => n.media))) { permAsked = true; okPerm(true).then(ok => { if (ok) { refreshAllMedia(); if (lockedStart) startUnlock(); } }); }
+}, true);
+if (DESK) { dir = new DeskDir('', DESK.name || 'proyectos'); permOK = true; }
+else if (WEB) noFolder = true;
+else idb.get('dir').then(h => { if (h && h.kind === 'directory') { dir = h; okPerm(false).then(ok => { if (ok) refreshAllMedia(); if (lockedStart) startUnlock(); }); } else if (lockedStart) { lockedStart = false; persist(); } });
+
+/* =========================================================
+   Inicio
+   ========================================================= */
+applyPrefs();
+try {
+  const d = JSON.parse(ls.get('cloto:board') || ls.get('lienzo:board') || 'null');
+  if (d && d.locked) {                                      // el último proyecto tenía contraseña: se vuelve a abrir desde su archivo
+    fileBase = safeName(d.base) || 'hilo'; if (KINDS.includes(d.kind)) kind = d.kind; lockedStart = true;
+  } else if (d) {
+    if (d.base) fileBase = d.base;
+    ingest(d); rebuild();
+    if (d.view && isFinite(d.view.k)) view = { x: +d.view.x || 0, y: +d.view.y || 0, k: clampK(+d.view.k) };
+    if (KINDS.includes(d.kind)) kind = d.kind;
+    if (d.base) fileBase = d.base;
+  }
+} catch (e) {}
+applyView(); updateTitle(); updateHint();
+hist = [snapshot()]; hi = 0;
+idb.sweep(lock || lockedStart ? null : cachePrefix());     // limpieza: solo quedan las copias del proyecto abierto (y ninguna si tiene contraseña)
+if (lockedStart) {
+  if (DESK) startUnlock();
+  else if (WEB) { lockedStart = false; note((isNamed() ? '«' + fileBase + '»' : 'El último proyecto') + ' tiene contraseña: ábrelo con ' + MOD + 'O'); fileBase = 'hilo'; persist(); updateTitle(); }
+}
+})();
+</script>
+</body>
+</html>
