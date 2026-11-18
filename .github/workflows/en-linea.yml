@@ -1,0 +1,40 @@
+# Publica la versión de prueba en GitHub Pages (https://<usuario>.github.io/<repo>/).
+# Actívalo una vez en el repositorio: Settings → Pages → Source: «GitHub Actions».
+name: Versión en línea
+
+on:
+  push:
+    branches: [main]
+    paths: ['cloto.html', 'icono/**', '.github/workflows/en-linea.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.pages.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Preparar la página
+        run: |
+          mkdir -p web
+          sed "s#__CLOTO_REPO__#https://github.com/${GITHUB_REPOSITORY}#g" cloto.html > web/index.html
+          cp icono/cloto-256.png web/icono.png
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+      - id: pages
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,132 @@
+# Compila Cloto para Windows, macOS y Linux y lo publica en «Releases».
+# Se dispara al subir una etiqueta de versión:   git tag v1.0.0 && git push origin v1.0.0
+name: Publicar app
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read          # compilar solo lee; publicar (abajo) es lo único que escribe
+
+jobs:
+  compilar:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            sistema: windows
+          - os: macos-latest
+            sistema: macos
+          - os: ubuntu-22.04
+            sistema: linux
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+          # Ventana propia (pywebview) en los tres sistemas. En Linux va con Qt dentro (no depende de GTK ni de Chrome).
+          pip install -r requirements.txt
+          if [ "${{ matrix.sistema }}" = "linux" ]; then pip install PyQt5 PyQtWebEngine qtpy; fi
+
+      - name: Versión y enlace al repositorio
+        run: |
+          V="${GITHUB_REF_NAME#v}"; [ "$GITHUB_REF_TYPE" = "tag" ] || V="0.0.0-prueba"
+          # solo versiones bien formadas (1.2.3 o 1.2.3-beta.1): una etiqueta no puede colar código
+          [[ "$V" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]] || { echo "Versión inválida: $V"; exit 1; }
+          python - "$V" "https://github.com/${GITHUB_REPOSITORY}" <<'PY'
+          import re, sys
+          v, repo = sys.argv[1], sys.argv[2]
+          for f, pat, rep in [('cloto.py', r"VERSION = '[^']*'", "VERSION = '%s'" % v),
+                              ('cloto.spec', r"'CFBundleShortVersionString': '[^']*'", "'CFBundleShortVersionString': '%s'" % v),
+                              ('cloto.html', r'__CLOTO_REPO__', repo)]:
+              s = open(f, encoding='utf-8').read()
+              open(f, 'w', encoding='utf-8').write(re.sub(pat, rep, s))
+          PY
+
+      - name: Compilar
+        run: pyinstaller --noconfirm cloto.spec
+
+      - name: Empaquetar la carpeta
+        run: |
+          mkdir -p Cloto/proyectos
+          cp paquete/LEEME.txt Cloto/
+          cp paquete/proyectos.txt Cloto/proyectos/LEEME.txt
+          case "${{ matrix.sistema }}" in
+            windows)
+              cp dist/Cloto.exe paquete/Instalar.bat paquete/Desinstalar.bat Cloto/
+              7z a -tzip Cloto-windows.zip Cloto ;;
+            macos)
+              cp -R dist/Cloto.app Cloto/
+              cp paquete/Instalar.command Cloto/ && chmod +x Cloto/Instalar.command
+              ditto -c -k --keepParent Cloto Cloto-macos.zip ;;
+            linux)
+              cp dist/Cloto paquete/instalar.sh Cloto/ && chmod +x Cloto/Cloto Cloto/instalar.sh
+              tar czf Cloto-linux.tar.gz Cloto ;;
+          esac
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cloto-${{ matrix.sistema }}
+          path: Cloto-*
+
+  usb:
+    # Una sola carpeta con las tres versiones, para llevarla en una memoria USB llamada CLOTO
+    needs: compilar
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          path: partes
+          merge-multiple: true
+      - name: Armar CLOTO/
+        run: |
+          mkdir -p CLOTO/windows CLOTO/macos CLOTO/linux CLOTO/proyectos x/w x/m x/l
+          unzip -q partes/Cloto-windows.zip -d x/w && cp x/w/Cloto/Cloto.exe CLOTO/windows/
+          unzip -q partes/Cloto-macos.zip -d x/m && cp -R x/m/Cloto/Cloto.app CLOTO/macos/
+          tar xzf partes/Cloto-linux.tar.gz -C x/l && cp x/l/Cloto/Cloto CLOTO/linux/
+          cp paquete-usb/Instalar.bat paquete-usb/Desinstalar.bat paquete-usb/Instalar.command paquete-usb/Desinstalar.command \
+             paquete-usb/instalar.sh paquete-usb/desinstalar.sh paquete-usb/LEEME.txt CLOTO/
+          cp paquete-usb/proyectos.txt CLOTO/proyectos/LEEME.txt
+          chmod +x CLOTO/Instalar.command CLOTO/Desinstalar.command CLOTO/instalar.sh CLOTO/desinstalar.sh CLOTO/linux/Cloto
+          zip -qr Cloto-USB.zip CLOTO   # sin -y: guarda los archivos reales, no enlaces simbólicos (exFAT no los admite)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cloto-usb
+          path: Cloto-USB.zip
+
+  publicar:
+    needs: [compilar, usb]
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: salida
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: salida/*
+          generate_release_notes: true
