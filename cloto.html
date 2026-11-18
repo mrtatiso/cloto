@@ -475,6 +475,42 @@ function ingest(d) {
     if (ns.length) groups.push({ id, nodes: ns, label: typeof g.label === 'string' ? g.label.slice(0, 60) : '', color: hex(g.color) });
   });
 }
+/* Un texto en edición solo se cierra cuando tú sales (clic fuera, Esc, Tab, otro campo). Si el foco se va «solo»
+   (la ventana pierde el foco, el sistema muestra un aviso, el visor recoloca algo) se sigue escribiendo donde ibas */
+let pdLeft = false, caret = null;
+window.addEventListener('pointerdown', e => {                       // un clic fuera del texto que se edita: salir es intencional
+  const t = editTarget(); if (!t || t.contains(e.target)) return;
+  pdLeft = true; setTimeout(() => { pdLeft = false; }, 0);
+}, true);
+const saveCaret = () => {
+  const s = getSelection(), t = editTarget();
+  if (t && s && s.rangeCount && t.contains(s.anchorNode)) caret = s.getRangeAt(0).cloneRange();
+};
+document.addEventListener('selectionchange', saveCaret);
+document.addEventListener('input', saveCaret, true);
+function editTarget() {
+  if (editing) { const el = els.get(editing); return el && el.firstChild; }
+  if (labEdit) return lels.get(labEdit) || null;
+  if (gEdit) return gels.get(gEdit) || null;
+  return null;
+}
+function refocusEdit() {
+  const t = editTarget(); if (!t || document.activeElement === t || !document.hasFocus()) return;
+  t.focus({ preventScroll: true });
+  const s = getSelection(); if (!s) return;
+  s.removeAllRanges();
+  if (caret && t.contains(caret.startContainer)) s.addRange(caret);
+  else { const r = document.createRange(); r.selectNodeContents(t); r.collapse(false); s.addRange(r); }
+}
+function softBlur(t, ev, still, finish) {
+  if (!still()) return;
+  const left = pdLeft || (ev.relatedTarget && !t.contains(ev.relatedTarget));
+  if (left) { finish(); return; }
+  const sel = getSelection();                                          // donde ibas escribiendo, para volver justo ahí
+  if (sel && sel.rangeCount && t.contains(sel.anchorNode)) caret = sel.getRangeAt(0).cloneRange();
+  requestAnimationFrame(refocusEdit);
+}
+window.addEventListener('focus', () => requestAnimationFrame(refocusEdit));
 function rebuild() {
   els.forEach(el => { ro.unobserve(el); el.remove(); }); els.clear();
   lels.forEach(el => el.remove()); lels.clear(); labEdit = null; gels.forEach(el => el.remove()); gels.clear(); gEdit = null; closeFind();
@@ -496,7 +532,7 @@ function createEl(n) {
   el.className = n.w ? 'node wt' : 'node'; el.dataset.id = n.id;
   const t = document.createElement('div'); t.className = 't'; t.textContent = n.text;
   el.appendChild(t);
-  t.addEventListener('blur', () => { if (editing === n.id) finishEdit(); });
+  t.addEventListener('blur', ev => softBlur(t, ev, () => editing === n.id, finishEdit));
   t.addEventListener('paste', e => { e.preventDefault(); document.execCommand('insertText', false, e.clipboardData.getData('text/plain')); });
   place(n, el);
   world.appendChild(el); els.set(n.id, el); ro.observe(el);
@@ -702,7 +738,7 @@ const labelEl = e => {
   let el = lels.get(e.id);
   if (!el) {
     el = document.createElement('div'); el.className = 'elab'; el.dataset.id = e.id;
-    el.addEventListener('blur', () => { if (labEdit === e.id) finishLabel(); });
+    el.addEventListener('blur', ev => softBlur(el, ev, () => labEdit === e.id, finishLabel));
     el.addEventListener('paste', ev => { ev.preventDefault(); document.execCommand('insertText', false, ev.clipboardData.getData('text/plain').replace(/\s+/g, ' ')); });
     world.appendChild(el); lels.set(e.id, el);
   }
@@ -808,7 +844,8 @@ const GIVE = .04;      // estiramiento que aguanta antes de empezar a ceder
 const CREEP = 9;       // ceder mínimo por cuadro (px); si la tensión es grande cede la mitad de lo que falta
 const RETRACT = .5;    // px por cuadro que recupera al quedar flojo
 let simRaf = 0, simCalm = 0, simT = 0, lastDragEnd = 0, debris = [];
-function kick() { simCalm = 0; if (!simRaf) simRaf = requestAnimationFrame(simStep); }
+let wRest = 0, wSleep = false;                    // reposo de los pesos (ver stepWeights)
+function kick() { simCalm = 0; wSleep = false; wRest = 0; if (!simRaf) simRaf = requestAnimationFrame(simStep); }
 
 function rect(n) { const el = els.get(n.id), w = el.offsetWidth, h = el.offsetHeight; return { x: n.x, y: n.y, w, h, cx: n.x + w / 2, cy: n.y + h / 2 }; }
 const centerDist = (a, b) => { const ra = rect(a), rb = rect(b); return Math.hypot(rb.cx - ra.cx, rb.cy - ra.cy); };
@@ -1093,35 +1130,59 @@ function simStep(now) {
 /* los pesos cuelgan como en un resorte: tienen masa, caen, estiran el hilo y rebotan. El hilo conserva el largo que tenía
    hasta el peso (cuando el peso estaba en medio, el tramo de ese lado) y vuelve a él en cuanto se suelta.
    Un peso sin ningún hilo se queda donde está */
-const WGRAV = .5, WDAMP = .975, WK = 3.4, WMAX = 45;       // gravedad · freno · rigidez (relativa al largo) · velocidad máxima
-let weightsMoving = false;
+const WGRAV = .45, WDAMP = .9, WK = 2.2, WMAX = 30;        // gravedad · freno · rigidez (relativa al largo) · velocidad máxima
+let weightsMoving = false, wAcc = 0;
+function anchoredWeights() {                       // un peso cae solo si, siguiendo hilos, llega a alguna caja: si no, se queda donde está
+  const adj = new Map(), out = new Set();
+  edges.forEach(e => { (adj.get(e.from) || adj.set(e.from, []).get(e.from)).push(e.to); (adj.get(e.to) || adj.set(e.to, []).get(e.to)).push(e.from); });
+  const seen = new Set();
+  nodes.forEach(n => {
+    if (n.w || seen.has(n.id)) return;
+    const st = [n.id]; seen.add(n.id);
+    while (st.length) { const id = st.pop(); (adj.get(id) || []).forEach(o => { if (seen.has(o)) return; seen.add(o); const m = nmap.get(o); if (m && m.w) { out.add(o); st.push(o); } }); }
+  });
+  return out;
+}
 function stepWeights(f) {
-  let moving = false;
+  wAcc = Math.min(wAcc + f, 4);                    // paso fijo (60 por segundo): igual de estable a cualquier frecuencia de pantalla
+  if (wAcc < 1) return weightsMoving;
+  const free = anchoredWeights(), list = [];
   nodes.forEach(n => {
     if (!n.w) return;
     const el = els.get(n.id); if (!el) return;
-    const inc = edges.filter(e => e.from === n.id || e.to === n.id);
     const held = editing === n.id || (drag && drag.type === 'node' && drag.moved && drag.orig && drag.orig.has(n.id));
-    if (!inc.length || held) { n.vx = n.vy = 0; return; }
-    const w = el.offsetWidth, h = el.offsetHeight;
-    let cx = n.x + w / 2, cy = n.y + h / 2, fx = 0, fy = WGRAV;
-    const W = { cx, cy, x0: cx - w / 2 - PAD, y0: cy - h / 2 - PAD, x1: cx + w / 2 + PAD, y1: cy + h / 2 + PAD };
-    inc.forEach(e => {
-      const O = boxFor(e.from === n.id ? e.to : e.from), len = e.len0 || e.len || 0; if (!O || !len) return;
-      const gap = gapOf(W, O); if (gap <= len) return;                      // flojo: no tira; estirado: tira como resorte
-      const dx = O.cx - cx, dy = O.cy - cy, d = Math.hypot(dx, dy) || 1, k = WK * (gap - len) / len;
-      fx += dx / d * k; fy += dy / d * k;
-    });
-    let vx = ((n.vx || 0) + fx * f) * WDAMP, vy = ((n.vy || 0) + fy * f) * WDAMP;
-    const sp = Math.hypot(vx, vy); if (sp > WMAX) { vx *= WMAX / sp; vy *= WMAX / sp; }
-    n.vx = vx; n.vy = vy;
-    n.x += vx * f; n.y += vy * f; place(n, el);
-    if (sp > .05) moving = true;
+    if (!free.has(n.id) || held) { n.vx = n.vy = 0; return; }
+    list.push({ n, el, w: el.offsetWidth, h: el.offsetHeight, inc: edges.filter(e => e.from === n.id || e.to === n.id) });
   });
-  return moving;
+  let maxSp = 0, maxF = 0;
+  while (wAcc >= 1) {
+    wAcc -= 1;
+    for (const { n, el, w, h, inc } of list) {
+      const cx = n.x + w / 2, cy = n.y + h / 2;
+      let fx = 0, fy = WGRAV;
+      const W = { cx, cy, x0: cx - w / 2 - PAD, y0: cy - h / 2 - PAD, x1: cx + w / 2 + PAD, y1: cy + h / 2 + PAD };
+      inc.forEach(e => {
+        const O = boxFor(e.from === n.id ? e.to : e.from), len = e.len0 || e.len || 0; if (!O || !len) return;
+        const gap = gapOf(W, O); if (gap <= len) return;                    // flojo: no tira; estirado: tira como resorte
+        const dx = O.cx - cx, dy = O.cy - cy, d = Math.hypot(dx, dy) || 1, k = Math.min(WK * (gap - len) / len, 6);
+        fx += dx / d * k; fy += dy / d * k;
+      });
+      const fm = Math.hypot(fx, fy); maxF = Math.max(maxF, fm);
+      if (wSleep && fm < .35) { n.vx = n.vy = 0; continue; }          // dormido: no se mueve hasta que algo tire de verdad
+      wSleep = false;
+      let vx = ((n.vx || 0) + fx) * WDAMP, vy = ((n.vy || 0) + fy) * WDAMP;
+      const sp = Math.hypot(vx, vy); if (sp > WMAX) { vx *= WMAX / sp; vy *= WMAX / sp; }
+      n.vx = vx; n.vy = vy; n.x += vx; n.y += vy;
+      maxSp = Math.max(maxSp, sp);
+    }
+  }
+  list.forEach(({ n, el }) => place(n, el));
+  wRest = maxSp < .08 && maxF < .35 ? wRest + 1 : 0;   // quieto de verdad unos cuadros seguidos: reposa, sin temblar
+  if (wRest > 12) { wSleep = true; list.forEach(({ n }) => { n.vx = n.vy = 0; }); return false; }
+  return list.length > 0;
 }
 function settleWeights() {                          // el peso dejó de moverse: su posición nueva se guarda sin crear un paso más en el historial
-  nodes.forEach(n => { if (n.w) { n.x = Math.round(n.x); n.y = Math.round(n.y); const el = els.get(n.id); if (el) place(n, el); n.vx = n.vy = 0; } });
+  nodes.forEach(n => { if (n.w) { n.vx = n.vy = 0; } });
   if (hi >= 0 && hist[hi] !== undefined) hist[hi] = snapshot();
   dirty = true; persist(); autoSaveSoon();
 }
@@ -1160,8 +1221,7 @@ function simStep0(now) {
 
     // tensión: cuánto excede el hilo a lo que mide ahora; nunca se rompe, solo cede
     const excess = r.L - e.len * (1 + GIVE), brk = 50 / view.k + e.len * .25;   // brk solo gradúa el adelgazamiento visual
-    const wEnd = (nmap.get(e.from) || {}).w || (nmap.get(e.to) || {}).w;   // un peso cuelga: el hilo que lo sostiene no cede al balanceo
-    if (excess > 0 && !wEnd) {                                // jalado: se estira, tan rápido como lo jalen
+    if (excess > 0) {                                                  // jalado: se estira, tan rápido como lo jalen (el resorte de un peso usa len0: vuelve)
       const need = r.L / (1 + GIVE) - e.len;
       e.len += Math.min(need, Math.max(CREEP / view.k * f, need * .5)); busy = true;
     } else if (!pin && r.L < e.len * (1 + GIVE / 2) && e.len > e.len0 + .5) {
@@ -1903,7 +1963,7 @@ function gLabelEl(g) {
   let el = gels.get(g.id);
   if (!el) {
     el = document.createElement('div'); el.className = 'ilab'; el.dataset.id = g.id;
-    el.addEventListener('blur', () => { if (gEdit === g.id) finishIsle(); });
+    el.addEventListener('blur', ev => softBlur(el, ev, () => gEdit === g.id, finishIsle));
     el.addEventListener('paste', ev => { ev.preventDefault(); document.execCommand('insertText', false, ev.clipboardData.getData('text/plain').replace(/\s+/g, ' ')); });
     world.appendChild(el); gels.set(g.id, el);
   }
