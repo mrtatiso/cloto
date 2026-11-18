@@ -1,7 +1,7 @@
 # Cloto
 
 Ideas, cajas de texto, imágenes, vídeos, PDF, enlaces y cuerdas.
-Cada proyecto es un solo archivo `.cloto` con todo dentro, y se puede proteger con contraseña.
+Cada proyecto es un solo archivo `.cloto` con todo dentro. Se puede proteger con contraseña.
 
 ## La app de escritorio
 
