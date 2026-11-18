@@ -651,8 +651,6 @@ def open_window(url, server_only=False):
             S.window = webview.create_window(APP, url, width=1280, height=820, min_size=(640, 420),
                                              background_color='#f4f4f6', text_select=True)
             kw = {'private_mode': False, 'storage_path': str(DATA / 'navegador')}
-            if FROZEN and sys.platform.startswith('linux'):
-                kw['gui'] = 'qt'                                  # la app de Linux trae Qt dentro (no depende de GTK ni de Chrome)
             try:
                 webview.start(icon=str(RES / 'icono' / 'cloto-256.png'), **kw)
             except TypeError:
@@ -759,11 +757,23 @@ def usb_id():
         return None
 
 
+def launch_exe() -> Path:
+    """Lo que abre el lanzador: el binario, o (Linux desde el código, en la memoria USB) el script linux/Cloto, que usa el Python del sistema."""
+    if FROZEN:
+        return Path(sys.executable).resolve()
+    return (HERE / 'Cloto').resolve()
+
+
+def usb_fuente() -> bool:
+    """Linux: la memoria lleva el código y un script (linux/Cloto) en vez de un binario; el equipo hace de intérprete."""
+    return not FROZEN and SYSTEM == 'Linux' and usb_root() is not None and (HERE / 'Cloto').is_file()
+
+
 def write_launcher():
     """Escribe el lanzador de esta computadora. Abre Cloto donde se instaló; si esa ruta ya no existe
     (la memoria apareció con otra letra o carpeta), busca el volumen llamado CLOTO. En los dos casos solo abre
     si la carpeta tiene el identificador de esta instalación. Devuelve la ruta del lanzador."""
-    exe = Path(sys.executable).resolve()
+    exe = launch_exe()
     mnt = mount_root(exe)
     rel = exe.relative_to(mnt)
     ident = usb_id()
@@ -861,6 +871,8 @@ def install_vinculado():
                 subprocess.run(['gio', 'set', str(d), 'metadata::trusted', 'true'], capture_output=True)
         if shutil.which('update-desktop-database'):
             subprocess.run(['update-desktop-database', str(apps)], capture_output=True)
+        if shutil.which('gtk-update-icon-cache'):                 # que el escritorio vea el icono nuevo sin cerrar sesión
+            subprocess.run(['gtk-update-icon-cache', '-f', '-t', str(icons)], capture_output=True)
         where = 'el menú de aplicaciones y el escritorio'
     S.root.mkdir(parents=True, exist_ok=True)
     aviso('Listo: Cloto está en %s de esta computadora.\nLa app y tus proyectos viven en:\n%s\n\n'
@@ -868,7 +880,7 @@ def install_vinculado():
 
 
 def install():
-    if FROZEN:
+    if FROZEN or usb_fuente():
         return install_vinculado()
     prog, args = launcher()
     if SYSTEM == 'Windows':
@@ -924,6 +936,8 @@ def install():
                 subprocess.run(['gio', 'set', str(d), 'metadata::trusted', 'true'], capture_output=True)
         if shutil.which('update-desktop-database'):
             subprocess.run(['update-desktop-database', str(apps)], capture_output=True)
+        if shutil.which('gtk-update-icon-cache'):                 # que el escritorio vea el icono nuevo sin cerrar sesión
+            subprocess.run(['gtk-update-icon-cache', '-f', '-t', str(icons)], capture_output=True)
         where = 'el menú de aplicaciones y el escritorio'
     S.root.mkdir(parents=True, exist_ok=True)
     aviso('Listo: Cloto está en %s.\nTus proyectos se guardan en:\n%s' % (where, S.root))
